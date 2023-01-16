@@ -15,8 +15,8 @@
 | Kagwa, Shawn | | |
 | Lay, Nancy | Nhomsombath | |
 | Lynn, Jacob | | |
-| Menchukov, Fedor | | |
-| Milligan, Ronald | | |
+| Menchukov, Fedor | menchukf | |
+| Milligan, Ronald | SWIFPAC | |
 | NGUYEN, Khoa | | |
 | Nguyen, Viet | nguyendviet | |
 | Platt, Nicholas | tpbnick | |
@@ -24,5 +24,5 @@
 | Tchangalov, Ivelin | | |
 | Teeba, Jah-wilson | jwteeba | |
 | Wabo tebu, Alex armel | | |
-| Wang, Hang | | |
+| Wang, Hang |spore42 | |
 | Welch, Jeffrey | jwelch28 | |
