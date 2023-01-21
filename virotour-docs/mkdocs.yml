@@ -1,0 +1,67 @@
+site_name: ViroTour Docs
+repo_name: umgc/spring2023
+repo_url: https://github.com/umgc/spring2023
+theme:
+  name: material
+  logo: '/images/logo.png'
+  favicon: '/images/logo.png'
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+  static_templates:
+    - 404.html
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icon:
+    repo: fontawesome/brands/git-alt
+plugins:
+  - glightbox
+  - search
+  - minify:
+      minify_html: true
+markdown_extensions:
+  - pymdownx.arithmatex
+  - md_in_html
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+  - toc:
+      permalink: false
+nav:
+  - Home : index.md
+  - User Guide:
+    - Home: user_guide/home.md
+  - Development:
+    - Home: development/home.md
+    - Technology: development/tech.md
+    - The Team: development/team.md
