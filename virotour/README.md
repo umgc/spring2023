@@ -10,7 +10,7 @@ Cohort Spring 2023 - Demo Checkin - Merge Conflict
 
 https://docs.flutter.dev/get-started/install/windows
 
-![img.png](readme_images/flutter_dir.png)
+![img.png](readme_images/dir_flutter.png)
 
 ## 2. Install Android Studio
 
