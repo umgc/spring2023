@@ -9,7 +9,7 @@ Cohort Spring 2023 - Demo Checkin - Merge Conflict
 - Follow [Flutter docs](https://docs.flutter.dev/get-started/install) to install required apps and set up your local environment.
 - Clone this repo:
     ```
-    https://github.com/umgc/spring2023.git
+    git clone https://github.com/umgc/spring2023.git
     ```
 - Try the app:
     ```
