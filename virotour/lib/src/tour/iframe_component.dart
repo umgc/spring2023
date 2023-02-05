@@ -4,9 +4,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(IFrameTesterApp());
+void main() => runApp(IFrameComponent());
 
-class IFrameTesterApp extends StatelessWidget {
+class IFrameComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
