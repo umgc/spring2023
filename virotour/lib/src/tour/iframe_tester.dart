@@ -9,17 +9,14 @@ void main() => runApp(IFrameTesterApp());
 class IFrameTesterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
       theme: ThemeData.light(),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('IFrame Tester App'),
-          centerTitle: true,
-        ),
         body: Center(
           child: Container(
-            width: 800,
-            height: 800,
+            width: screenWidth,
+            // height: 800,
             decoration: BoxDecoration(
               border: Border.all(
                   color: Theme.of(context).colorScheme.onSurface, width: 1.0),
