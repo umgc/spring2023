@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(IFrameComponent());
 
 class IFrameComponent extends StatelessWidget {
+  // <iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true"></iframe>
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -16,14 +17,14 @@ class IFrameComponent extends StatelessWidget {
         body: Center(
           child: Container(
             width: screenWidth,
-            // height: 800,
+            // height: 400,
             decoration: BoxDecoration(
               border: Border.all(
                   color: Theme.of(context).colorScheme.onSurface, width: 1.0),
             ),
             child: const IframeView(
                 source:
-                    "https://firebasestorage.googleapis.com/v0/b/virotour-19daa.appspot.com/o/users%2Fhang_wang%2F1.jpg?alt=media&token=0b26a6d6-a281-4c21-9ff1-ea7f9088386f"),
+                    "https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true"),
           ),
         ),
       ),
@@ -49,6 +50,7 @@ class _IframeViewState extends State<IframeView> {
     super.initState();
     _iframeElement.src = widget.source;
     _iframeElement.style.border = 'none';
+    _iframeElement.allowFullscreen = true;
 
     //ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
