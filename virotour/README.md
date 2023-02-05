@@ -15,11 +15,11 @@ Cohort Spring 2023 - Demo Checkin - Merge Conflict
     ```
 - You should see this
 <div style='float: center'>
-    <img style='width: 800px' src="img/Screenshot2023-02-04at20.19.14.png"></img>
+    <img style='width: 800px' src="/docs/img/Screenshot2023-02-04at20.19.14.png"></img>
 </div>
 <div style='float: center'>
-    <img style='width: 800px' src="Screenshot2023-02-04at20.19.14.png"></img>
+    <img style='width: 800px' src="S/docs/img/creenshot2023-02-04at20.19.14.png"></img>
 </div>
-    - ![sc1](img/Screenshot2023-02-04at20.19.14.png)
-    - ![sc1](img/Screenshot2023-02-04at20.19.14.png)
+    - ![sc1](/docs/img/img/Screenshot2023-02-04at20.19.14.png)
+    - ![sc1](/docs/img/img/Screenshot2023-02-04at20.19.14.png)
 - ⚠️ At the moment, everything is hard coded. This is just a hacky solution. All 3 tours are the same. Each tour only shows one 360 image that Hang Wang took.
