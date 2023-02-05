@@ -1,4 +1,6 @@
 //ignore: avoid_web_libraries_in_flutter
+// ignore_for_file: library_private_types_in_public_api, avoid_web_libraries_in_flutter, duplicate_ignore, prefer_const_constructors
+
 import 'dart:html';
 import 'dart:ui' as ui;
 
@@ -7,6 +9,8 @@ import 'package:flutter/material.dart';
 void main() => runApp(IFrameComponent());
 
 class IFrameComponent extends StatelessWidget {
+  const IFrameComponent({super.key});
+
   // <iframe width="600" height="400" allowfullscreen style="border-style:none;" src="https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true"></iframe>
   @override
   Widget build(BuildContext context) {

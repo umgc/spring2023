@@ -19,8 +19,9 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         title: const Text('Tour Details'),
       ),
       // body: const Center(
-      //   child: Text('More Information Here'),
+      // child: Text('More Information Here'),
       // body: Image.network('https://picsum.photos/250?image=9'),
+      // )
       body: IFrameComponent(),
     );
   }
