@@ -1,14 +1,3 @@
-API Token Secret: 98864754dc73cdf3d59c673e3beaf333
-API Token ID: cf80ca1b9bf19525
-API Token Name: UMGC670
-SDK Token: i30a8zxpwd2bcwghf862ky2fd
-SDK Token Name: UMGC670
-
-const token = "cf80ca1b9bf19525";
-const secret = "98864754dc73cdf3d59c673e3beaf333";
-
-API Basic Auth: Y2Y4MGNhMWI5YmYxOTUyNTo5ODg2NDc1NGRjNzNjZGYzZDU5YzY3M2UzYmVhZjMzMw==
-
 {
   "data": {
     "model": {
