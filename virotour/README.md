@@ -2,8 +2,6 @@
 
 Enable a deeper connection between the user and the facility by providing a virtual tour experience that enables text searchable elements.
 
-Cohort Spring 2023 - Demo Checkin - Merge Conflict
-
 ## Flutter App
 
 - Follow [Flutter docs](https://docs.flutter.dev/get-started/install) to install required apps and set up your local environment.
