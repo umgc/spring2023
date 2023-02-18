@@ -12,14 +12,14 @@
 1. Assuming you didn't get any issues and you're using a Macbook and VSCode, while you have the `main.dart` open, use VSCode's Command Palette (`cmd+shift+P`), type or select: `Flutter: Select Device`. You should see this:
 
     <div style='float: center'>
-        <img style='width: 800px' src="./assets/img/macos_setup/mac_os_setup_1.png"></img>
+        <img style='width: 800px' src="../assets/images/macos_setup/mac_os_setup_1.png"></img>
     </div>
 
 1. Select the device you want to test this app on.
 1. Go to VSCode > Run > Start Debugging. Ignore all warnings.
 
     <div style='float: center'>
-        <img style='width: 800px' src="./assets/img/macos_setup/mac_os_setup_2.png"></img>
+        <img style='width: 800px' src="../assets/images/macos_setup/mac_os_setup_2.png"></img>
     </div>
 
 1. You should see this:

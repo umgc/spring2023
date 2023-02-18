@@ -4,7 +4,7 @@
 
 https://docs.flutter.dev/get-started/install/windows
 
-![img.png](assets/img/windows_setup_images/dir_flutter.png)
+![img.png](../assets/images/windows_setup/dir_flutter.png)
 
 ## 2. Install Android Studio
 
@@ -16,22 +16,22 @@ https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/windows-7-install.htm
 
 Ensure JAVA_HOME is set properly
 
-![InstallJava.PNG](assets/img/windows_setup_images/InstallJava.PNG)
+![InstallJava.PNG](../assets/images/windows_setup/InstallJava.PNG)
 
 ## 4. Import the project
 
-![Install1.PNG](assets/img/windows_setup_images/Install1.PNG)
-![Install2.PNG](assets/img/windows_setup_images/Install2.PNG)
-![Install3.PNG](assets/img/windows_setup_images/Install3.PNG)
-![Install4.PNG](assets/img/windows_setup_images/Install4.PNG)
-![Install5.PNG](assets/img/windows_setup_images/Install5.PNG)
-![Install6.PNG](assets/img/windows_setup_images/Install6.PNG)
-![Install7.PNG](assets/img/windows_setup_images/Install7.PNG)
+![Install1.PNG](../assets/images/windows_setup/Install1.PNG)
+![Install2.PNG](../assets/images/windows_setup/Install2.PNG)
+![Install3.PNG](../assets/images/windows_setup/Install3.PNG)
+![Install4.PNG](../assets/images/windows_setup/Install4.PNG)
+![Install5.PNG](../assets/images/windows_setup/Install5.PNG)
+![Install6.PNG](../assets/images/windows_setup/Install6.PNG)
+![Install7.PNG](../assets/images/windows_setup/Install7.PNG)
 
 ## 5. Launching the android application
 
 Create an emulator and run "main.dart"
-![InstallRun.PNG](assets/img/windows_setup_images/InstallRun.PNG)
+![InstallRun.PNG](../assets/images/windows_setup/InstallRun.PNG)
 
 ## 6. Launching the web application
 
