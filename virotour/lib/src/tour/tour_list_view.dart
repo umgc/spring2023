@@ -3,25 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:webviewx/webviewx.dart';
 
-import 'helpers.dart';
+import '../helpers/helpers.dart';
 
-class WebViewXPage extends StatefulWidget {
-  const WebViewXPage({
+class TourListView extends StatefulWidget {
+  const TourListView({
     Key? key,
   }) : super(key: key);
 
   @override
-  _WebViewXPageState createState() => _WebViewXPageState();
+  _TourListViewState createState() => _TourListViewState();
 }
 
-class _WebViewXPageState extends State<WebViewXPage> {
+class _TourListViewState extends State<TourListView> {
   late WebViewXController webviewController;
-  final initialContent =
-      '<h4> This is some hardcoded HTML code embedded inside the webview <h4> <h2> Hello world! <h2>';
-  final executeJsErrorMessage =
-      'Failed to execute this task because the current content is (probably) URL that allows iframe embedding, on Web.\n\n'
-      'A short reason for this is that, when a normal URL is embedded in the iframe, you do not actually own that content so you cant call your custom functions\n'
-      '(read the documentation to find out why).';
 
   Size get screenSize => MediaQuery.of(context).size;
 
@@ -35,7 +29,7 @@ class _WebViewXPageState extends State<WebViewXPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WebViewX Page'),
+        title: const Text('Tours'),
       ),
       body: Center(
         child: Container(
@@ -45,10 +39,6 @@ class _WebViewXPageState extends State<WebViewXPage> {
               buildSpace(direction: Axis.vertical, amount: 10.0, flex: false),
               Container(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: Text(
-                  'Play around with the buttons below',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
               ),
               buildSpace(direction: Axis.vertical, amount: 10.0, flex: false),
               Container(
@@ -78,7 +68,6 @@ class _WebViewXPageState extends State<WebViewXPage> {
   Widget _buildWebViewX() {
     return WebViewX(
       key: const ValueKey('webviewx'),
-      initialContent: initialContent,
       initialSourceType: SourceType.html,
       height: screenSize.height / 2,
       width: min(screenSize.width * 0.8, 1024),
@@ -131,13 +120,6 @@ class _WebViewXPageState extends State<WebViewXPage> {
     );
   }
 
-  void _setHtml() {
-    webviewController.loadContent(
-      initialContent,
-      SourceType.html,
-    );
-  }
-
   void _setHtmlFromAssets() {
     webviewController.loadContent(
       'assets/test.html',
@@ -146,70 +128,10 @@ class _WebViewXPageState extends State<WebViewXPage> {
     );
   }
 
-  Future<void> _goForward() async {
-    if (await webviewController.canGoForward()) {
-      await webviewController.goForward();
-      showSnackBar('Did go forward', context);
-    } else {
-      showSnackBar('Cannot go forward', context);
-    }
-  }
-
-  Future<void> _goBack() async {
-    if (await webviewController.canGoBack()) {
-      await webviewController.goBack();
-      showSnackBar('Did go back', context);
-    } else {
-      showSnackBar('Cannot go back', context);
-    }
-  }
-
-  void _reload() {
-    webviewController.reload();
-  }
-
   void _toggleIgnore() {
     final ignoring = webviewController.ignoresAllGestures;
     webviewController.setIgnoreAllGestures(!ignoring);
     showSnackBar('Ignore events = ${!ignoring}', context);
-  }
-
-  Future<void> _evalRawJsInGlobalContext() async {
-    try {
-      final result = await webviewController.evalRawJavascript(
-        '2+2',
-        inGlobalContext: true,
-      );
-      showSnackBar('The result is $result', context);
-    } catch (e) {
-      showAlertDialog(
-        executeJsErrorMessage,
-        context,
-      );
-    }
-  }
-
-  Future<void> _callPlatformIndependentJsMethod() async {
-    try {
-      await webviewController.callJsMethod('testPlatformIndependentMethod', []);
-    } catch (e) {
-      showAlertDialog(
-        executeJsErrorMessage,
-        context,
-      );
-    }
-  }
-
-  Future<void> _callPlatformSpecificJsMethod() async {
-    try {
-      await webviewController
-          .callJsMethod('testPlatformSpecificMethod', ['Hi']);
-    } catch (e) {
-      showAlertDialog(
-        executeJsErrorMessage,
-        context,
-      );
-    }
   }
 
   Future<void> _getWebviewContent() async {
@@ -242,63 +164,14 @@ class _WebViewXPageState extends State<WebViewXPage> {
   List<Widget> _buildButtons() {
     return [
       buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: createButton(onTap: _goBack, text: 'Back')),
-          buildSpace(amount: 12, flex: false),
-          Expanded(child: createButton(onTap: _goForward, text: 'Forward')),
-          buildSpace(amount: 12, flex: false),
-          Expanded(child: createButton(onTap: _reload, text: 'Reload')),
-        ],
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
       createButton(
-        text:
-            'Viet\'s Pannellum Tour',
+        text: 'Viet\'s Pannellum Tour',
         onTap: _setUrl,
       ),
       buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
       createButton(
-        text:
-            'https://news.ycombinator.com/',
+        text: 'https://news.ycombinator.com/',
         onTap: _setUrlBypass,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text: 'Change content to HTML (hardcoded)',
-        onTap: _setHtml,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text: 'Change content to HTML (from assets)',
-        onTap: _setHtmlFromAssets,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text: 'Toggle on/off ignore any events (click, scroll etc)',
-        onTap: _toggleIgnore,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text: 'Evaluate 2+2 in the global "window" (javascript side)',
-        onTap: _evalRawJsInGlobalContext,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text: 'Call platform independent Js method (console.log)',
-        onTap: _callPlatformIndependentJsMethod,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text:
-            'Call platform specific Js method, that calls back a Dart function',
-        onTap: _callPlatformSpecificJsMethod,
-      ),
-      buildSpace(direction: Axis.vertical, flex: false, amount: 20.0),
-      createButton(
-        text: 'Show current webview content',
-        onTap: _getWebviewContent,
       ),
     ];
   }
