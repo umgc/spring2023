@@ -12,6 +12,8 @@ dependencies:
   cupertino_icons: ^1.0.3
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   webviewx: ^0.2.1
 
 dev_dependencies:
@@ -24,5 +26,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  generate: true
+
   assets:
     - assets/
+    - assets/images/

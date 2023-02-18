@@ -18,17 +18,17 @@ class _TourDetailsViewState extends State<TourDetailsView> {
 
   Size get screenSize => MediaQuery.of(context).size;
 
-  @override
-  void dispose() {
-    webviewController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   webviewController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tours'),
+        title: const Text('Tour Details / Tour Name'),
       ),
       body: Center(
         child: Container(

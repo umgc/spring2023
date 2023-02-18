@@ -6,6 +6,7 @@ import 'package:virotour/src/tour/tour_details_view.dart';
 class TourListView extends StatelessWidget {
   const TourListView({
     super.key,
+    // TODO: Get the list of tours from GET /
     this.items = const [Tour(1), Tour(2), Tour(3)],
   });
 
@@ -49,6 +50,7 @@ class TourListView extends StatelessWidget {
           return ListTile(
             title: Text('Tour ${item.id}'),
             leading: const CircleAvatar(
+              // TODO: show ViroTour logo
               foregroundImage: AssetImage('assets/images/virotour_logo.png'),
             ),
             onTap: () {
