@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:virotour/src/settings/settings_controller.dart';
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
@@ -16,7 +15,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
-    //
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return AnimatedBuilder(
@@ -58,12 +56,4 @@ class App extends StatelessWidget {
       },
     );
   }
-  // return MaterialApp(
-  //   title: 'ViroTour',
-  //   theme: ThemeData(
-  //     primarySwatch: Colors.blue,
-  //   ),
-  //   home: const TourListView(),
-  // );
-  // }
 }

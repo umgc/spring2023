@@ -48,11 +48,12 @@ class TourListView extends StatelessWidget {
           final item = items[index];
 
           return ListTile(
+            // TODO: Show tour name
             title: Text('Tour ${item.id}'),
             leading: const CircleAvatar(
-              // TODO: show ViroTour logo
               foregroundImage: AssetImage('assets/images/virotour_logo.png'),
             ),
+            // TODO: ontap = call GET /tour/<tour_id>
             onTap: () {
               // Navigate to the details page. If the user leaves and returns to
               // the app after it has been killed while running in the
