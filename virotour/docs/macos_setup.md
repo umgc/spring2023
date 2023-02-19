@@ -5,7 +5,7 @@
     ```
     git clone https://github.com/umgc/spring2023.git
     cd spring2023
-    git checkout joint_dev
+    git checkout viet/cross_platform
     code virotour/lib/main.dart
     ```
 1. Watch [this video](https://www.youtube.com/watch?v=ZSWfgxrxN0M) to install required apps for different platforms (Windows, MacOS, iOS, Android).
