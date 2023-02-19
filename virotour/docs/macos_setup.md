@@ -23,4 +23,15 @@
     </div>
 
 1. You should see this:
-    TODO
+    - iOS
+    <div style='float: center'>
+        <img style='width: 800px' src="../assets/images/screenshots/app_screenshot_iOS_v1.0.png"></img>
+    </div>
+    - Android
+    <div style='float: center'>
+        <img style='width: 800px' src="../assets/images/screenshots/app_screenshot_Android_v1.0.png"></img>
+    </div>
+    - Chrome
+    <div style='float: center'>
+        <img style='width: 800px' src="../assets/images/screenshots/app_screenshot_Chrome_v1.0.png"></img>
+    </div>
