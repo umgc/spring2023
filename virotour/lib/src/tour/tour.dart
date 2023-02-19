@@ -1,6 +1,9 @@
 // A placeholder class that represents an entity or model.
 class Tour {
-  const Tour(this.id);
+  final String tourName;
+  final String description;
+  final String id;
 
-  final int id;
+
+  Tour({required this.tourName, required this.description, required this.id});
 }
