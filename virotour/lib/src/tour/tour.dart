@@ -4,6 +4,5 @@ class Tour {
   final String description;
   final String id;
 
-
   Tour({required this.tourName, required this.description, required this.id});
 }

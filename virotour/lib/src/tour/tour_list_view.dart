@@ -26,14 +26,32 @@ class TourListView extends StatelessWidget {
         .toList();
 
      */
-    final response = [{'data': {"tours":[{"tour_name": "example tour 1", "description": "This is an example tour", "id": 1}, {"tour_name": "example tour 2", "description": "This is another example tour", "id": 2}]}}];
+    final response = [
+      {
+        'data': {
+          "tours": [
+            {
+              "tour_name": "example tour 1",
+              "description": "This is an example tour",
+              "id": 1
+            },
+            {
+              "tour_name": "example tour 2",
+              "description": "This is another example tour",
+              "id": 2
+            }
+          ]
+        }
+      }
+    ];
 
     final data = response[0]['data']!['tours'] as List<dynamic>;
 
-    return data.map((tour) => Tour(
-        id: tour['id'].toString(),
-        tourName: tour['tour_name'].toString(),
-        description: tour['description'].toString()))
+    return data
+        .map((tour) => Tour(
+            id: tour['id'].toString(),
+            tourName: tour['tour_name'].toString(),
+            description: tour['description'].toString()))
         .toList();
   }
 
@@ -92,7 +110,7 @@ class TourListView extends StatelessWidget {
                   subtitle: Text(item.description),
                   leading: const CircleAvatar(
                     foregroundImage:
-                    AssetImage('assets/images/virotour_logo.png'),
+                        AssetImage('assets/images/virotour_logo.png'),
                   ),
                   onTap: () {
                     // Navigate to the details page. If the user leaves and returns to
@@ -100,8 +118,8 @@ class TourListView extends StatelessWidget {
                     // background, the navigation stack is restored.
                     // This needs to be updated to use the specific tour's data when the api is available.
                     Navigator.restorablePushNamed(
-                    context,
-                    TourDetailsView.routeName,
+                      context,
+                      TourDetailsView.routeName,
                     );
                   },
                 );
