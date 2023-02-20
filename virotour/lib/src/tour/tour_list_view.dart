@@ -95,8 +95,14 @@ class TourListView extends StatelessWidget {
                     AssetImage('assets/images/virotour_logo.png'),
                   ),
                   onTap: () {
-                    // TODO: Call the API to get the tour details and navigate
-                    // to the details page.
+                    // Navigate to the details page. If the user leaves and returns to
+                    // the app after it has been killed while running in the
+                    // background, the navigation stack is restored.
+                    // This needs to be updated to use the specific tour's data when the api is available.
+                    Navigator.restorablePushNamed(
+                    context,
+                    TourDetailsView.routeName,
+                    );
                   },
                 );
               },
