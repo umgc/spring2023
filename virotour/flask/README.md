@@ -33,6 +33,7 @@ pip install -r requirements.txt
 
 ## Run
 
+```
 $ pip install -r requirements.txt
 $ python run.py
 ```
@@ -45,21 +46,9 @@ Example of REST API endpoints:
 
 ```
 http://localhost:5000/api/ -- hello world
-
 http://localhost:5000/api/tours  -- get list of tours
-
 http://localhost:5000/api/tour/<id>  -- get tour by id
-
 http://localhost:5000/api/add/tour  -- add new tour with JSON data payload:
-{
-    "name": "John Doe",
-    "email": "john.doe@human.com"
-}
-
 http://localhost:5000/api/update/tour/<id>  -- update tour by id with JSON data payload
-{
-    "name": "John Doe 1",
-    "email": "john.doe1@human.com"
-}
-
 http://localhost:5000/api/delete/tour/<id>  -- delete tour by id
+```
