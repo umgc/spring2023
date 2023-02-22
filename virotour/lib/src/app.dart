@@ -47,7 +47,9 @@ class App extends StatelessWidget {
                     return const TourDetailsView();
                   case TourListView.routeName:
                   default:
-                    return const TourListView(items: [],);
+                    return const TourListView(
+                      items: [],
+                    );
                 }
               },
             );
