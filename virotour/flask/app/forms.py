@@ -10,6 +10,7 @@ class TourForm(FlaskForm):
 class UpdateTourForm(FlaskForm):
     id = StringField('ID', validators=[InputRequired()])
     name = StringField('Name', validators=[InputRequired()])
+    description = StringField('Description', validators=[InputRequired()])
 
 class DeleteTourForm(FlaskForm):
     id = StringField('ID', validators=[InputRequired()])

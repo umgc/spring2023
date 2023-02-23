@@ -67,6 +67,7 @@ def api_update_tour(id):
         data = request.get_json()
         tour = Tour.query.get_or_404(id)
         tour.name = data['name']
+        tour.description = data['description']
         db.session.commit()
         payload = {
             'message': f'Tour {tour.name} has been updated successfully.'

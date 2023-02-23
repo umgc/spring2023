@@ -60,17 +60,14 @@ def update_tour():
     if request.method == 'POST' or request.method == 'PUT':
         if update_tour_form.validate_on_submit():
             # Get validated data from form
-            # You could also have used request.form['id']
             id = update_tour_form.id.data
-            # You could also have used request.form['name']
             updated_name = update_tour_form.name.data
-            # You could also have used request.form['email']
-            updated_email = update_tour_form.email.data
+            updated_description = update_tour_form.description.data
 
             # update tour from database
             tour = db.session.query(Tour).filter(Tour.id == id).first()
             tour.name = updated_name
-            tour.email = updated_email
+            tour.description = updated_description
             db.session.commit()
 
             flash('Tour successfully updated.')
@@ -87,11 +84,10 @@ def delete_tour():
     if request.method == 'POST':
         if delete_tour_form.validate_on_submit():
             # Get validated data from form
-            # You could also have used request.form['email']
-            email = delete_tour_form.email.data
+            id = delete_tour_form.id.data
 
             # delete tour from database
-            tour = db.session.query(Tour).filter(Tour.email == email).first()
+            tour = db.session.query(Tour).filter(Tour.id == id).first()
             db.session.delete(tour)
             db.session.commit()
 
