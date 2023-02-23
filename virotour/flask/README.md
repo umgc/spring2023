@@ -25,6 +25,11 @@ Windows
 venv\Scripts\activate
 ```
 
+Note, if you get "cannot be loaded because its operation is blocked by software restriction       
+policies, such as those created by using Group Policy."
+
+Then run ```Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process``` and try again
+
 ## Install flask and dependencies
 
 ```
