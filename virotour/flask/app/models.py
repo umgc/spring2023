@@ -39,6 +39,7 @@ class Images(db.Model):
     def __repr__(self):
         return '<Images %r>' % self.panoramic
     
+    
 class Locations(db.Model):
     __tablename__ = 'locations_table_v1'
 
