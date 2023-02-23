@@ -77,3 +77,4 @@ class State(db.Model):
 
     def __repr__(self):
         return '<State %r>' % self.setting
+    
