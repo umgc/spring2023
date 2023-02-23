@@ -17,6 +17,11 @@ def about():
     return render_template('about.html', name="Starter Template CRUD App using Flask and SQLite")
 
 
+@app.route('/upload-images/')
+def upload_images():
+    return render_template('upload-images.html', name="Starter Template CRUD App using Flask and SQLite")
+
+
 @app.route('/tours')
 def show_tours():
     # or tours = Tour.query.all()
@@ -34,10 +39,10 @@ def add_tour():
             # You could also have used request.form['name']
             name = tour_form.name.data
             # You could also have used request.form['email']
-            # email = tour_form.email.data
+            description = tour_form.description.data
 
             # save tour to database
-            tour = Tour(name)
+            tour = Tour(name, description)
             db.session.add(tour)
             db.session.commit()
 

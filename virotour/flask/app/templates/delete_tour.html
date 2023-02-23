@@ -16,7 +16,7 @@
     {% endwith %}
     <form method="POST" action="{{ url_for('delete_tour') }}">
         {{ form.csrf_token }}
-        <div class="form-group">{{ form.email.label }} {{ form.email(size=20, class="form-control", type="email") }}
+        <div class="form-group">{{ form.id.label }} {{ form.id(size=20, class="form-control") }}
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

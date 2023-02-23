@@ -49,10 +49,11 @@ See [app\apis.py](vsp/apis.py) for complete supported REST APIs operation.
 Example of REST API endpoints:
 
 ```
-http://localhost:5000/api/ -- hello world
-http://localhost:5000/api/tours  -- get list of tours
-http://localhost:5000/api/tour/<id>  -- get tour by id
-http://localhost:5000/api/add/tour  -- add new tour with JSON data payload:
-http://localhost:5000/api/update/tour/<id>  -- update tour by id with JSON data payload
-http://localhost:5000/api/delete/tour/<id>  -- delete tour by id
+http://localhost:5000/api/                  -- [GET] hello world
+http://localhost:5000/api/tours             -- [GET] get list of tours
+http://localhost:5000/api/tour/<id>         -- [GET] get tour by id
+http://localhost:5000/api/add/tour          -- [POST] add new tour with JSON data payload:
+http://localhost:5000/api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
+http://localhost:5000/api/delete/tour/<id>  -- [POST/DELETE] delete tour by id
+http://localhost:5000/api/add/tour/images/  -- [POST] upload images to server
 ```

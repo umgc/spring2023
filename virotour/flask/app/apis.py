@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify
+import os
+
+from flask import Flask, request, jsonify, flash, redirect
 
 from app import app, db
+from .file_utils import allowed_file
 from .models import Tour
 
 
@@ -19,7 +22,8 @@ def api_get_tours():
     tours = db.session.query(Tour).all()
     result = [{
         'id': tour.id,
-        'name': tour.name
+        'name': tour.name,
+        'description': tour.description
     } for tour in tours]
     payload = {
         'count': len(result),
@@ -33,7 +37,8 @@ def api_get_tour(id):
     tour = Tour.query.get_or_404(id)
     payload = {
         'id': tour.id,
-        'name': tour.name
+        'name': tour.name,
+        'description': tour.description
     }
     return jsonify(payload), 200
 
@@ -42,7 +47,7 @@ def api_get_tour(id):
 def api_add_tour():
     if request.is_json:
         data = request.get_json()
-        tour = Tour(name=data['name'])
+        tour = Tour(name=data['name'], description=data['description'])
         db.session.add(tour)
         db.session.commit()
         payload = {
@@ -76,10 +81,28 @@ def api_update_tour(id):
 
 @app.route('/api/delete/tour/<int:id>', methods=['POST', 'DELETE'])
 def api_delete_tour(id):
-    tour = Tour.query.get_or_404(id)
+    tour = Tour.query.f.get_or_404(id)
     db.session.delete(tour)
     db.session.commit()
     payload = {
         'message': f'Tour {tour.name} successfully deleted.',
     }
     return jsonify(payload), 200
+
+
+@app.route('/api/add/tour/images', methods=['POST'])
+def api_add_tour_images():
+    if request.method == 'POST':
+        if 'files[]' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+
+        files = request.files.getlist('files[]')
+
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = file.filename
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        flash('File(s) successfully uploaded')
+        return redirect('/')
