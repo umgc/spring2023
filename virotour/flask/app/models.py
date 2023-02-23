@@ -26,9 +26,6 @@ class Images(db.Model):
     panoramic = db.Column(db.String(255))
     blurred = db.Column(db.String(255))
     
-    locations  = db.relationship('Locations', backref='Images', lazy=True)
-    states  = db.relationship('State', backref='Images', lazy=True)
-    
     def __init__(self, location_id, state_id, original, panoramic, blurred):
         self.location_id = location_id
         self.state_id = state_id
@@ -52,6 +49,8 @@ class Locations(db.Model):
     informational_hotshots_ids  = db.Column(db.String(255))
     text_ids = db.Column(db.String(255))
     
+    images  = db.relationship('Images', backref='Locations', lazy=True)
+    
     def __init__(self, position_x, position_y, position_z, image_id, transitional_hotshots_ids, informational_hotshots_ids, text_ids):
         self.position_x = position_x
         self.position_y = position_y
@@ -69,7 +68,9 @@ class State(db.Model):
     
     state_id = db.Column(db.String, primary_key=True)
     setting = db.Column(db.String(255), nullable=False)
-    filter = db.Column(db.String(255))
+    filter = db.Column(db.String(255)) 
+    
+    images  = db.relationship('Images', backref='State', lazy=True)
     
     def __init__(self, state_id, setting, filter):
         self.state_id = state_id
