@@ -34,13 +34,12 @@ pip install -r requirements.txt
 ## Run
 
 ```
-$ pip install -r requirements.txt
-$ python run.py
+python run.py
 ```
 
 Navigate to `http://localhost:5000/` to access the Web App frontend and `http://localhost:5000/api/*` to access the REST APIs.
 
-See [app\apis.py](app/apis.py) for complete supported REST APIs operation.
+See [app\apis.py](vsp/apis.py) for complete supported REST APIs operation.
 
 Example of REST API endpoints:
 
