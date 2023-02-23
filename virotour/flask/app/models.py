@@ -26,6 +26,9 @@ class Images(db.Model):
     panoramic = db.Column(db.String(255))
     blurred = db.Column(db.String(255))
     
+    locations  = db.relationship('Locations', backref='Images', lazy=True)
+    states  = db.relationship('State', backref='Images', lazy=True)
+    
     def __init__(self, location_id, state_id, original, panoramic, blurred):
         self.location_id = location_id
         self.state_id = state_id
