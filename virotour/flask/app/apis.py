@@ -88,7 +88,7 @@ def api_update_tour(id):
 
 @app.route('/api/delete/tour/<int:id>', methods=['POST', 'DELETE'])
 def api_delete_tour(id):
-    tour = Tour.query.f.get_or_404(id)
+    tour = Tour.query.get_or_404(id)
     db.session.delete(tour)
     db.session.commit()
     payload = {
