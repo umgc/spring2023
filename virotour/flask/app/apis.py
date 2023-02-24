@@ -97,7 +97,7 @@ def api_delete_tour(id):
     return jsonify(payload), 200
 
 
-@app.route('/api/add/tour/images', methods=['POST'])
+@app.route('/api/add/tour/images', methods=['POST', 'GET'])
 def api_add_tour_images():
     if request.method == 'POST':
         if 'files[]' not in request.files:
