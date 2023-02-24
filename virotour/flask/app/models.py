@@ -90,9 +90,9 @@ class Filters(db.Model):
         return '<Filters %r>' % self.settings
     
 class Informational_Hotshots(db.Model):
-    __tablename__ = 'Informational_Hotshots_table_v1'
+    __tablename__ = 'informational_Hotshots_table_v1'
     
-    Informational_id = db.Column(db.String, primary_key=True)
+    informational_id = db.Column(db.String, primary_key=True)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
@@ -108,9 +108,9 @@ class Informational_Hotshots(db.Model):
         return '<Informational_Hotshots %r>' % self.content
     
 class Transitional_Hotshots(db.Model):
-    __tablename__ = 'Transitional_Hotshots_table_v1'
+    __tablename__ = 'transitional_Hotshots_table_v1'
     
-    Transitional_id = db.Column(db.String, primary_key=True)
+    transitional_id = db.Column(db.String, primary_key=True)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
@@ -126,9 +126,9 @@ class Transitional_Hotshots(db.Model):
         return '<Transitional_Hotshots %r>' % self.content
     
 class Text(db.Model):
-    __tablename__ = 'Text_table_v1'
+    __tablename__ = 'text_table_v1'
     
-    Text_id = db.Column(db.String, primary_key=True)
+    text_id = db.Column(db.String, primary_key=True)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
