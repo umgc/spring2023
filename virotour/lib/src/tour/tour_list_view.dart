@@ -10,7 +10,7 @@ class TourListView extends StatelessWidget {
     this.items = const [Tour(1), Tour(2), Tour(3)],
   });
 
-  static const routeName = '/';
+  static const routeName = '/tour_list';
 
   final List<Tour> items;
 
