@@ -1,6 +1,5 @@
 from app import db
 
-
 class Tour(db.Model):
     __tablename__ = 'tour_table_v1'
 
@@ -20,9 +19,9 @@ class Images(db.Model):
     __tablename__ = 'images_table_v1'
 
     image_id = db.Column(db.String, primary_key=True)
-    location_id = db.Column(db.Integer, db.ForeignKey('location_id'), nullable=False)
-    state_id = db.Column(db.String(255), db.ForeignKey('state_id'))
-    original = db.Column(db.String(255))
+    location_id = db.Column(db.Integer, db.ForeignKey('locations_table_v1.location_id'), nullable=False)
+    state_id = db.Column(db.String(255), db.ForeignKey('state_table_v1.state_id'))
+    original = db.Column(db.SPickleType) 
     panoramic = db.Column(db.String(255))
     blurred = db.Column(db.String(255))
     
@@ -45,11 +44,9 @@ class Locations(db.Model):
     position_y = db.Column(db.Integer)
     position_z = db.Column(db.Integer)
     image_id = db.Column(db.String(255), nullable=False)
-    transitional_hotshots_ids = db.Column(db.String(255))
-    informational_hotshots_ids  = db.Column(db.String(255))
+    transitional_hotshots_ids = db.Column(db.SPickleType) 
+    informational_hotshots_ids  = db.Column(db.SPickleType) 
     text_ids = db.Column(db.String(255))
-    
-    images  = db.relationship('Images', backref='Locations', lazy=True)
     
     def __init__(self, position_x, position_y, position_z, image_id, transitional_hotshots_ids, informational_hotshots_ids, text_ids):
         self.position_x = position_x
@@ -68,7 +65,7 @@ class State(db.Model):
     
     state_id = db.Column(db.String, primary_key=True)
     setting = db.Column(db.String(255), nullable=False)
-    filter_id = db.Column(db.String(255), db.ForeignKey('filter_id'), nullable=False) 
+    filter_id = db.Column(db.String(255), db.ForeignKey('filter_table_v1.filter_id'), nullable=False) 
     
     def __init__(self, state_id, setting, filter):
         self.state_id = state_id
