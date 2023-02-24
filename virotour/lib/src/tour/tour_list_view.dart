@@ -8,9 +8,9 @@ import 'package:virotour/src/tour/tour_details_view.dart';
 
 class TourListView extends StatefulWidget {
   const TourListView({
-    Key? key,
+    super.key,
     required this.items,
-  }) : super(key: key);
+  });
 
   static const routeName = '/';
 
@@ -30,41 +30,24 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
-    // TODO: Implement fetching the tour data from an API endpoint
-    // final response = await http.get(Uri.parse('https://virotour.com/tours/endpoint'));
-    final response = [
-      {
-        'data': {
-          "tours": [
-            {
-              "tour_name": "example tour 1",
-              "description": "This is an example tour",
-              "id": 1
-            },
-            {
-              "tour_name": "example tour 2",
-              "description": "This is another example tour",
-              "id": 2
-            }
-          ]
-        }
-      }
-    ];
+    final response =
+        await http.get(Uri.parse('http://192.168.1.217:5000/api/tours'));
 
-    // if (response.statusCode == 200) {
-    //   final responseData = jsonDecode(response.body);
-    final data = response[0]['data']!['tours'] as List<dynamic>;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-    return data
-        .map((tour) => Tour(
-              id: tour['id'].toString(),
-              tourName: tour['tour_name'].toString(),
-              description: tour['description'].toString(),
-            ))
-        .toList();
-    // } else {
-    //   throw Exception("Failed to load tour data!");
-    // }
+      final tours = data['tours'] as List<dynamic>;
+
+      return tours
+          .map((tour) => Tour(
+                id: tour['id'].toString(),
+                tourName: tour['name'].toString(),
+                description: tour['description'].toString(),
+              ))
+          .toList();
+    } else {
+      throw Exception("Failed to load tour data!");
+    }
   }
 
   @override
