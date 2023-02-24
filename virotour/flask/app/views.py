@@ -5,7 +5,8 @@ from .forms import TourForm
 from .forms import UpdateTourForm
 from .forms import DeleteTourForm
 from .models import Tour
-
+from .file_utils import allowed_file
+import os
 
 @app.route('/')
 def home():
@@ -17,8 +18,24 @@ def about():
     return render_template('about.html', name="Starter Template CRUD App using Flask and SQLite")
 
 
-@app.route('/upload-images/')
+@app.route('/upload-images', methods=['GET', 'POST'])
 def upload_images():
+    if request.method == "POST":
+        if 'files[]' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+                
+        files = request.files.getlist('files[]')
+        #print(files)
+        
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = file.filename
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                #print(filename)
+
+        flash('File(s) successfully uploaded')
+
     return render_template('upload-images.html', name="Starter Template CRUD App using Flask and SQLite")
 
 
