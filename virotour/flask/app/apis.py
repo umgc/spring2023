@@ -7,6 +7,12 @@ from .file_utils import allowed_file
 from .models import Tour
 
 
+@app.after_requestdef 
+add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 @app.route('/api/', methods=['GET'])
 def api_hello():
     payload = {
