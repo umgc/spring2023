@@ -1,6 +1,10 @@
-# Local Testing
+This folder is used for local testing. We use a Flask server to mock the API endpoints.
 
-## Setup
+## Table of Contents
+1. [Setup for Windows](#setup-for-windows)
+1. [Setup for MacOS](#setup-for-macos)
+
+## Setup for Windows
 
 ### Install Python 3.11.2 (or latest)
 
@@ -59,4 +63,28 @@ http://localhost:8081/api/add/tour          -- [POST] add new tour with JSON dat
 http://localhost:8081/api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
 http://localhost:8081/api/delete/tour/<id>  -- [POST/DELETE] delete tour by id
 http://localhost:8081/api/add/tour/images/  -- [POST] upload images to server
+
+```
+
+## Setup for MacOS
+
+In this folder (virotour_local) run:
+```
+. ./helpers/setup_macos.sh
+```
+Go to the flask folder:
+```
+cd ./flask
+```
+Install dependencies:
+```
+pip install -r requirements.txt
+```
+Start the Flask server:
+```
+python run.py
+```
+If you want to run all tests, do:
+```
+python -m pytest app/tests 
 ```
