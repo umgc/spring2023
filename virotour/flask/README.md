@@ -52,6 +52,7 @@ Example of REST API endpoints:
 http://localhost:5000/api/                  -- [GET] hello world
 http://localhost:5000/api/tours             -- [GET] get list of tours
 http://localhost:5000/api/tour/<id>         -- [GET] get tour by id
+http://localhost:5000/api/tour-name/<name>  -- [GET] get tour by name
 http://localhost:5000/api/add/tour          -- [POST] add new tour with JSON data payload:
 http://localhost:5000/api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
 http://localhost:5000/api/delete/tour/<id>  -- [POST/DELETE] delete tour by id

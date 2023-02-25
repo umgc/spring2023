@@ -1,7 +1,7 @@
-import os
-
 import pytest
+
 from app import create_app, db
+
 
 @pytest.fixture
 def app():
@@ -12,3 +12,8 @@ def app():
         db.session.remove()
         db.drop_all()
     return app
+
+@pytest.fixture
+def client(app):
+    client = app.test_client()
+    yield client
