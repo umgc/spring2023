@@ -18,9 +18,9 @@ app.config.from_object(__name__)
 db.init_app(app)
 
 def create_app():
-    from .api import after_request
     from .api import hello
     from .api import tour
     from .api import image_upload
+    from .api import after_request
 
     return app
