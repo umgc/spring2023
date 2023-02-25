@@ -36,7 +36,19 @@ Then run ```Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process``` and tr
 pip install -r requirements.txt
 ```
 
-## Run
+## Run Tests
+
+To run all tests
+```
+pytest app/tests/
+```
+
+To run just one test class
+```
+pytest app/tests/tour/tour_update_test.py
+```
+
+## Run Server
 
 ```
 python run.py
