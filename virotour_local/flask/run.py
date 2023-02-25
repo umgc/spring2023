@@ -1,11 +1,9 @@
 #! /usr/bin/env python
-import os
-from app import app, db
+from app import create_app, db
 
 PORT = 8081
 if __name__ == '__main__':
+    app = create_app()
     with app.app_context():
-        # create table(s) according to the model
-        # declare this after model base class
         db.create_all()
         app.run(host='0.0.0.0', port=PORT, debug=True)
