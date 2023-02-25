@@ -11,6 +11,7 @@ class Tour(db.Model):
         db.TIMESTAMP(timezone=True), nullable=False, server_default=db.text("now()")
     )
 
+
     def __init__(self, name, description):
         self.name = name
         self.description = description
