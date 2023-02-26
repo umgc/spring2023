@@ -18,3 +18,11 @@ def upload_images_with_resp(client, name, image_list):
     finally:
         for fp in files:
             fp.close()
+
+
+def get_images(client, tour_name, location_id):
+    return parse_http_response(get_images_with_resp(client, tour_name, location_id))
+
+
+def get_images_with_resp(client, tour_name, location_id):
+    return client.get(f'/api/tour/images/{tour_name}/{location_id}')

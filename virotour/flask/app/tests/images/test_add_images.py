@@ -1,6 +1,6 @@
 import os
 
-from app.tests.images.image_utils import upload_images_with_resp, upload_images
+from app.tests.images.image_utils import upload_images_with_resp, upload_images, get_images
 from app.tests.tour.tour_utils import add_tour
 
 
@@ -27,8 +27,8 @@ def test_add_images_to_tour(client):
         'S5.jpg': 'uploads/tour_id=1/location_id=1/S5.jpg'
     }
 
-    # TODO: Add validations to retrieve image paths!
-
+    data = get_images(client, "Tour 1", 1)
+    assert data['count'] == 5
 
 def test_add_images_multiple_locations(client):
     """Split input images to simulate different locations"""
@@ -43,3 +43,4 @@ def test_add_images_multiple_locations(client):
             f'S{id}.jpg': f'uploads/tour_id=1/location_id={id}/S{id}.jpg'
         }
         id += 1
+

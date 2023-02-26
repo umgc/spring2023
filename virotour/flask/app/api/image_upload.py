@@ -47,3 +47,13 @@ def api_add_tour_images(tour_name):
             'server_file_paths': result
         }
         return jsonify(payload), 200
+
+@app.route('/api/tour/images/<string:tour_name>/<int:location_id>', methods=['GET'])
+def api_get_tour_images(tour_name, location_id):
+    # TODO: use method parameters above to return the correct result
+    result = {}
+    payload = {
+        'count': 0,
+        'server_file_paths': result
+    }
+    return jsonify(payload), 200

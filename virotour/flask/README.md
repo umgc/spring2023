@@ -59,19 +59,20 @@ To run integration tests. This will populate test data.
 pytest app/integration_tests
 ```
 
-Navigate to `http://localhost:5000/api/site-map` to access the REST APIs.
+Navigate to `api/site-map` to access the REST APIs.
 
 See [app\apis.py](vsp/apis.py) for complete supported REST APIs operation.
 
 Example of REST API endpoints:
 
 ```
-http://localhost:5000/api/                  -- [GET] hello world
-http://localhost:5000/api/tours             -- [GET] get list of tours
-http://localhost:5000/api/tour/<id>         -- [GET] get tour by id
-http://localhost:5000/api/tour-name/<name>  -- [GET] get tour by name
-http://localhost:5000/api/add/tour          -- [POST] add new tour with JSON data payload:
-http://localhost:5000/api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
-http://localhost:5000/api/delete/tour/<id>  -- [POST/DELETE] delete tour by id
-http://localhost:5000/api/add/tour/images/  -- [POST] upload images to server
+/api/                  -- [GET] hello world
+/api/tours             -- [GET] get list of tours
+/api/tour/<id>         -- [GET] get tour by id
+/api/tour-name/<name>  -- [GET] get tour by name
+/api/tour/add          -- [POST] add new tour with JSON data payload:
+/api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
+/api/delete/tour/<id>  -- [POST/DELETE] delete tour by id
+/api/tour/add/images/  -- [POST] upload images to server
+/api/tour/images/<string:tour_name>/<int:location_id>  -- [GET] Retrieve raw image paths for a given tour name and location_id
 ```
