@@ -1,6 +1,6 @@
 import os
 
-from app.tests.images.image_utils import upload_images
+from app.tests.images.image_utils import upload_images_with_resp, upload_images
 from app.tests.tour.tour_utils import add_tour
 
 
@@ -11,4 +11,13 @@ def test_add_images_to_tour(client):
     image_dir = 'input_images/location1'
     image_list = os.listdir(image_dir)
     image_paths = [f"{image_dir}/{file}" for file in image_list]
-    upload_images(client, tour_name, image_paths)
+    data = upload_images(client, tour_name, image_paths)
+
+    assert data['tour_id'] == 1
+    assert data['server_file_paths'] == {
+        'S1.jpg': 'uploads/1/S1.jpg',
+        'S2.jpg': 'uploads/1/S2.jpg',
+        'S3.jpg': 'uploads/1/S3.jpg',
+        'S4.jpg': 'uploads/1/S4.jpg',
+        'S5.jpg': 'uploads/1/S5.jpg'
+    }
