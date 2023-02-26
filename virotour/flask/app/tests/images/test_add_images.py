@@ -31,7 +31,7 @@ def test_add_images_to_tour(client):
 
 
 def test_add_images_multiple_locations(client):
-    "Split input images to simulate different locations"
+    """Split input images to simulate different locations"""
     tour_name = "Tour 2"
     add_tour(client, tour_name, "Tour Description Example")
 
