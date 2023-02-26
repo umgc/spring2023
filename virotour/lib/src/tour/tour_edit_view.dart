@@ -1,5 +1,7 @@
 // tour_edit_view.dart
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:virotour/src/tour/tour.dart';
@@ -94,8 +96,11 @@ class _TourEditViewState extends State<TourEditView> {
                         'name': _nameController.text,
                         'description': _descriptionController.text,
                       };
-                      final response =
-                          await http.post(Uri.parse(url), body: body);
+                      final response = await http.post(
+                        Uri.parse(url),
+                        headers: {'Content-Type': 'application/json'},
+                        body: json.encode(body),
+                      );
                       if (response.statusCode == 200) {
                         Navigator.pop(context);
                       } else {
