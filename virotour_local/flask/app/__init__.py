@@ -1,4 +1,5 @@
 import os
+from os.path import join, dirname, realpath
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -12,7 +13,7 @@ from . import models
 
 app.config['SECRET_KEY'] = 'secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
-app.config["UPLOAD_FOLDER"] = 'uploads/'
+app.config["UPLOAD_FOLDER"] = os.path.abspath(join(dirname(realpath(__file__)), '../uploads'))
 app.config.from_object(__name__)
 
 db.init_app(app)

@@ -1,5 +1,5 @@
 from app.tests.tour.tour_utils import list_tours, add_tour, update_tour, get_tour_by_id, get_tour_by_name
-from app.utils import parse_http_response
+from app.tests.common_utils import parse_http_response
 
 
 def test_no_tours(client):
