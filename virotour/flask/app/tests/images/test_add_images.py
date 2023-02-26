@@ -15,9 +15,9 @@ def test_add_images_to_tour(client):
 
     assert data['tour_id'] == 1
     assert data['server_file_paths'] == {
-        'S1.jpg': 'uploads/1/S1.jpg',
-        'S2.jpg': 'uploads/1/S2.jpg',
-        'S3.jpg': 'uploads/1/S3.jpg',
-        'S4.jpg': 'uploads/1/S4.jpg',
-        'S5.jpg': 'uploads/1/S5.jpg'
+        'S1.jpg': 'uploads/tour_id=1/location_id=1/S1.jpg',
+        'S2.jpg': 'uploads/tour_id=1/location_id=1/S2.jpg',
+        'S3.jpg': 'uploads/tour_id=1/location_id=1/S3.jpg',
+        'S4.jpg': 'uploads/tour_id=1/location_id=1/S4.jpg',
+        'S5.jpg': 'uploads/tour_id=1/location_id=1/S5.jpg'
     }

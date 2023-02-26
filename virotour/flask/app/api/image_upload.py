@@ -5,6 +5,7 @@ from flask import request, flash, redirect, jsonify
 from app import allowed_file, app, db
 from app.models import Tour, Location, Image
 
+
 @app.route('/api/add/tour/images/<string:tour_name>', methods=['POST', 'GET'])
 def api_add_tour_images(tour_name):
     if request.method == 'POST':
@@ -18,15 +19,21 @@ def api_add_tour_images(tour_name):
         tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
         location = Location(tour.id)
         db.session.add(location)
-        db.session.commit()  
+        db.session.commit()
 
         for file in files:
             if file and allowed_file(file.filename):
                 filename_raw = file.filename
                 filename = os.path.basename(filename_raw)
-                target_path = os.path.join(app.config['UPLOAD_FOLDER'], str(tour.id))
+                target_path = os.path.join(app.config['UPLOAD_FOLDER'],
+                                           'tour_id=', str(tour.id),
+                                           'location_id=', str(location.location_id))
                 target_file = os.path.join(target_path, filename)
-                result[filename] = f'uploads/{tour.id}/{filename}'
+
+                # To return to user
+                result[filename] = f'uploads/tour_id={tour.id}/location_id={location.location_id}/{filename}'
+
+                # Make directory & save
                 os.makedirs(target_path, exist_ok=True)
                 file.save(target_file)
 
