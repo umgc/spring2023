@@ -1,77 +1,40 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../settings/settings_view.dart';
-import 'tour.dart';
-import 'tour_details_view.dart';
 
-/// Displays a list of Tours.
-class TourListView extends StatelessWidget {
-  const TourListView({
-    super.key,
-    this.items = const [Tour(1), Tour(2), Tour(3)],
-  });
+class SearchTour extends StatelessWidget {
+  const SearchTour({super.key});
 
-  static const routeName = '/';
-
-  final List<Tour> items;
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tours'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
-            },
-          ),
-        ],
+    const viroTitle = 'Search Tours';
+    return MaterialApp(
+
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(viroTitle),
+        ),
+        body:const SearchScreen(),
+      ),
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
       ),
 
-      // To work with lists that may contain a large number of items, it’s best
-      // to use the ListView.builder constructor.
-      //
-      // In contrast to the default ListView constructor, which requires
-      // building all Widgets up front, the ListView.builder constructor lazily
-      // builds Widgets as they’re scrolled into view.
-      body:Column( children:<Widget>[  Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: const SearchScreen(),
-      ),Padding(padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 16),
-          child:SizedBox(height:200,child:ListView.builder(
-        // Providing a restorationId allows the ListView to restore the
-        // scroll position when a user leaves and returns to the app after it
-        // has been killed while running in the background.
-        restorationId: 'tourListView',
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
-
-          return ListTile(
-              title: Text('Tour ${item.id}'),
-              leading: const CircleAvatar(
-                // Display the Flutter Logo image asset.
-                foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-              ),
-              onTap: () {
-                // Navigate to the details page. If the user leaves and returns to
-                // the app after it has been killed while running in the
-                // background, the navigation stack is restored.
-                Navigator.restorablePushNamed(
-                  context,
-                  TourDetailsView.routeName,
-                );
-              });
-        },
-      )))]),
     );
   }
+
+
+
 }
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -161,7 +124,7 @@ class TourList extends StatelessWidget {
       children:  <Widget>[
         Material(
           child: InkWell(
-            onTap: () {},
+            onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SearchTour()));},
 
             child: Image.network('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.PzQkGTYFc_Ipn0iMSl7bTwHaE7%26pid%3DApi&f=1&ipt=ee6edbaaf1bd9bf3b0ed33f3f711b4e6ef17de6cd992edbe6781b75792337533&ipo=images',
                 fit: BoxFit.cover),
