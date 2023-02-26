@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.3
   flutter:
     sdk: flutter
+  http: ^0.13.5
   webviewx: ^0.2.1
 
 dev_dependencies:
