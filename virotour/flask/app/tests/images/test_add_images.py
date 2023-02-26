@@ -4,13 +4,18 @@ from app.tests.images.image_utils import upload_images_with_resp, upload_images
 from app.tests.tour.tour_utils import add_tour
 
 
+def get_image_paths(path):
+    image_dir = os.path.join(os.path.dirname(__file__), path)
+    image_list = os.listdir(image_dir)
+    return [f"{image_dir}/{file}" for file in image_list]
+    pass
+
+
 def test_add_images_to_tour(client):
     tour_name = "Tour 1"
     add_tour(client, tour_name, "Tour Description Example")
 
-    image_dir = os.path.join(os.path.dirname(__file__), 'input_images/location1')
-    image_list = os.listdir(image_dir)
-    image_paths = [f"{image_dir}/{file}" for file in image_list]
+    image_paths = get_image_paths('input_images/location1')
     data = upload_images(client, tour_name, image_paths)
 
     assert data['tour_id'] == 1
