@@ -54,6 +54,11 @@ pytest app/tests/tour/tour_update_test.py
 python run.py
 ```
 
+To run integration tests. This will populate test data.
+```
+pytest app/integration_tests
+```
+
 Navigate to `http://localhost:5000/api/site-map` to access the REST APIs.
 
 See [app\apis.py](vsp/apis.py) for complete supported REST APIs operation.
