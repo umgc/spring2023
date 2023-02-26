@@ -9,17 +9,10 @@ def upload_images(client, name, image_list):
 
 
 def upload_images_with_resp(client, name, image_list):
-    resp = get_tour_by_name_with_resp(client, name)
-    if resp.status_code != 200:
-        raise Exception("Error finding tour: " + str(resp))
-
-    tour = parse_http_response(resp)
-    id = tour['id']
-
     files = []
     try:
         files = [open(fpath, 'rb') for fpath in image_list]
-        return client.post(f'/api/add/tour/images/{id}', data={
+        return client.post(f'/api/add/tour/images/{name}', data={
             'files[]': files
         })
     finally:

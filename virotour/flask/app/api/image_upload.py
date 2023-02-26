@@ -5,8 +5,8 @@ from flask import request, flash, redirect, jsonify
 from app import allowed_file, app, db
 from app.models import Tour, Location, Image
 
-@app.route('/api/add/tour/images/<string:name>', methods=['POST', 'GET'])
-def api_add_tour_images(name):
+@app.route('/api/add/tour/images/<string:tour_name>', methods=['POST', 'GET'])
+def api_add_tour_images(tour_name):
     if request.method == 'POST':
         if 'files[]' not in request.files:
             flash('No file part')
@@ -15,7 +15,7 @@ def api_add_tour_images(name):
         files = request.files.getlist('files[]')
         result = {}
 
-        tour = db.session.query(Tour).filter(Tour.name == name).first()
+        tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
         location = Location(tour.id)
         db.session.add(location)
         db.session.commit()  
@@ -36,7 +36,7 @@ def api_add_tour_images(name):
 
         flash('File(s) successfully uploaded')
         payload = {
-            'tour_id': id,
+            'tour_id': tour.id,
             'server_file_paths': result
         }
         return jsonify(payload), 200
