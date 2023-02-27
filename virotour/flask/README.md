@@ -3,6 +3,13 @@
 
 See: https://www.python.org/downloads/release/python-3112/
 
+## IDE Recommendation
+
+Install PyCharm (Community Edition should be ok)
+https://www.jetbrains.com/pycharm/download/#section=windows
+
+Import the project from THIS folder (flask)
+
 ## Create Virtual Environment
 
 ```
