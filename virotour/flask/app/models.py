@@ -1,3 +1,4 @@
+from datetime import datetime
 from app import db
 
 
@@ -7,14 +8,15 @@ class Tour(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255))
-    created_at = db.Column(
-        db.TIMESTAMP(timezone=True), nullable=False, server_default=db.text("now()")
-    )
+    # created_at = db.Column(
+    #     db.TIMESTAMP(timezone=True), nullable=False, server_default=db.text("now()")
+    # )
 
 
     def __init__(self, name, description):
         self.name = name
         self.description = description
+        # self.created_at = created_at
 
     def __repr__(self):
         return f"<Tour {self.name}>"
@@ -23,16 +25,17 @@ class Tour(db.Model):
 class Images(db.Model):
     __tablename__ = "images_table_v1"
 
-    image_id = db.Column(db.String, primary_key=True, nullable=False)
+    image_id = db.Column(db.Integer, primary_key=True, nullable=False)
     location_id = db.Column(
         db.Integer,
         db.ForeignKey("locations_table_v1.location_id", ondelete="CASCADE"),
         nullable=False,
     )
     state_id = db.Column(
-        db.String(255), db.ForeignKey("state_table_v1.state_id", ondelete="CASCADE")
+        db.Integer, 
+        db.ForeignKey("state_table_v1.state_id", ondelete="CASCADE")
     )
-    original = db.Column(db.SPickleType)
+    original = db.Column(db.PickleType)
     panoramic = db.Column(db.String(255))
     blurred = db.Column(db.String(255))
 
@@ -50,13 +53,13 @@ class Images(db.Model):
 class Locations(db.Model):
     __tablename__ = "locations_table_v1"
 
-    location_id = db.Column(db.String, primary_key=True)
+    location_id = db.Column(db.Integer, primary_key=True)
     position_x = db.Column(db.Integer)
     position_y = db.Column(db.Integer)
     position_z = db.Column(db.Integer)
-    image_id = db.Column(db.String(255), nullable=False)
-    transitional_hotshots_ids = db.Column(db.SPickleType)
-    informational_hotshots_ids = db.Column(db.SPickleType)
+    image_id = db.Column(db.Integer, nullable=False)
+    transitional_hotshots_ids = db.Column(db.PickleType)
+    informational_hotshots_ids = db.Column(db.PickleType)
     text_ids = db.Column(db.String(255))
 
     def __init__(
@@ -84,10 +87,10 @@ class Locations(db.Model):
 class State(db.Model):
     __tablename__ = "state_table_v1"
 
-    state_id = db.Column(db.String, primary_key=True, nullable=False)
-    setting = db.Column(db.String(255), nullable=False)
+    state_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    setting = db.Column(db.String(8000), nullable=False)
     filter_id = db.Column(
-        db.String(255),
+        db.Integer,
         db.ForeignKey("filter_table_v1.filter_id", ondelete="CASCADE"),
         nullable=False,
     )
@@ -104,7 +107,7 @@ class State(db.Model):
 class Filters(db.Model):
     __tablename__ = "filter_table_v1"
 
-    filter_id = db.Column(db.String, primary_key=True, nullable=False)
+    filter_id = db.Column(db.Integer, primary_key=True, nullable=False)
     type = db.Column(db.String(255), nullable=False)
     settings = db.Column(db.String(max), nullable=False)
 
@@ -119,11 +122,11 @@ class Filters(db.Model):
 class Informational_Hotshots(db.Model):
     __tablename__ = "informational_Hotshots_table_v1"
 
-    informational_id = db.Column(db.String, primary_key=True, nullable=False)
+    informational_id = db.Column(db.Integer, primary_key=True, nullable=False)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
-    content = db.Column(db.String(max))
+    content = db.Column(db.String(8000))
 
     def __init__(self, position_x, position_y, position_z, content):
         self.position_x = position_x
@@ -138,11 +141,11 @@ class Informational_Hotshots(db.Model):
 class Transitional_Hotshots(db.Model):
     __tablename__ = "transitional_Hotshots_table_v1"
 
-    transitional_id = db.Column(db.String, primary_key=True)
+    transitional_id = db.Column(db.Integer, primary_key=True)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
-    content = db.Column(db.String(max))
+    content = db.Column(db.String(8000))
 
     def __init__(self, position_x, position_y, position_z, content):
         self.position_x = position_x
@@ -157,11 +160,11 @@ class Transitional_Hotshots(db.Model):
 class Text(db.Model):
     __tablename__ = "text_table_v1"
 
-    text_id = db.Column(db.String, primary_key=True, nullable=False)
+    text_id = db.Column(db.Integer, primary_key=True, nullable=False)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
-    content = db.Column(db.String(max))
+    content = db.Column(db.String(8000))
 
     def __init__(self, position_x, position_y, position_z, content):
         self.position_x = position_x
