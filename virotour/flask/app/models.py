@@ -26,10 +26,14 @@ class Tour(AppBaseModelOrm):
     # )
 
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, is_active = True, created_by = None, created_at= None, updated_by = None, updated_at= None):
         self.name = name
         self.description = description
-        # self.created_at = created_at
+        self.is_active = is_active
+        self.created_at = created_at
+        self.created_by = created_by
+        self.updated_by = updated_by
+        self.updated_at = updated_at
 
     def __repr__(self):
         return f"<Tour {self.name}>"
@@ -122,7 +126,7 @@ class Filters(AppBaseModelOrm):
 
     # filter_id = db.Column(db.Integer, primary_key=True, nullable=False)
     type = db.Column(db.String(255), nullable=False)
-    settings = db.Column(db.String(max), nullable=False)
+    settings = db.Column(db.String(8000), nullable=False)
 
     def __init__(self, type, settings):
         self.type = type

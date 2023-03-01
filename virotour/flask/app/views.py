@@ -7,6 +7,7 @@ from .forms import DeleteTourForm
 from .models import Tour
 from .file_utils import allowed_file
 import os
+from app.repository import TableRepository
 
 @app.route('/')
 def home():
@@ -42,7 +43,9 @@ def upload_images():
 @app.route('/tours')
 def show_tours():
     # or tours = Tour.query.all()
-    tours = db.session.query(Tour).all()
+    # tours = db.session.query(Tour).all()
+    repo = TableRepository(db, Tour)
+    tours = repo.get_all()
     return render_template('show_tours.html', tours=tours)
 
 
@@ -60,8 +63,11 @@ def add_tour():
 
             # save tour to database
             tour = Tour(name, description)
-            db.session.add(tour)
-            db.session.commit()
+            # db.session.add(tour)
+            # db.session.commit()
+            
+            repo = TableRepository(db, Tour)
+            repo.add(tour)
 
             flash('Tour successfully added.')
             return redirect(url_for('show_tours'))
@@ -82,10 +88,16 @@ def update_tour():
             updated_description = update_tour_form.description.data
 
             # update tour from database
-            tour = db.session.query(Tour).filter(Tour.id == id).first()
+            # tour = db.session.query(Tour).filter(Tour.id == id).first()
+            # tour.name = updated_name
+            # tour.description = updated_description
+            # db.session.commit()
+            
+            repo = TableRepository(db, Tour)
+            tour = repo.find_by_id(id)
             tour.name = updated_name
             tour.description = updated_description
-            db.session.commit()
+            repo.update(tour)
 
             flash('Tour successfully updated.')
             return redirect(url_for('show_tours'))
