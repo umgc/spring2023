@@ -1,11 +1,24 @@
 from datetime import datetime
 from app import db
+# from db.database import Base
+
+# common fields for all entities
+class AppBaseModelOrm(db.Model):
+    __abstract__ = True
+    
+    id = db.Column(db.Integer, primary_key=True, index=True, autoincrement=True)
+    is_active = db.Column(db.Boolean, default=True)  # soft delete
+    created_by = db.Column(db.Integer)
+    updated_by = db.Column(db.Integer, default=None)
+    created_at = db.Column(db.DateTime(timezone=True), default = datetime.utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), \
+                       default=None, onupdate = datetime.utcnow)
 
 
-class Tour(db.Model):
+class Tour(AppBaseModelOrm):
     __tablename__ = "tour_table_v1"
 
-    id = db.Column(db.Integer, primary_key=True)
+    # id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255))
     # created_at = db.Column(
@@ -22,18 +35,18 @@ class Tour(db.Model):
         return f"<Tour {self.name}>"
 
 
-class Images(db.Model):
+class Images(AppBaseModelOrm):
     __tablename__ = "images_table_v1"
 
-    image_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    # image_id = db.Column(db.Integer, primary_key=True, nullable=False)
     location_id = db.Column(
         db.Integer,
-        db.ForeignKey("locations_table_v1.location_id", ondelete="CASCADE"),
+        db.ForeignKey("locations_table_v1.id", ondelete="CASCADE"),
         nullable=False,
     )
     state_id = db.Column(
         db.Integer, 
-        db.ForeignKey("state_table_v1.state_id", ondelete="CASCADE")
+        db.ForeignKey("state_table_v1.id", ondelete="CASCADE")
     )
     original = db.Column(db.PickleType)
     panoramic = db.Column(db.String(255))
@@ -50,10 +63,10 @@ class Images(db.Model):
         return f"<Images {self.panoramic}>"
 
 
-class Locations(db.Model):
+class Locations(AppBaseModelOrm):
     __tablename__ = "locations_table_v1"
 
-    location_id = db.Column(db.Integer, primary_key=True)
+    # location_id = db.Column(db.Integer, primary_key=True)
     position_x = db.Column(db.Integer)
     position_y = db.Column(db.Integer)
     position_z = db.Column(db.Integer)
@@ -84,14 +97,14 @@ class Locations(db.Model):
         return f"<Locations: {self.transitional_hotshots_ids}>"
 
 
-class State(db.Model):
+class State(AppBaseModelOrm):
     __tablename__ = "state_table_v1"
 
-    state_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    # state_id = db.Column(db.Integer, primary_key=True, nullable=False)
     setting = db.Column(db.String(8000), nullable=False)
     filter_id = db.Column(
         db.Integer,
-        db.ForeignKey("filter_table_v1.filter_id", ondelete="CASCADE"),
+        db.ForeignKey("filter_table_v1.id", ondelete="CASCADE"),
         nullable=False,
     )
 
@@ -104,10 +117,10 @@ class State(db.Model):
         return f"<State  {self.setting}>"
 
 
-class Filters(db.Model):
+class Filters(AppBaseModelOrm):
     __tablename__ = "filter_table_v1"
 
-    filter_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    # filter_id = db.Column(db.Integer, primary_key=True, nullable=False)
     type = db.Column(db.String(255), nullable=False)
     settings = db.Column(db.String(max), nullable=False)
 
@@ -119,10 +132,10 @@ class Filters(db.Model):
         return f"<Filters: {self.settings}>"
 
 
-class Informational_Hotshots(db.Model):
+class Informational_Hotshots(AppBaseModelOrm):
     __tablename__ = "informational_Hotshots_table_v1"
 
-    informational_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    # informational_id = db.Column(db.Integer, primary_key=True, nullable=False)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
@@ -138,10 +151,10 @@ class Informational_Hotshots(db.Model):
         return f"<Informational_Hotshots: {self.content}>"
 
 
-class Transitional_Hotshots(db.Model):
+class Transitional_Hotshots(AppBaseModelOrm):
     __tablename__ = "transitional_Hotshots_table_v1"
 
-    transitional_id = db.Column(db.Integer, primary_key=True)
+    # transitional_id = db.Column(db.Integer, primary_key=True)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
@@ -157,10 +170,10 @@ class Transitional_Hotshots(db.Model):
         return f"<Transitional_Hotshots: {self.content}>"
 
 
-class Text(db.Model):
+class Text(AppBaseModelOrm):
     __tablename__ = "text_table_v1"
 
-    text_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    # text_id = db.Column(db.Integer, primary_key=True, nullable=False)
     position_x = db.Column(db.Integer, nullable=False)
     position_y = db.Column(db.Integer, nullable=False)
     position_z = db.Column(db.Integer, nullable=False)
