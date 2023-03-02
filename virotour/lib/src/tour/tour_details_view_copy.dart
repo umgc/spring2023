@@ -3,6 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class SampleItemDetailsView extends StatefulWidget {
   const SampleItemDetailsView({super.key});
+
   static const routeName = '/sample';
 
   @override

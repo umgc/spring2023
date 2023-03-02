@@ -5,6 +5,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 /// Displays detailed information about a Tour.
 class TourDetailsView extends StatefulWidget {
   const TourDetailsView({super.key});
+
   static const routeName = '/tour';
 
   @override
