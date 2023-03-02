@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:virotour/src/hamburger.dart';
 import 'settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -18,6 +18,7 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        leading: Hamburger()
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
