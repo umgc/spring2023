@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-
+import 'package:virotour/src/tour/tour_list_view.dart';
+import 'package:virotour/src/tour/tour_edit_view.dart';
 class Hamburger extends StatelessWidget {
 
   Future<void> _showPopupMenu(BuildContext context) async {
@@ -43,20 +44,21 @@ class Hamburger extends StatelessWidget {
       ],
       elevation: 8.0,
     );
+
+    // Not entirely sure how to navigate the page tree. Tried to make the app into a materialApp to have named routes
+    //but that didn't seem to work properly. Will figure this out later in the week.
     if (selected == 'Create Tour') {
       showSnackBar('Should go to Create Tour Page', context);
       //once complete something along the lines of        Navigator.push(context, MaterialPageRoute(builder: (context) =>
       //        nameOfCreateTourPage()));
     }
     else if (selected == 'View Tour') {
-      showSnackBar('Should go to View Tour Page', context);
-      //once complete something along the lines of        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-      //        nameOfViewTourPage()));
+      //doesn't work
+     // Navigator.push(context, MaterialPageRoute(builder: (context) => TourListView()));
     }
     else if (selected == 'Edit Tour') {
-      showSnackBar('Should go to Edit Tour Page', context);
-      //once complete something along the lines of        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-      //        nameOfEditTourPage()));
+      //doesn't work
+      //Navigator.push(context, MaterialPageRoute(builder: (context) => TourEditView()));
     }
     else if (selected == 'Publish Tour') {
       showSnackBar('Should go to publish Tour Page', context);
