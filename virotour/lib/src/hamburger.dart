@@ -49,21 +49,19 @@ class Hamburger extends StatelessWidget {
     //but that didn't seem to work properly. Will figure this out later in the week.
     if (selected == 'Create Tour') {
       showSnackBar('Should go to Create Tour Page', context);
-      //once complete something along the lines of        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-      //        nameOfCreateTourPage()));
+      //Navigator.restorablePushNamed(context, CreateTour.routeName);
     }
     else if (selected == 'View Tour') {
       //doesn't work
-     // Navigator.push(context, MaterialPageRoute(builder: (context) => TourListView()));
+      Navigator.of(context).popUntil((route) => route.isFirst);
     }
     else if (selected == 'Edit Tour') {
-      //doesn't work
-      //Navigator.push(context, MaterialPageRoute(builder: (context) => TourEditView()));
+      Navigator.restorablePushNamed(context, TourEditView.routeName);
+
     }
     else if (selected == 'Publish Tour') {
       showSnackBar('Should go to publish Tour Page', context);
-      //once complete something along the lines of        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-      //        nameOfPublishTourPage()));
+      //Navigator.restorablePushNamed(context, PublishTour.routeName);
     }
     else {
       //nothing here, only used for testing
