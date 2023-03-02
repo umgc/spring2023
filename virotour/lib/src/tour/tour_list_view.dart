@@ -1,18 +1,55 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
+import 'package:virotour/src/tour/tour_edit_view.dart';
 
-class TourListView extends StatelessWidget {
+class TourListView extends StatefulWidget {
   const TourListView({
     super.key,
-    // TODO: Get the list of tours from GET /
-    this.items = const [Tour(1), Tour(2), Tour(3)],
+    required this.items,
   });
 
   static const routeName = '/';
 
   final List<Tour> items;
+
+  @override
+  _TourListViewState createState() => _TourListViewState();
+}
+
+class _TourListViewState extends State<TourListView> {
+  late Future<List<Tour>> _tourData;
+
+  @override
+  void initState() {
+    super.initState();
+    _tourData = fetchData();
+  }
+
+  static Future<List<Tour>> fetchData() async {
+    final response =
+        await http.get(Uri.parse('http://192.168.1.217:8081/api/tours'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+      final tours = data['tours'] as List<dynamic>;
+
+      return tours
+          .map((tour) => Tour(
+                id: tour['id'].toString(),
+                tourName: tour['name'].toString(),
+                description: tour['description'].toString(),
+              ))
+          .toList();
+    } else {
+      throw Exception("Failed to load tour data!");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,48 +60,82 @@ class TourListView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
           ),
         ],
       ),
-
-      // To work with lists that may contain a large number of items, it’s best
-      // to use the ListView.builder constructor.
-      //
-      // In contrast to the default ListView constructor, which requires
-      // building all Widgets up front, the ListView.builder constructor lazily
-      // builds Widgets as they’re scrolled into view.
-      body: ListView.builder(
-        // Providing a restorationId allows the ListView to restore the
-        // scroll position when a user leaves and returns to the app after it
-        // has been killed while running in the background.
-        restorationId: 'tourListView',
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
-
-          return ListTile(
-            // TODO: Show tour name
-            title: Text('Tour ${item.id}'),
-            leading: const CircleAvatar(
-              foregroundImage: AssetImage('assets/images/virotour_logo.png'),
-            ),
-            // TODO: ontap = call GET /tour/<tour_id>
-            onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                TourDetailsView.routeName,
-              );
-            },
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            _tourData = fetchData();
+          });
         },
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            const maxWidth = 800.0;
+            final isNarrow = constraints.maxWidth < maxWidth;
+            return Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: isNarrow ? constraints.maxWidth : maxWidth,
+                ),
+                child: FutureBuilder<List<Tour>>(
+                  future: _tourData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final items = snapshot.data!;
+                      return ListView.builder(
+                        restorationId: 'tourListView',
+                        itemCount: items.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final item = items[index];
+                          String toTitleCase(String str) {
+                            if (str.isEmpty) return str;
+                            return str.substring(0, 1).toUpperCase() +
+                                str.substring(1);
+                          }
+
+                          return ListTile(
+                            title: Text(toTitleCase(item.tourName)),
+                            subtitle: Text(toTitleCase(item.description)),
+                            leading: const CircleAvatar(
+                              foregroundImage:
+                                  AssetImage('assets/images/virotour_logo.png'),
+                            ),
+                            trailing: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TourEditView(
+                                      tour: item,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Icon(Icons.edit),
+                            ),
+                            onTap: () {
+                              Navigator.restorablePushNamed(
+                                context,
+                                TourDetailsView.routeName,
+                              );
+                            },
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
