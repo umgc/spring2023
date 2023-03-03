@@ -1,11 +1,33 @@
 from flask import jsonify, request
 
 from app import db, app
-from app.models import Tour
+from app.models import Tour, Location
 
 
 @app.route('/api/tours', methods=['GET'])
 def api_get_tours():
+    """
+        Get all tours
+        ---
+        responses:
+          200:
+            description: Success!
+            schema:
+                 description: Response
+                 properties:
+                   count:
+                     type: integer
+                   tours:
+                     type: array
+                     items:
+                       properties:
+                         id:
+                           type: integer
+                         name:
+                           type: string
+                         description:
+                           type: string
+        """
     # or tours = Tour.query.all()
     tours = db.session.query(Tour).all()
     result = [{
@@ -22,6 +44,19 @@ def api_get_tours():
 
 @app.route('/api/tour/<int:id>', methods=['GET'])
 def api_get_tour_by_id(id):
+    """
+        Get tour by id
+        ---
+        parameters:
+          - in: path
+            name: id
+            type: integer
+            required: true
+            description: ID of the tour
+        responses:
+          200:
+            description: Success!
+    """
     tour = Tour.query.get_or_404(id)
     payload = {
         'id': tour.id,
@@ -33,6 +68,21 @@ def api_get_tour_by_id(id):
 
 @app.route('/api/tour-name/<string:name>', methods=['GET'])
 def api_get_tour_by_name(name):
+    """
+        Get tour by name
+        ---
+        parameters:
+          - in: path
+            name: name
+            type: string
+            required: true
+            description: Name of the tour
+        responses:
+          200:
+            description: Success!
+            schema:
+                description: Response
+    """
     try:
         tour = db.session.query(Tour).filter(Tour.name == name).first()
         payload = {
@@ -48,8 +98,14 @@ def api_get_tour_by_name(name):
         return jsonify(payload), 404
 
 
-@app.route('/api/add/tour', methods=['POST'])
+@app.route('/api/tour/add', methods=['POST'])
 def api_add_tour():
+    """
+        Add new tour
+        ---
+        parameters:
+          - data: name, description
+    """
     if request.is_json:
         data = request.get_json()
         tour = Tour(name=data['name'], description=data['description'])
@@ -66,8 +122,15 @@ def api_add_tour():
         return jsonify(payload), 404
 
 
-@app.route('/api/update/tour/<int:id>', methods=['POST', 'PUT'])
+@app.route('/api/tour/update/<int:id>', methods=['POST'])
 def api_update_tour(id):
+    """
+        Update tour by id
+        ---
+        parameters:
+          - id: int
+          - data: name, description
+    """
     if request.is_json:
         data = request.get_json()
         tour = Tour.query.get_or_404(id)
@@ -85,12 +148,43 @@ def api_update_tour(id):
         return jsonify(payload), 404
 
 
-@app.route('/api/delete/tour/<int:id>', methods=['POST', 'DELETE'])
+@app.route('/api/tour/delete<int:id>', methods=['POST'])
 def api_delete_tour(id):
+    """
+        Delete tour by id. TODO: We need to clean up the rest of the tables and underlying data.
+        ---
+        parameters:
+          - in: path
+            name: id
+            type: integer
+            required: true
+            description: Id of the tour
+    """
     tour = Tour.query.get_or_404(id)
     db.session.delete(tour)
     db.session.commit()
     payload = {
         'message': f'Tour {tour.name} successfully deleted.',
+    }
+    return jsonify(payload), 200
+
+
+@app.route('/api/tour/locations/<string:tour_name>', methods=['GET'])
+def api_locations_for_tour(tour_name):
+    """
+        List all locations of a tour
+        ---
+        parameters:
+          - in: path
+            name: tour_name
+            type: string
+            required: true
+            description: Name of the tour
+    """
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # Get Locations
+    locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
+    payload = {
+        'results': [x.location_id for x in locations]
     }
     return jsonify(payload), 200

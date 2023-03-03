@@ -1,4 +1,4 @@
-from app.tests.tour.tour_utils import add_tour, update_tour_with_resp, delete_tour, list_tours
+from app.tests.common_utils import list_tours, add_tour, update_tour_with_resp, delete_tour
 
 
 def test_delete_tour(client):
