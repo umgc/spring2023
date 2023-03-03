@@ -57,7 +57,7 @@ def delete_tour_with_resp(client, name, description):
 
     tour = parse_http_response(resp)
     id = tour['id']
-    resp = client.post(f'/api/tour/delete{id}', json={
+    resp = client.post(f'/api/tour/delete/{id}', json={
         'name': name,
         'description': description
     })

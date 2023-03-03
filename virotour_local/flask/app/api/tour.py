@@ -148,7 +148,7 @@ def api_update_tour(id):
         return jsonify(payload), 404
 
 
-@app.route('/api/tour/delete<int:id>', methods=['POST'])
+@app.route('/api/tour/delete/<int:id>', methods=['POST'])
 def api_delete_tour(id):
     """
         Delete tour by id. TODO: We need to clean up the rest of the tables and underlying data.
