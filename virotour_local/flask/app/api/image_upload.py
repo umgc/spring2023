@@ -9,7 +9,14 @@ from app.models import Tour, Location, Image
 @app.route('/api/tour/add/images/<string:tour_name>', methods=['POST'])
 def api_add_tour_images(tour_name):
     """
-        Upload images to server.
+        Upload images to server. In one request, you upload a set of images. This represents one "location". Multiple locations comprise a tour.
+        ---
+        parameters:
+          - in: path
+            name: tour_name
+            type: string
+            required: true
+            description: Name of the tour
     """
     if request.method == 'POST':
         if not request.files:
