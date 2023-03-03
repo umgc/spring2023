@@ -31,6 +31,13 @@ class TableRepository:
         return self.db.session.query(self.entity).filter\
         (self.entity.is_active==True, self.entity.id==id)
 
+    def get_by_location_id(self, location_id:int):
+        return self.db.query(self.entity).filter(self.entity. c == location_id).first()
+
+    def get_actives_by_location_id(self, location_id:int):
+        return self.db.query(self.entity).filter\
+        (self.entity.is_active==True, self.entity.location_id == location_id).first()
+
     def get_by_create_datetime_range(self, from_datetime:datetime, to_datetime:datetime):
         data = self.db.session.query(self.entity).filter\
         (self.entity.created_datetime >= from_datetime, \

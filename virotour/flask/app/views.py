@@ -116,9 +116,13 @@ def delete_tour():
             id = delete_tour_form.id.data
 
             # delete tour from database
-            tour = db.session.query(Tour).filter(Tour.id == id).first()
-            db.session.delete(tour)
-            db.session.commit()
+            # tour = db.session.query(Tour).filter(Tour.id == id).first()
+            # db.session.delete(tour)
+            # db.session.commit()
+            
+            repo = TableRepository(db, Tour)
+            tour = repo.find_by_id(id)
+            repo.permanent_delete(tour)
 
             flash('Tour successfully deleted.')
             return redirect(url_for('show_tours'))

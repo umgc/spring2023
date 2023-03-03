@@ -4,7 +4,8 @@ from flask import Flask, request, jsonify, flash, redirect
 
 from app import app, db
 from .file_utils import allowed_file
-from .models import Tour
+from .models import State, Tour, Images
+from app.repository import TableRepository
 
 
 @app.route('/api/', methods=['GET'])
@@ -107,3 +108,29 @@ def api_add_tour_images():
 
         flash('File(s) successfully uploaded')
         return redirect('/')
+
+@app.route('/blur_opt', methods=['GET'])
+def blur_Image_Operation():
+    location_id = int(request.args.get('locatoin_id'))
+    state_id = int(request.args.get('state_id'))
+    setting = "blurred"
+    blurred = request.args.get('blurred')
+    
+    # update state table
+    repo = TableRepository(db, State)
+    state = repo.find_by_id(state_id)
+    state.setting = setting
+    repo.update(state)
+    
+    # update images table
+    repo = TableRepository(db, Images)
+    image = repo.get_actives_by_location_id(location_id)
+    image.blurred = blurred
+    repo.update(image)
+    
+    # need to send back /return the blurred image path
+
+    flash(blurred)
+    return redirect('/')
+   
+    # return  redirect(url_for("upload-images"))
