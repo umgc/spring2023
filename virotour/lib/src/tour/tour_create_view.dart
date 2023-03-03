@@ -119,9 +119,16 @@ class _TourCreateViewState extends State<TourCreateView> {
                   onPressed: () async {
                     images = await _picker.pickMultiImage();
                   },
-                  child: const Text('Select Images'),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const <Widget>[
+                      Icon(Icons.image),
+                      Text(' Select Images'),
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(height: 16.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
