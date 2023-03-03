@@ -20,7 +20,7 @@ def compute_panoramic(tour_name, location_id):
         else:
             for inner_element in element:
                 flatlist.append(inner_element)
-    app.logger.error(f'Input to panoramic compute: {flatlist}')
+    app.logger.info(f'Input to panoramic compute: {flatlist}')
     stitch.main(flatlist)
 
     return target_file

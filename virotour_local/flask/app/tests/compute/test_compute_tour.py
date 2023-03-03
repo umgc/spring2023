@@ -28,7 +28,7 @@ def test_compute_tour(client):
     assert data['server_file_paths'][0] == 'raw_images/T_1_L_1_S1.jpg'
 
     # Test that we can search (case-insensitive)
-    data = get_search_results(client, 'welcome')
+    data = get_search_results(client, tour_name, 'welcome')
     assert len(data['results']) == 1
     assert data['results'][0]['location_id'] == 2
     assert data['results'][0]['text_content'] == 'WELCOME'
@@ -37,14 +37,14 @@ def test_compute_tour(client):
     assert data['results'][0]['position_z'] == 0
 
     # Test that we can search (partial match)
-    data = get_search_results(client, 'level')
+    data = get_search_results(client, tour_name, 'level')
     assert len(data['results']) == 2
     assert data['results'][0]['location_id'] == 2
     assert data['results'][1]['location_id'] == 2
     assert data['results'][0]['text_content'] == '~LOWER LEVEL'
     assert data['results'][1]['text_content'] == 'UPPER LEVEL'
 
-    data = get_search_results(client, 'Should find nothing!')
+    data = get_search_results(client, tour_name, 'Should find nothing!')
     assert len(data['results']) == 0
 
     data = get_tour_locations(client, tour_name)

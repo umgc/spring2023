@@ -121,12 +121,12 @@ def set_panoramic_image_with_resp(client, tour_name, location_id, path):
     })
 
 
-def get_search_results(client, search_input):
-    return parse_http_response(get_search_results_with_resp(client, search_input))
+def get_search_results(client, tour_name, search_input):
+    return parse_http_response(get_search_results_with_resp(client, tour_name, search_input))
 
 
-def get_search_results_with_resp(client, search_input):
-    return client.get(f'/api/tour/search/{search_input}')
+def get_search_results_with_resp(client, tour_name, search_input):
+    return client.get(f'/api/tour/search/{tour_name}/{search_input}')
 
 
 def get_tour_locations(client, search_input):

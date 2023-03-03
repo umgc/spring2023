@@ -36,7 +36,7 @@ def test_integration():
 
     # Perform Searc
     search_input = 'level'
-    r6 = requests.get(url=f"{URL}/tour/search/{search_input}")
+    r6 = requests.get(url=f"{URL}/tour/search/{tour_name}/{search_input}")
 
     # List locations
     r7 = requests.get(url=f"{URL}/tour/locations/{tour_name}")
