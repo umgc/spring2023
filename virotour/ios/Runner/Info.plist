@@ -43,5 +43,7 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Virotour needs permission to access the photo library</string>
 </dict>
 </plist>
