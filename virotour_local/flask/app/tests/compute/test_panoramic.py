@@ -1,7 +1,6 @@
-from PIL import Image
 from app.api.compute.compute import compute_panoramic
+from app.tests.common_utils import add_tour, upload_images
 from app.tests.images.test_add_images import get_image_paths
-from app.tests.common_utils import add_tour, upload_images, get_panoramic_image
 
 
 def test_compute_panoramic(client):

@@ -15,7 +15,7 @@ def test_compute_tour(client):
 
     # Test get relative image path
     pano_image_path = get_panoramic_image(client, tour_name, 1)['server_file_path']
-    assert pano_image_path == 'panoramic_images/T_1_L_1_pano.png'
+    assert pano_image_path == 'panoramic_images/T_1_L_1_pano.jpg'
 
     # Test image exists and is openable
     pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)

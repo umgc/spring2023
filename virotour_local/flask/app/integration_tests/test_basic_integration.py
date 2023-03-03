@@ -34,7 +34,7 @@ def test_integration():
     # Compute tour
     r5 = requests.get(url=f"{URL}/compute-tour/{tour_name}")
 
-    # Perform Searc
+    # Perform Search
     search_input = 'level'
     r6 = requests.get(url=f"{URL}/tour/search/{tour_name}/{search_input}")
 
