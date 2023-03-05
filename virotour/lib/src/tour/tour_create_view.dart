@@ -189,33 +189,77 @@ class _TourCreateViewState extends State<TourCreateView> {
                     onPressed: () async {
 
                       // Creation of the tour object
-                      final url =
+                      final url_add_tour =
                           'http://127.0.0.1:8081/api/tour/add';
-                      // final body = {
-                      //   'id': widget.tour.id,
-                      //   'name': _nameController.text,
-                      //   'description': _descriptionController.text,
-                      // };
+
+                      /* TODO: Uncomment this in prod
                       final response = await http.post(
                         Uri.parse(url),
                         headers: {'Content-Type': 'application/json'}
                       );
+                      
                       if (response.statusCode == 200) {
+                        // Send location data for each transitional hotspot
+                        for (location in transitional_hotspots) {
+                          final location_response = await http.post(
+                            Uri.parse("http://127.0.0.1:8081/api/tour/add/images/${response.name}"),
+                            headers: {'Content-type': 'multipart/form-data'},
+                            body: {
+                              images: location.images
+                            }
+                          )
+                          if (location_response.statusCode != 200) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Failed to create ${location.name}'),
+                                content:
+                                Text('Status code: ${location_response.statusCode}'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          }
+                        }
+                      // Compute tour
+                      final tour_response = await http.get(
+                        Uri.parse("http://127.0.0.1:8081/api/compute-tour/${response.name}")
+                      )
+                      if (tour_response.statusCode == 200){
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: const Text('Failed to create tour'),
-                            content:
-                            Text('Response: ${response}'),
+                            title: const Text('Done'),
+                            content: const Text("Successfully created tour!")
                             actions: [
                               TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('OK'),
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('OK'),
                               ),
                             ],
                           ),
-                        );
-                        //Navigator.pop(context);
+                        ),
+                      }
+                      else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Failed to compute tour'),
+                            content:
+                            Text('Status code: ${tour_response.statusCode}'),
+                            actions: [
+                              TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      }
                       } else {
                         showDialog(
                           context: context,
@@ -232,6 +276,7 @@ class _TourCreateViewState extends State<TourCreateView> {
                           ),
                         );
                       }
+                      */
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.green,
