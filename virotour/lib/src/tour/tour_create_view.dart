@@ -187,36 +187,51 @@ class _TourCreateViewState extends State<TourCreateView> {
                   const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      // final url =
-                      //     'http://127.0.0.1:8081/api/update/tour/${widget.tour.id}';
+
+                      // Creation of the tour object
+                      final url =
+                          'http://127.0.0.1:8081/api/tour/add';
                       // final body = {
                       //   'id': widget.tour.id,
                       //   'name': _nameController.text,
                       //   'description': _descriptionController.text,
                       // };
-                      // final response = await http.post(
-                      //   Uri.parse(url),
-                      //   headers: {'Content-Type': 'application/json'},
-                      //   body: json.encode(body),
-                      // );
-                      // if (response.statusCode == 200) {
-                      //   Navigator.pop(context);
-                      // } else {
-                      //   showDialog(
-                      //     context: context,
-                      //     builder: (context) => AlertDialog(
-                      //       title: const Text('Failed to update tour'),
-                      //       content:
-                      //       Text('Status code: ${response.statusCode}'),
-                      //       actions: [
-                      //         TextButton(
-                      //           onPressed: () => Navigator.pop(context),
-                      //           child: const Text('OK'),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   );
-                      // }
+                      final response = await http.post(
+                        Uri.parse(url),
+                        headers: {'Content-Type': 'application/json'}
+                      );
+                      if (response.statusCode == 200) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Failed to create tour'),
+                            content:
+                            Text('Response: ${response}'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                        //Navigator.pop(context);
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Failed to create tour'),
+                            content:
+                            Text('Status code: ${response.statusCode}'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.green,
