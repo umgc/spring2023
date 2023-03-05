@@ -31,6 +31,7 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
+<<<<<<< HEAD
     final response =
         await http.get(Uri.parse('http://192.168.1.217:8081/api/tours'));
 
@@ -44,6 +45,27 @@ class _TourListViewState extends State<TourListView> {
                 id: tour['id'].toString(),
                 tourName: tour['name'].toString(),
                 description: tour['description'].toString(),
+=======
+    // final response = await http.get(Uri.parse('http://192.168.1.217:5000/api/tours'));
+    // Mock API call to avoid Flask server issues. TODO: Remove this in prod.
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1/photos'));
+
+    if (response.statusCode == 200) {
+      // Mock data
+      final data = jsonDecode(response.body) as List<dynamic>;
+
+      // final data = jsonDecode(response.body) as Map<String, dynamic>;
+      // final tours = data['tours'] as List<dynamic>;
+
+      return data
+          .map((tour) => Tour(
+                id: tour['id'].toString(),
+                tourName: tour['title'].toString(),
+                description: tour['title'].toString(),
+                // tourName: tour['name'].toString(),
+                // description: tour['description'].toString(),
+>>>>>>> origin/team_a_dev
               ))
           .toList();
     } else {
