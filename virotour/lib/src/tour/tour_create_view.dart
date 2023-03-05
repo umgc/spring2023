@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:virotour/src/tour/tour.dart';
 
+int hotspot_counter = 0;
 
 class TourCreateView extends StatefulWidget {
   static const routeName = '/tour_create';
@@ -25,7 +26,7 @@ class _TourCreateViewState extends State<TourCreateView> {
   late TextEditingController _dateController;
   DateTime selectedDate = DateTime.now();
   final ImagePicker _picker = ImagePicker();
-  List<XFile>? images;
+  List<Hotspot> transitional_hotspots = [];
 
   @override
   void initState() {
@@ -100,24 +101,61 @@ class _TourCreateViewState extends State<TourCreateView> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Text("Date: ${"${selectedDate.toLocal()}".split(' ')[0]}",
-                      style: const TextStyle(fontSize: 18),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Text("Date: ${"${selectedDate.toLocal()}".split(' ')[0]}",
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _selectDate(context),
+                        child: const Text('Select date'),
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () => _selectDate(context),
-                    child: const Text('Select date'),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: transitional_hotspots.map((hotspot){
+                      return Container(
+                        child: Card(
+                          child: ListTile(
+                            title: Text(hotspot.name),
+                            trailing: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.redAccent
+                              ),
+                              child: Icon(Icons.delete),
+                              onPressed: (){
+                                transitional_hotspots.removeWhere((element){
+                                  return element.name == hotspot.name;
+                                });
+                                setState(() {
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                ],
+                ),
               ),
               const SizedBox(height: 16.0),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    images = await _picker.pickMultiImage();
+                    transitional_hotspots.add(new Hotspot(await _picker.pickMultiImage()));
+                    setState(() {
+                    });
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -185,62 +223,6 @@ class _TourCreateViewState extends State<TourCreateView> {
                     ),
                     child: const Text('Save'),
                   ),
-                  const SizedBox(width: 16.0),
-                  OutlinedButton(
-                    onPressed: () async {
-                      final confirmDelete = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Confirm Deletion'),
-                          content: const Text(
-                            'Are you sure you want to delete this tour?',
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (confirmDelete == true) {
-                        // final url =
-                        //     'http://127.0.0.1:8081/api/delete/tour/${widget.tour.id}';
-                        // final response = await http.delete(Uri.parse(url));
-                        // if (response.statusCode == 200) {
-                        //   Navigator.pop(context);
-                        // } else {
-                        //   showDialog(
-                        //     context: context,
-                        //     builder: (context) => AlertDialog(
-                        //       title: const Text('Failed to delete tour'),
-                        //       content:
-                        //       Text('Status code: ${response.statusCode}'),
-                        //       actions: [
-                        //         TextButton(
-                        //           onPressed: () => Navigator.pop(context),
-                        //           child: const Text('OK'),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   );
-                        // }
-                      }
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      'Delete',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ],
@@ -248,5 +230,16 @@ class _TourCreateViewState extends State<TourCreateView> {
         ),
       ),
     );
+  }
+}
+
+class Hotspot {
+  String name = "";
+  List<XFile>? images = [];
+
+  Hotspot(images) {
+    this.name = "location_" + hotspot_counter.toString();
+    hotspot_counter++;
+    this.images = images;
   }
 }
