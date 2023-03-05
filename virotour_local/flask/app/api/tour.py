@@ -6,7 +6,10 @@ from app.models import Tour
 
 @app.route('/api/tours', methods=['GET'])
 def api_get_tours():
-    # or tours = Tour.query.all()
+    test_tour = Tour(name="test Nick code", description="test description");
+    db.session.add(test_tour)
+    db.session.commit()
+    # tours = Tour.query.all()
     tours = db.session.query(Tour).all()
     result = [{
         'id': tour.id,
@@ -15,7 +18,8 @@ def api_get_tours():
     } for tour in tours]
     payload = {
         'count': len(result),
-        'tours': result
+        'tours': result,
+        'message': 'got it'
     }
     return jsonify(payload), 200
 
