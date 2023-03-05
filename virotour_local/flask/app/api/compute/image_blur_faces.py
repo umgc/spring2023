@@ -17,7 +17,7 @@ def image_blur_faces_main(image_list):
     return image_list
 
 def getPathToDetectorFile():
-    pathToDetector = "haarcascade_frontalface_default.xml"
+    pathToDetector = "../api/compute/blur_faces_util/haarcascade_frontalface_default.xml"
     return pathToDetector
 
 def loadFaceDetector(pathToDetector):
