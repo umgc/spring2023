@@ -27,10 +27,18 @@ def test_adjust_hsv(client):
 
 def test_apply_glow(client):
     input_file = get_image_path('input_images\\location4\original\\T_1_L_1_pano.png').replace("\\", "/")
+    output_file = get_image_path('input_images\\location4\\result\\T_1_L_1_pano.png').replace("\\", "/")
     output_directory = get_image_path('input_images\\location4\\result').replace("\\", "/")
     radius = 1
     strength = 1
+    # Detect dark image
+    data = detect_brightness(input_file)
+    assert data == 'dark'
+    # Apply glow filter
     apply_glow(input_file, radius, strength, output_directory)
     # Count the number of files in the output directory
     count = len(fnmatch.filter(os.listdir(output_directory), '*.*'))
     assert count > 0
+    # Detect brighter image
+    data = detect_brightness(output_file)
+    assert data == 'light'
