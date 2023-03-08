@@ -24,6 +24,53 @@ class _TourDetailsViewState extends State<TourDetailsView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tour Details / Tour Name'),
+        actions: [                 //wheel_menu action start
+          PopupMenuButton<int>(
+            color: Colors.lightBlue[600],
+            icon: const Icon(Icons.settings, color: Colors.white,),
+            onSelected: (item) => onSelected(context, item),
+            itemBuilder: (context) => [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.sunny,
+                      color: Colors.white70,
+                    ),
+                    SizedBox(width: 15.0),
+                    Text(
+                      'Glow Effect',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),),
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons
+                          .voicemail_outlined, //this icon is used because VR view icon is missing in material apps
+                      color: Colors.white70,
+                    ),
+                    SizedBox(width: 15.0),
+                    Text(
+                      'VR View',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),),
+            ],
+          )
+
+        ],                //wheel_menu action end
       ),
       body: WebViewX(
         height: safeHeight,
@@ -40,5 +87,17 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         },
       ),
     );
+  }
+  //wheel_menu onSelected
+  void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Navigator.restorablePushNamed(
+          context, TourDetailsView.routeName,); // 'Glow Effect'
+        break;
+      case 1:
+        Navigator.restorablePushNamed(
+          context, TourDetailsView.routeName,); // 'VR View'
+    }
   }
 }

@@ -68,14 +68,64 @@ class _TourListViewState extends State<TourListView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tours'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
-            },
-          ),
-        ],
+        actions: [                 //wheel_menu action start
+          PopupMenuButton<int>(
+            color: Colors.lightBlue[600],
+            icon: const Icon(Icons.settings, color: Colors.white,),
+            onSelected: (item) => onSelected(context, item),
+            itemBuilder: (context) => [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.sunny,
+                      color: Colors.white70,
+                    ),
+                    SizedBox(width: 15.0),
+                    Text(
+                      'Glow Effect',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),),
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons
+                          .voicemail_outlined, //this icon is used because VR view icon is missing in material apps
+                      color: Colors.white70,
+                    ),
+                    SizedBox(width: 15.0),
+                    Text(
+                      'VR View',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),),
+            ],
+          )
+
+        ],                //wheel_menu action end
+
+        //the following is the initial wheel_menu actions code
+        // actions [
+        //   IconButton(
+        //     icon: const Icon(Icons.settings),
+        //     onPressed: () {
+        //       Navigator.restorablePushNamed(context, SettingsView.routeName);
+        //     },
+        //   ),
+        // ],
+
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -167,4 +217,18 @@ class _TourListViewState extends State<TourListView> {
       ),
     );
   }
+
+  //wheel_menu onSelected
+  void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Navigator.restorablePushNamed(
+          context, TourListView.routeName,); // 'Glow Effect'
+        break;
+      case 1:
+        Navigator.restorablePushNamed(
+          context, TourListView.routeName,); // 'VR View'
+    }
+  }
+
 }
