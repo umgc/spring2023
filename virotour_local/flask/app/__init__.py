@@ -1,6 +1,8 @@
 import os
 from os.path import join, dirname, realpath
 
+from flasgger import Swagger
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -8,6 +10,7 @@ from .utils import allowed_file
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
+Swagger(app)
 db = SQLAlchemy()
 from . import models
 
@@ -22,6 +25,8 @@ def create_app():
     from .api import hello
     from .api import tour
     from .api import image_upload
+    from .api import text
+    from .api.compute import compute
     from .api import after_request
 
     return app
