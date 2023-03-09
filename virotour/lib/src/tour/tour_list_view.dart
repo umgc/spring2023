@@ -36,6 +36,18 @@ class _TourListViewState extends State<TourListView> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final dataLength = data["tours"].length;
+
+      // If response is empty, create text that no tours are found
+      if (dataLength == 0) {
+        return [
+          Tour(
+            id: '0',
+            tourName: 'No tours found!',
+            description: '',
+          )
+        ];
+      }
 
       final tours = data['tours'] as List<dynamic>;
 
@@ -65,77 +77,93 @@ class _TourListViewState extends State<TourListView> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {
-            _tourData = fetchData();
-          });
-        },
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            const maxWidth = 800.0;
-            final isNarrow = constraints.maxWidth < maxWidth;
-            return Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: isNarrow ? constraints.maxWidth : maxWidth,
-                ),
-                child: FutureBuilder<List<Tour>>(
-                  future: _tourData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final items = snapshot.data!;
-                      return ListView.builder(
-                        restorationId: 'tourListView',
-                        itemCount: items.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final item = items[index];
-                          String toTitleCase(String str) {
-                            if (str.isEmpty) return str;
-                            return str.substring(0, 1).toUpperCase() +
-                                str.substring(1);
-                          }
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          const maxWidth = 800.0;
+          final isNarrow = constraints.maxWidth < maxWidth;
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                _tourData = fetchData();
+              });
+            },
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: isNarrow ? constraints.maxWidth : maxWidth,
+              ),
+              child: FutureBuilder<List<Tour>>(
+                future: _tourData,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final items = snapshot.data!;
+                    if (items.length == 1 && items.first.id == '0') {
+                      return Center(
+                        child: ListView(
+                          restorationId: 'tourListView',
+                          children: [
+                            ListTile(
+                              title: Text(
+                                items.first.tourName,
+                                textAlign: TextAlign.center,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      restorationId: 'tourListView',
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final item = items[index];
+                        String toTitleCase(String str) {
+                          if (str.isEmpty) return str;
+                          return str.substring(0, 1).toUpperCase() +
+                              str.substring(1);
+                        }
 
-                          return ListTile(
-                            title: Text(toTitleCase(item.tourName)),
-                            subtitle: Text(toTitleCase(item.description)),
-                            leading: const CircleAvatar(
-                              foregroundImage:
-                                  AssetImage('assets/images/virotour_logo.png'),
-                            ),
-                            trailing: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TourEditView(
-                                      tour: item,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Icon(Icons.edit),
-                            ),
+                        return ListTile(
+                          title: Text(toTitleCase(item.tourName)),
+                          subtitle: Text(toTitleCase(item.description)),
+                          leading: const CircleAvatar(
+                            foregroundImage:
+                                AssetImage('assets/images/virotour_logo.png'),
+                          ),
+                          trailing: GestureDetector(
                             onTap: () {
-                              Navigator.restorablePushNamed(
+                              Navigator.push(
                                 context,
-                                TourDetailsView.routeName,
+                                MaterialPageRoute(
+                                  builder: (context) => TourEditView(
+                                    tour: item,
+                                  ),
+                                ),
                               );
                             },
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
+                            child: const Icon(Icons.edit),
+                          ),
+                          onTap: () {
+                            Navigator.restorablePushNamed(
+                              context,
+                              TourDetailsView.routeName,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
