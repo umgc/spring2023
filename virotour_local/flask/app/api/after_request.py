@@ -1,5 +1,3 @@
-from flask import url_for
-
 from app import app
 
 
@@ -10,7 +8,8 @@ def add_cors_headers(response):
 
 @app.route("/api/site-map")
 def site_map():
-    links = []
+    links = {}
     for rule in app.url_map.iter_rules():
-        links.append(str(rule))
+        methods = [str(x) for x in rule.methods if (str(x) != 'OPTIONS' and str(x) != 'HEAD')]
+        links[str(rule)] = methods
     return links

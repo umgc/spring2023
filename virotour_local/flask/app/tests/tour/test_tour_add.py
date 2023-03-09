@@ -1,4 +1,4 @@
-from app.tests.tour.tour_utils import list_tours, add_tour
+from app.tests.common_utils import list_tours, add_tour
 
 
 def test_add_tour(client):
