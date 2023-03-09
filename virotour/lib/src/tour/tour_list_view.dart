@@ -31,8 +31,10 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
+    /* If you get _ClientSocketException (Connection refused) change from 
+    127.0.0.1 to your local server address (192.x.x.x) */
     final response =
-        await http.get(Uri.parse('http://127.0.0.1:8081/api/tours'));
+        await http.get(Uri.parse('http://192.168.1.217:8081/api/tours'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
