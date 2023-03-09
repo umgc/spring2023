@@ -1,5 +1,4 @@
-
-from app.utils import parse_http_response
+from app.tests.common_utils import parse_http_response
 
 
 def test_hello_world(client):
