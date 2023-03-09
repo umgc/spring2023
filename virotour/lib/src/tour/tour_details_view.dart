@@ -12,6 +12,9 @@ class TourDetailsView extends StatefulWidget {
 
 class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
+  // TODO: load content from the API call
+  String initialContent =
+      'https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true';
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,8 @@ class _TourDetailsViewState extends State<TourDetailsView> {
     final padding = MediaQuery.of(context).padding;
     final safeHeight = height - padding.top - padding.bottom;
     final safeWidth = width - padding.left - padding.right;
+
+    debugPrint('get context: $this.state');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tour Details / Tour Name'),
@@ -29,8 +34,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         height: safeHeight,
         width: safeWidth,
         // TODO: replace URL with response from API call GET /tour/<tour_id>/
-        initialContent:
-            'https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true',
+        initialContent: initialContent,
         onPageStarted: (url) {
           // This method is called when the WebView starts loading a new page
           debugPrint('Page started loading: $url');
