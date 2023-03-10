@@ -13,7 +13,6 @@ class ViroTour extends StatefulWidget {
   @override
   SliderState createState() => SliderState();
 }
-
 class SliderState extends State<ViroTour> {
   @override
   Widget build(BuildContext context) {
