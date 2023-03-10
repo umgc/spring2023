@@ -1,14 +1,14 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:virotour/src/text_search/search_object.dart';
 import 'package:virotour/src/text_search/view_object.dart';
 
 class SearchResults extends StatelessWidget {
   String searchTerm = "";
 
-  SearchResults({super.key, required this.searchTerm}){
-  }
+  SearchResults({super.key, required this.searchTerm}) {}
 
   // This widget is the root of your application.
   @override
@@ -35,13 +35,14 @@ class SearchResults extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class ResultsList extends StatelessWidget {
-  String searchTerm="";
-  ResultsList({super.key,required  String searchTerm}){fetchData();}
+  String searchTerm = "";
 
+  ResultsList({super.key, required String searchTerm}) {
+    fetchData();
+  }
 
   List<SearchObject> searches = [
     SearchObject(
@@ -80,7 +81,7 @@ class ResultsList extends StatelessWidget {
                 return ListTile(
                   leading: CircleAvatar(
                     backgroundImage:
-                    img.image, // No matter how big it is, it won't overflow
+                        img.image, // No matter how big it is, it won't overflow
                   ),
                   trailing: Text(
                     "${searches[i].itemDescription}",
@@ -98,6 +99,7 @@ class ResultsList extends StatelessWidget {
           ))
     ]);
   }
+
   Future<http.Response> fetchData() async {
     final url = Uri.https('virotour.com', '/search/$searchTerm');
     final response = await http.get(url);
@@ -107,5 +109,4 @@ class ResultsList extends StatelessWidget {
       throw Exception("Failed to load the tours, please try again");
     }
   }
-
 }
