@@ -1,46 +1,39 @@
-
 import 'package:flutter/material.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
+
 class Hamburger extends StatelessWidget {
+  const Hamburger({super.key});
 
   Future<void> _showPopupMenu(BuildContext context) async {
     String? selected = await showMenu(
       context: context,
       color: Colors.blue,
-      position: RelativeRect.fromLTRB(0.0, 56, 25.0, 0.0),
+      position: const RelativeRect.fromLTRB(0.0, 56, 25.0, 0.0),
       //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(
-            child: Row(children: const <Widget>[
-              Icon(Icons.public, color: Colors.white),
-              const Text('  Create Tour', style: TextStyle(color: Colors.white))
-            ]), value: 'Create Tour'),
-        PopupMenuDivider(
-            height: 2
+          value: 'Create Tour',
+          child: Row(
+            children: const <Widget>[
+              Icon(Icons.add, color: Colors.white),
+              Text('  Create Tour', style: TextStyle(color: Colors.white))
+            ],
+          ),
         ),
+        const PopupMenuDivider(height: 2),
         PopupMenuItem<String>(
-            child: Row(children: const <Widget>[
-              Icon(Icons.add_circle_outline, color: Colors.white),
-              const Text('  View Tour', style: TextStyle(color: Colors.white))
-            ]), value: 'View Tour'),
-        PopupMenuDivider(
-            height: 2
+          value: 'Search',
+          child: Row(
+            children: const <Widget>[
+              Icon(Icons.search, color: Colors.white),
+              Text(
+                '  Search',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
         ),
-        PopupMenuItem<String>(
-            child: Row(children: const <Widget>[
-              Icon(Icons.edit, color: Colors.white),
-              const Text('  Edit Tour', style: TextStyle(color: Colors.white))
-            ]), value: 'Edit Tour'),
-        PopupMenuDivider(
-            height: 2
-        ),
-        PopupMenuItem<String>(
-            child: Row(children: const <Widget>[
-              Icon(Icons.publish, color: Colors.white),
-              const Text(
-                  '  Publish Tour', style: TextStyle(color: Colors.white))
-            ]), value: 'Publish Tour'),
       ],
       elevation: 8.0,
     );
@@ -50,20 +43,10 @@ class Hamburger extends StatelessWidget {
     if (selected == 'Create Tour') {
       showSnackBar('Should go to Create Tour Page', context);
       //Navigator.restorablePushNamed(context, CreateTour.routeName);
-    }
-    else if (selected == 'View Tour') {
-      //doesn't work
-      Navigator.of(context).popUntil((route) => route.isFirst);
-    }
-    else if (selected == 'Edit Tour') {
-      Navigator.restorablePushNamed(context, TourEditView.routeName);
-
-    }
-    else if (selected == 'Publish Tour') {
-      showSnackBar('Should go to publish Tour Page', context);
+    } else if (selected == 'Search') {
+      showSnackBar('Should go to Search Page', context);
       //Navigator.restorablePushNamed(context, PublishTour.routeName);
-    }
-    else {
+    } else {
       //nothing here, only used for testing
       // showSnackBar('menu exit', context);
     }
@@ -71,10 +54,12 @@ class Hamburger extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(icon: const Icon(Icons.menu, color: Colors.white), onPressed: () async {
-      //display option here
-      _showPopupMenu(context);
-    });
+    return IconButton(
+        icon: const Icon(Icons.menu, color: Colors.white),
+        onPressed: () async {
+          //display option here
+          _showPopupMenu(context);
+        });
   }
 
   //for testing purposes only
@@ -88,5 +73,4 @@ class Hamburger extends StatelessWidget {
         ),
       );
   }
-
 }
