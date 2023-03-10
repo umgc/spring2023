@@ -55,11 +55,12 @@ class Hamburger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: const Icon(Icons.menu, color: Colors.white),
-        onPressed: () async {
-          //display option here
-          _showPopupMenu(context);
-        });
+      icon: const Icon(Icons.menu, color: Colors.white),
+      onPressed: () async {
+        //display option here
+        _showPopupMenu(context);
+      },
+    );
   }
 
   //for testing purposes only
