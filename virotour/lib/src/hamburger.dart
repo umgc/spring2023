@@ -13,6 +13,16 @@ class Hamburger extends StatelessWidget {
       //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(
+          value: 'View Tours',
+          child: Row(
+            children: const <Widget>[
+              Icon(Icons.list, color: Colors.white),
+              Text('  View Tours', style: TextStyle(color: Colors.white))
+            ],
+          ),
+        ),
+        const PopupMenuDivider(height: 2),
+        PopupMenuItem<String>(
           value: 'Create Tour',
           child: Row(
             children: const <Widget>[
@@ -46,6 +56,8 @@ class Hamburger extends StatelessWidget {
     } else if (selected == 'Search') {
       showSnackBar('Should go to Search Page', context);
       //Navigator.restorablePushNamed(context, PublishTour.routeName);
+    } else if (selected == 'View Tours') {
+      Navigator.restorablePushNamed(context, TourListView.routeName);
     } else {
       //nothing here, only used for testing
       // showSnackBar('menu exit', context);
