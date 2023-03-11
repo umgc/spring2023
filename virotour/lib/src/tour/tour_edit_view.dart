@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:virotour/src/tour/tour.dart';
 
+import '../settings/settings_view.dart';
+
 class TourEditView extends StatefulWidget {
   static const routeName = '/tour_edit';
 
@@ -41,6 +43,14 @@ class _TourEditViewState extends State<TourEditView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Tour'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.restorablePushNamed(context, SettingsView.routeName);
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Container(
