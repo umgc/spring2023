@@ -34,7 +34,6 @@ Windows
 venv\Scripts\activate
 ```
 
-
 Note, if you get "cannot be loaded because its operation is blocked by software restriction       
 policies, such as those created by using Group Policy."
 
@@ -45,8 +44,6 @@ Then run ```Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process``` and tr
 ```
 pip install -r requirements.txt
 ```
-
-Note# If you get "Python Was Not Found" try steps found here https://www.youtube.com/watch?v=uBnbVqUmZaQ
 
 ### Run
 
@@ -91,5 +88,5 @@ python run.py
 ```
 If you want to run all tests, do:
 ```
-python -m pytest app/tests 
+python -m pytest app/tests 
 ```
