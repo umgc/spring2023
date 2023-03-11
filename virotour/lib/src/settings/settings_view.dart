@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:virotour/src/tour/empty_page_glow_vr.dart';
-
+import '../tour/empty_page_glow_vr.dart';
+import '../tour/glow_effect.dart';
 import 'settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -27,19 +27,16 @@ class SettingsView extends StatelessWidget {
           right: 16.0,
           bottom: 16.0,
         ),
-
-
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-
             //Glow Effect Button
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GlowVr()),
+                  MaterialPageRoute(builder: (context) => ViroTour()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -48,8 +45,7 @@ class SettingsView extends StatelessWidget {
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.lightBlue,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
+                    borderRadius: BorderRadius.circular(5),),
               ),
               child: const Text("Glow Effect"),
             ),
@@ -68,12 +64,13 @@ class SettingsView extends StatelessWidget {
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.lightBlue,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
+                    borderRadius: BorderRadius.circular(5),),
               ),
               child: const Text("VR View"),
             ),
 
+            // Glue the SettingsController to the theme selection DropdownButton.
+            //
             // When a user selects a theme from the dropdown list, the
             // SettingsController is updated, which rebuilds the MaterialApp.
             DropdownButton<ThemeMode>(

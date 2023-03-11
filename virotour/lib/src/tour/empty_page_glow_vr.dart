@@ -11,17 +11,17 @@ class GlowVr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Glow Effect/VR View'),
+          title: const Text('VR View'),
         ),
         body: const Padding(
           padding: EdgeInsets.all(28.0),
           child: Text(
-            "Links to Glow effect/Vr View",
+            "Links to VR View",
             style: TextStyle(
               fontSize: 35.0,
               color: Colors.blueGrey,
             ),
           ),
-        ),);
+        ));
   }
 }

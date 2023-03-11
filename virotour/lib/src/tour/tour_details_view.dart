@@ -28,7 +28,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         title: const Text('Tour Details / Tour Name'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.settings,color: Colors.white,),
             onPressed: () {
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },

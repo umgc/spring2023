@@ -13,6 +13,7 @@ class ViroTour extends StatefulWidget {
   @override
   SliderState createState() => SliderState();
 }
+
 class SliderState extends State<ViroTour> {
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,8 @@ class SliderState extends State<ViroTour> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset('assets/images/screenshots/app_screenshot_Chrome_v1.0.png',
+                  Image.asset(
+                      'assets/images/screenshots/app_screenshot_Chrome_v1.0.png',
                       fit: BoxFit.cover),
                   ColoredBox(
                     color: Colors.black.withOpacity(lighting),
