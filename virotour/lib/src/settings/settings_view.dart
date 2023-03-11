@@ -31,6 +31,8 @@ class SettingsView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+
+
             //Glow Effect Button
             ElevatedButton(
               onPressed: () {
