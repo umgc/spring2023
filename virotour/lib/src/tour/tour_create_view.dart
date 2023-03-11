@@ -106,7 +106,8 @@ class _TourCreateViewState extends State<TourCreateView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Text("Date: ${"${selectedDate.toLocal()}".split(' ')[0]}",
+                      Text(
+                        "Date: ${"${selectedDate.toLocal()}".split(' ')[0]}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       ElevatedButton(
@@ -122,22 +123,20 @@ class _TourCreateViewState extends State<TourCreateView> {
                 child: Container(
                   padding: EdgeInsets.all(10),
                   child: Column(
-                    children: transitional_hotspots.map((hotspot){
+                    children: transitional_hotspots.map((hotspot) {
                       return Container(
                         child: Card(
                           child: ListTile(
                             title: Text(hotspot.name),
                             trailing: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.redAccent
-                              ),
+                                  primary: Colors.redAccent),
                               child: Icon(Icons.delete),
-                              onPressed: (){
-                                transitional_hotspots.removeWhere((element){
+                              onPressed: () {
+                                transitional_hotspots.removeWhere((element) {
                                   return element.name == hotspot.name;
                                 });
-                                setState(() {
-                                });
+                                setState(() {});
                               },
                             ),
                           ),
@@ -151,9 +150,9 @@ class _TourCreateViewState extends State<TourCreateView> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    transitional_hotspots.add(new Hotspot(await _picker.pickMultiImage()));
-                    setState(() {
-                    });
+                    transitional_hotspots
+                        .add(new Hotspot(await _picker.pickMultiImage()));
+                    setState(() {});
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -185,10 +184,8 @@ class _TourCreateViewState extends State<TourCreateView> {
                   const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-
                       // Creation of the tour object
-                      final url_add_tour =
-                          'http://127.0.0.1:8081/api/tour/add';
+                      final url_add_tour = 'http://127.0.0.1:8081/api/tour/add';
 
                       /* TODO: Uncomment this in prod
                       final response = await http.post(
@@ -295,9 +292,8 @@ class Hotspot {
   String name = "";
   List<XFile>? images = [];
 
-  Hotspot(images) {
+  Hotspot(this.images) {
     this.name = "location_" + hotspot_counter.toString();
     hotspot_counter++;
-    this.images = images;
   }
 }
