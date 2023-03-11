@@ -190,17 +190,18 @@ class _TourCreateViewState extends State<TourCreateView> {
                       final url_add_tour =
                           'http://127.0.0.1:8081/api/tour/add';
 
-                      /* TODO: Uncomment this in prod
+
                       final response = await http.post(
-                        Uri.parse(url),
+                        Uri.parse(url_add_tour),
                         headers: {'Content-Type': 'application/json'}
                       );
-                      
+
+                      /* TODO: Uncomment this in prod
                       if (response.statusCode == 200) {
                         // Send location data for each transitional hotspot
                         for (location in transitional_hotspots) {
                           final location_response = await http.post(
-                            Uri.parse("http://127.0.0.1:8081/api/tour/add/images/${response.name}"),
+                            Uri.parse("http://192.168.50.43:8081/api/tour/add/images/${response.name}"),
                             headers: {'Content-type': 'multipart/form-data'},
                             body: {
                               images: location.images
@@ -225,7 +226,7 @@ class _TourCreateViewState extends State<TourCreateView> {
                         }
                       // Compute tour
                       final tour_response = await http.get(
-                        Uri.parse("http://127.0.0.1:8081/api/compute-tour/${response.name}")
+                        Uri.parse("http://192.168.50.43:8081/api/compute-tour/${response.name}")
                       )
                       if (tour_response.statusCode == 200){
                         showDialog(
