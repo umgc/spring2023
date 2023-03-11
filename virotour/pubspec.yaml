@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.5
+  panorama: ^0.4.1
   webviewx: ^0.2.1
 
 dev_dependencies:

@@ -1,43 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:webviewx/webviewx.dart';
+import 'package:panorama/panorama.dart';
 
-/// Displays detailed information about a Tour.
 class TourDetailsView extends StatefulWidget {
-  const TourDetailsView({super.key});
+  const TourDetailsView({Key? key}) : super(key: key);
   static const routeName = '/tour';
 
   @override
-  State<TourDetailsView> createState() => _TourDetailsViewState();
+  _TourDetailsViewState createState() => _TourDetailsViewState();
 }
 
 class _TourDetailsViewState extends State<TourDetailsView> {
-  late WebViewXController webviewController;
+  late String _panoramaUrl;
+  late String _panoramaUrl2;
+
+  @override
+  void initState() {
+    super.initState();
+    _panoramaUrl = 'https://i.imgur.com/O9CBhdM.jpg';
+    _panoramaUrl2 = 'https://i.imgur.com/yrhSmSh.jpg';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-
-    final padding = MediaQuery.of(context).padding;
-    final safeHeight = height - padding.top - padding.bottom;
-    final safeWidth = width - padding.left - padding.right;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tour Details / Tour Name'),
       ),
-      body: WebViewX(
-        height: safeHeight,
-        width: safeWidth,
-        // TODO: replace URL with response from API call GET /tour/<tour_id>/
-        initialContent:
-            'https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true',
-        onPageStarted: (url) {
-          // This method is called when the WebView starts loading a new page
-          debugPrint('Page started loading: $url');
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            if (_panoramaUrl == _panoramaUrl2) {
+              _panoramaUrl = 'https://i.imgur.com/O9CBhdM.jpg';
+            } else {
+              _panoramaUrl = _panoramaUrl2;
+            }
+          });
         },
-        onWebViewCreated: (controller) {
-          webviewController = controller;
-        },
+        child: Panorama(
+          sensitivity: 2.0,
+          child: Image.network(_panoramaUrl),
+          hotspots: _panoramaUrl == _panoramaUrl2
+              ? [
+                  Hotspot(
+                    latitude: -190,
+                    longitude: -60,
+                    width: 60.0,
+                    height: 60.0,
+                    widget: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 235, 80, 80),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_downward),
+                        onPressed: () {
+                          setState(() {
+                            _panoramaUrl = 'https://i.imgur.com/O9CBhdM.jpg';
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ]
+              : [
+                  Hotspot(
+                    latitude: -170.0,
+                    longitude: 90.0,
+                    width: 60.0,
+                    height: 60.0,
+                    widget: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 235, 80, 80),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_downward),
+                        onPressed: () {
+                          setState(() {
+                            _panoramaUrl = _panoramaUrl2;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+        ),
       ),
     );
   }
