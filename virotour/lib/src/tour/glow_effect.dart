@@ -6,7 +6,6 @@ double lighting = 0;
 void main() {
   runApp(ViroTour());
 }
-
 class ViroTour extends StatefulWidget {
   ViroTour({Key? key}) : super(key: key);
 
