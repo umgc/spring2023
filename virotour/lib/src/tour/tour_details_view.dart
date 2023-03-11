@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webviewx/webviewx.dart';
 
+import '../settings/settings_view.dart';
+
 /// Displays detailed information about a Tour.
 class TourDetailsView extends StatefulWidget {
   const TourDetailsView({super.key});
@@ -24,6 +26,14 @@ class _TourDetailsViewState extends State<TourDetailsView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tour Details / Tour Name'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.restorablePushNamed(context, SettingsView.routeName);
+            },
+          ),
+        ],
       ),
       body: WebViewX(
         height: safeHeight,
