@@ -15,7 +15,7 @@ See: https://www.python.org/downloads/release/python-3112/
 ### Create Virtual Environment
 
 ```
-# Create and then change to this directory
+# Change to this directory
 cd flask
 
 # Create virtual environment called 'venv'
@@ -39,9 +39,6 @@ Note, if you get "cannot be loaded because its operation is blocked by software 
 policies, such as those created by using Group Policy."
 
 Then run ```Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process``` and try again
-
-### Pull down a current project and change to that directory
-cd .....virotour_local/flask/requirements.txt
 
 ### Install flask and dependencies
 
