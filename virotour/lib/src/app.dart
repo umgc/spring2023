@@ -3,6 +3,7 @@ import 'package:virotour/src/settings/settings_controller.dart';
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
+import 'package:virotour/src/tour/tour_create_view.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -46,6 +47,11 @@ class App extends StatelessWidget {
                   case TourDetailsView.routeName:
                     return const TourDetailsView();
                   case TourListView.routeName:
+                    return const TourListView(
+                        items: []
+                    );
+                  case TourCreateView.routeName:
+                    return const TourCreateView();
                   default:
                     return const TourListView(
                       items: [],

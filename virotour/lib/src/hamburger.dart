@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
+import 'package:virotour/src/tour/tour_create_view.dart';
 
 class Hamburger extends StatelessWidget {
   const Hamburger({super.key});
@@ -50,8 +51,7 @@ class Hamburger extends StatelessWidget {
     // Not entirely sure how to navigate the page tree. Tried to make the app into a materialApp to have named routes
     //but that didn't seem to work properly. Will figure this out later in the week.
     if (selected == 'Create Tour') {
-      showSnackBar('Should go to Create Tour Page', context);
-      //Navigator.restorablePushNamed(context, CreateTour.routeName);
+      Navigator.restorablePushNamed(context, TourCreateView.routeName);
     } else if (selected == 'Search') {
       showSnackBar('Should go to Search Page', context);
       //Navigator.restorablePushNamed(context, PublishTour.routeName);
