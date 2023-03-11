@@ -6,6 +6,7 @@ import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
+import 'package:virotour/src/hamburger.dart';
 
 class TourListView extends StatefulWidget {
   const TourListView({
@@ -63,11 +64,14 @@ class _TourListViewState extends State<TourListView> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tours'),
+        leading: Hamburger(),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
