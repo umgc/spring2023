@@ -8,7 +8,6 @@ void main() {
 }
 class ViroTour extends StatefulWidget {
   ViroTour({Key? key}) : super(key: key);
-
   @override
   SliderState createState() => SliderState();
 }
