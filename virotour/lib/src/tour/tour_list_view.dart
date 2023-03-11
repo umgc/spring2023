@@ -6,6 +6,7 @@ import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
+import 'package:virotour/src/hamburger.dart';
 
 class TourListView extends StatefulWidget {
   const TourListView({
@@ -31,8 +32,6 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
-    /* If you get _ClientSocketException (Connection refused) change from 
-    127.0.0.1 to your local server address (192.x.x.x) */
     final response =
         await http.get(Uri.parse('http://192.168.50.43:8081/api/tours'));
 
@@ -65,11 +64,14 @@ class _TourListViewState extends State<TourListView> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tours'),
+        leading: Hamburger(),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

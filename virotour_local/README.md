@@ -1,3 +1,5 @@
+# ViroTour Local Setup
+
 This folder is used for local testing. We use a Flask server to mock the API endpoints.
 
 ## Table of Contents
