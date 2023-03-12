@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:virotour/src/navbar/hamburger.dart';
-import 'package:virotour/src/tour/tour.dart';
-
-import '../settings/settings_view.dart';
 
 class HotspotSearchView extends StatefulWidget {
   const HotspotSearchView({
@@ -19,45 +15,56 @@ class HotspotSearchView extends StatefulWidget {
 }
 
 class _HotspotSearchViewState extends State<HotspotSearchView> {
-  late Future<List<Tour>> _searchResult;
-  final _searchTerm = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  List<String> _searchResults = [];
+
+  Future<List<String>> _fetchSearchResults(String query) async {
+    // Mock API call to fetch search results
+    await Future.delayed(const Duration(seconds: 1));
+
+    // In this example, we return a list of words that contain the search query
+    final List<String> words = ['museum', 'house', 'park', 'public places'];
+    return words.where((word) => word.contains(query)).toList();
+  }
+
+  void _onSearchQueryChanged(String query) {
+    if (query.isNotEmpty) {
+      _fetchSearchResults(query).then((results) {
+        setState(() {
+          _searchResults = results;
+        });
+      });
+    } else {
+      setState(() {
+        _searchResults = [];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Hotspots'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
-            },
-          ),
-        ],
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 16),
-            child: TextField(
-              controller: _searchTerm,
-              onChanged: (text) {
-                // addButton();
+        children: [
+          TextField(
+            controller: _searchController,
+            onChanged: _onSearchQueryChanged,
+            decoration: const InputDecoration(
+              hintText: 'Type to search for informational hotspots',
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _searchResults.length,
+              itemBuilder: (BuildContext context, int index) {
+                final result = _searchResults[index];
+                return ListTile(
+                  title: Text(result),
+                );
               },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                labelText: 'Enter a search term',
-                prefixIcon: Padding(
-                  padding:
-                      EdgeInsets.only(top: 0), // add padding to adjust icon
-                  child: Icon(Icons.search),
-                ),
-              ),
             ),
           ),
         ],
