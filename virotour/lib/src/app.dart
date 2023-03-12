@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:virotour/src/search/hotspot_search_view.dart';
 import 'package:virotour/src/settings/settings_controller.dart';
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
@@ -47,6 +48,10 @@ class App extends StatelessWidget {
                   case TourDetailsView.routeName:
                     return TourDetailsView(
                       tour: Tour(id: '', tourName: '', description: ''),
+                    );
+                  case HotspotSearchView.routeName:
+                    return const HotspotSearchView(
+                      items: [],
                     );
                   case TourListView.routeName:
                   default:
