@@ -15,7 +15,7 @@ def test_compute_tour(client):
 
     # Test get relative image path
     pano_image_path = get_panoramic_image(client, tour_name, 1)['server_file_path']
-    assert pano_image_path == 'panoramic_images/T_1_L_1_pano.jpg'
+    assert pano_image_path == 'panoramic_images/T_1_L_1_pano_blurred.jpg'
 
     # Test image exists and is openable
     pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)
@@ -41,7 +41,7 @@ def test_compute_tour(client):
     assert len(data['results']) == 2
     assert data['results'][0]['location_id'] == 2
     assert data['results'][1]['location_id'] == 2
-    assert data['results'][0]['text_content'] == '~LOWER LEVEL'
+    assert data['results'][0]['text_content'] == 'LOWER LEVEL'
     assert data['results'][1]['text_content'] == 'UPPER LEVEL'
 
     data = get_search_results(client, tour_name, 'Should find nothing!')
