@@ -33,7 +33,7 @@ class _TourListViewState extends State<TourListView> {
 
   static Future<List<Tour>> fetchData() async {
     final response =
-        await http.get(Uri.parse('http://127.0.0.1:8081/api/tours'));
+        await http.get(Uri.parse('http://192.168.1.180:8081/api/tours'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -63,8 +63,6 @@ class _TourListViewState extends State<TourListView> {
       throw Exception("Failed to load tour data!");
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
