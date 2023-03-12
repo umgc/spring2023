@@ -16,27 +16,47 @@ class HotspotSearchView extends StatefulWidget {
 
 class _HotspotSearchViewState extends State<HotspotSearchView> {
   final TextEditingController _searchController = TextEditingController();
-  List<String> _searchResults = [];
+  List<Map<String, String>>? _searchResults;
 
-  Future<List<String>> _fetchSearchResults(String query) async {
+  List<Map<String, String>>? _fetchSearchResults(String query) {
     // Mock API call to fetch search results
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
 
     // In this example, we return a list of words that contain the search query
-    final List<String> words = ['museum', 'house', 'park', 'public places'];
-    return words.where((word) => word.contains(query)).toList();
+    final List<Map<String, List<Map<String, String>>>> items = [
+      {
+        "painting": [
+          {"description": "Painting 1", "url": "URL to painting 1"}
+        ]
+      },
+      {
+        "vase": [
+          {"description": "Vase 1", "url": "URL to vase 1"},
+          {"description": "Vase 2", "url": "URL to vase 2"}
+        ]
+      },
+      {"sculpture": []},
+    ];
+
+    final matchedItem = items.firstWhere(
+      (item) => item.containsKey(query),
+      orElse: () => {},
+    );
+    if (matchedItem.isEmpty) {
+      return null;
+    }
+    final results = matchedItem[query] as List<Map<String, String>>?;
+    return results;
   }
 
   void _onSearchQueryChanged(String query) {
     if (query.isNotEmpty) {
-      _fetchSearchResults(query).then((results) {
-        setState(() {
-          _searchResults = results;
-        });
+      setState(() {
+        _searchResults = _fetchSearchResults(query);
       });
     } else {
       setState(() {
-        _searchResults = [];
+        _searchResults = null;
       });
     }
   }
@@ -58,11 +78,30 @@ class _HotspotSearchViewState extends State<HotspotSearchView> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _searchResults.length,
+              itemCount: _searchResults?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
-                final result = _searchResults[index];
+                final result = _searchResults?[index];
                 return ListTile(
-                  title: Text(result),
+                  title: Text(result?['description'] ?? ''),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Alert'),
+                          content: Text("This should go to: ${result!['url']}"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 );
               },
             ),
