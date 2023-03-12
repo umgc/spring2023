@@ -19,6 +19,7 @@ def test_image_blur_faces_main():
     # Arrange
     # Act
     # Assert
+    return None
 
 def test_getPathToDetectorFile():
     # Arrange
@@ -54,7 +55,7 @@ def test_grayscaleImage():
 def test_detectFaces():
     # Arrange
     expectedFacesDetected = 2
-    image = get_image_path("../images/input_images/face_blur/messi.png")
+    image = get_image_path("input_images/face_blur/messi.png")
     greyImage = image_blur_faces.grayscaleImage(image)
     detector = cv2.CascadeClassifier("../../api/compute/blur_faces_util/haarcascade_frontalface_default.xml")
     # Act
@@ -74,7 +75,7 @@ def getFacesDetectedLength():
 
 def blurFaces():
     # Arrange
-    originalImage = get_image_path("../images/input_images/face_blur/messi.png")
+    originalImage = get_image_path("input_images/face_blur/messi.png")
     greyImage = image_blur_faces.grayscaleImage(originalImage)
     detector = cv2.CascadeClassifier("../../api/compute/blur_faces_util/haarcascade_frontalface_default.xml")
     faces = image_blur_faces.detectFaces(greyImage, detector)
