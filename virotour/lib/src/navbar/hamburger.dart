@@ -16,7 +16,7 @@ class Hamburger extends StatelessWidget {
           child: Row(
             children: const <Widget>[
               Icon(Icons.list, color: Colors.white),
-              Text('  View Tours', style: TextStyle(color: Colors.white))
+              Text('View Tours', style: TextStyle(color: Colors.white))
             ],
           ),
         ),
@@ -26,18 +26,31 @@ class Hamburger extends StatelessWidget {
           child: Row(
             children: const <Widget>[
               Icon(Icons.add, color: Colors.white),
-              Text('  Create Tour', style: TextStyle(color: Colors.white))
+              Text('Create Tour', style: TextStyle(color: Colors.white))
             ],
           ),
         ),
         const PopupMenuDivider(height: 2),
         PopupMenuItem<String>(
-          value: 'Search',
+          value: 'Search Tours',
           child: Row(
             children: const <Widget>[
               Icon(Icons.search, color: Colors.white),
               Text(
-                '  Search',
+                'Search Tours',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+        ),
+        const PopupMenuDivider(height: 2),
+        PopupMenuItem<String>(
+          value: 'Search Hotspots',
+          child: Row(
+            children: const <Widget>[
+              Icon(Icons.image_search, color: Colors.white),
+              Text(
+                'Search Hotspots',
                 style: TextStyle(color: Colors.white),
               )
             ],
@@ -52,9 +65,11 @@ class Hamburger extends StatelessWidget {
     if (selected == 'Create Tour') {
       showSnackBar('Should go to Create Tour Page', context);
       //Navigator.restorablePushNamed(context, CreateTour.routeName);
-    } else if (selected == 'Search') {
-      showSnackBar('Should go to Search Page', context);
-      //Navigator.restorablePushNamed(context, PublishTour.routeName);
+    } else if (selected == 'Search Tours') {
+      showSnackBar('Should go to Search Tours Page', context);
+    } else if (selected == 'Search Hotspots') {
+      showSnackBar('Should go to Search Hotspots Page', context);
+      // Navigator.restorablePushNamed(context, SearchHotspotsView.routeName);
     } else if (selected == 'View Tours') {
       Navigator.restorablePushNamed(context, TourListView.routeName);
     } else {
