@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:virotour/src/search.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
+
+import '../search/hotspot_search_view.dart';
 
 class Hamburger extends StatelessWidget {
   const Hamburger({super.key});
 
-  Future<void> _showPopupMenu(BuildContext context) async {
+  void _showPopupMenu(BuildContext context) async {
     String? selected = await showMenu(
       context: context,
       color: Colors.blue,
@@ -16,7 +19,7 @@ class Hamburger extends StatelessWidget {
           child: Row(
             children: const <Widget>[
               Icon(Icons.list, color: Colors.white),
-              Text('  View Tours', style: TextStyle(color: Colors.white))
+              Text('View Tours', style: TextStyle(color: Colors.white))
             ],
           ),
         ),
@@ -26,18 +29,31 @@ class Hamburger extends StatelessWidget {
           child: Row(
             children: const <Widget>[
               Icon(Icons.add, color: Colors.white),
-              Text('  Create Tour', style: TextStyle(color: Colors.white))
+              Text('Create Tour', style: TextStyle(color: Colors.white))
             ],
           ),
         ),
         const PopupMenuDivider(height: 2),
         PopupMenuItem<String>(
-          value: 'Search',
+          value: 'Search Tours',
           child: Row(
             children: const <Widget>[
               Icon(Icons.search, color: Colors.white),
               Text(
-                '  Search',
+                'Search Tours',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+        ),
+        const PopupMenuDivider(height: 2),
+        PopupMenuItem<String>(
+          value: 'Search Hotspots',
+          child: Row(
+            children: const <Widget>[
+              Icon(Icons.image_search, color: Colors.white),
+              Text(
+                'Search Hotspots',
                 style: TextStyle(color: Colors.white),
               )
             ],
@@ -47,14 +63,17 @@ class Hamburger extends StatelessWidget {
       elevation: 8.0,
     );
 
-    // Not entirely sure how to navigate the page tree. Tried to make the app into a materialApp to have named routes
-    //but that didn't seem to work properly. Will figure this out later in the week.
     if (selected == 'Create Tour') {
       showSnackBar('Should go to Create Tour Page', context);
       //Navigator.restorablePushNamed(context, CreateTour.routeName);
-    } else if (selected == 'Search') {
-      showSnackBar('Should go to Search Page', context);
-      //Navigator.restorablePushNamed(context, PublishTour.routeName);
+    } else if (selected == 'Search Tours') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SearchPage()),
+      );
+    } else if (selected == 'Search Hotspots') {
+      // showSnackBar('Should go to Search Hotspots Page', context);
+      Navigator.restorablePushNamed(context, HotspotSearchView.routeName);
     } else if (selected == 'View Tours') {
       Navigator.restorablePushNamed(context, TourListView.routeName);
     } else {
