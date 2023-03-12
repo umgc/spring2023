@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:virotour/src/settings/settings_controller.dart';
 import 'package:virotour/src/settings/settings_view.dart';
+import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
 
@@ -44,7 +45,9 @@ class App extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case TourDetailsView.routeName:
-                    return const TourDetailsView();
+                    return TourDetailsView(
+                      tour: Tour(id: '', tourName: '', description: ''),
+                    );
                   case TourListView.routeName:
                   default:
                     return const TourListView(
