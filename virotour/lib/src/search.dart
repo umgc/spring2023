@@ -23,22 +23,36 @@ class _SearchPageState extends State<SearchPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-      final dataLength = data["tours"].length;
-
       final tours = data['tours'] as List<dynamic>;
 
       setState(() {
         items = tours.map((tour) => tour as Map<String, dynamic>).toList();
       });
+
+      if (items.isEmpty) {
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('No Tours'),
+            content: const Text('There are currently no tours to search for.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     } else {
-      throw Exception("Failed to load tour data!");
+      throw Exception('Failed to load tour data!');
     }
   }
 
   void searchData() {
     setState(() {
       filteredItems = [];
-      for (var item in items) {
+      for (final item in items) {
         String itemName = item['name'].toString().toLowerCase();
         String itemDescription = item['description'].toString().toLowerCase();
         String searchQueryLower = searchQuery.toLowerCase();
