@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:virotour/src/search.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
 
 class Hamburger extends StatelessWidget {
   const Hamburger({super.key});
 
-  Future<void> _showPopupMenu(BuildContext context) async {
+  void _showPopupMenu(BuildContext context) async {
     String? selected = await showMenu(
       context: context,
       color: Colors.blue,
@@ -47,14 +48,15 @@ class Hamburger extends StatelessWidget {
       elevation: 8.0,
     );
 
-    // Not entirely sure how to navigate the page tree. Tried to make the app into a materialApp to have named routes
-    //but that didn't seem to work properly. Will figure this out later in the week.
     if (selected == 'Create Tour') {
       showSnackBar('Should go to Create Tour Page', context);
       //Navigator.restorablePushNamed(context, CreateTour.routeName);
     } else if (selected == 'Search') {
-      showSnackBar('Should go to Search Page', context);
-      //Navigator.restorablePushNamed(context, PublishTour.routeName);
+      // Navigate to the search page here
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SearchPage()),
+      );
     } else if (selected == 'View Tours') {
       Navigator.restorablePushNamed(context, TourListView.routeName);
     } else {
