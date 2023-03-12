@@ -1,0 +1,23 @@
+fragment panoFragment on PanoramicImageLocation{
+  id
+  skybox {
+    id
+    status
+    format
+    children
+  }
+}
+
+query getSweeps($modelId: ID!){
+    model(id: $modelId) {
+      locations {
+        id        
+        position { x, y, z }
+        neighbors
+        panos { ...panoFragment }
+        # model { id }
+        floor { id }
+        room { id }
+    }
+  }
+}
