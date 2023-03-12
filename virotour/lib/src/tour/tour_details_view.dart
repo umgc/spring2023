@@ -19,35 +19,14 @@ class TourDetailsView extends StatefulWidget {
 class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
 
-  Future<List<Tour>> getTourInfo() async {
+  Future<Tour> getTourInfo() async {
     final response = await http
         .get(Uri.parse('http://192.168.1.180:8081/api/tour/${widget.tour.id}'));
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      print('where is $data');
-      final dataLength = data["tours"].length;
-
-      // If response is empty, create text that no tours are found
-      if (dataLength == 0) {
-        return [
-          Tour(
-            id: '0',
-            tourName: 'No tours found!',
-            description: '',
-          )
-        ];
-      }
-
-      final tours = data['tours'] as List<dynamic>;
-
-      return tours
-          .map((tour) => Tour(
-                id: tour['id'].toString(),
-                tourName: tour['name'].toString(),
-                description: tour['description'].toString(),
-              ))
-          .toList();
+      final Tour tour = jsonDecode(response.body) as Tour;
+      print('where is $tour');
+      return tour;
     } else {
       throw Exception("Failed to load tour data!");
     }
@@ -62,8 +41,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
     final safeHeight = height - padding.top - padding.bottom;
     final safeWidth = width - padding.left - padding.right;
 
-    // final tourInfo = getTourInfo();
-    // print('Got this tour: $tourInfo');
+    // TODO: Mock returned object from GET /tour/<tour_id>
     const Map<String, dynamic> mockTourInfo = <String, dynamic>{
       "tour_id": "tour_1",
       "start_location": "location_1",
