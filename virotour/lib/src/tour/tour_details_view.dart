@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webviewx/webviewx.dart';
 
-/// Displays detailed information about a Tour.
 class TourDetailsView extends StatefulWidget {
   const TourDetailsView({super.key});
   static const routeName = '/tour';
@@ -13,6 +12,8 @@ class TourDetailsView extends StatefulWidget {
 class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
 
+  static const tourHtml = "<h2> Hello, world! </h2>";
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -21,23 +22,26 @@ class _TourDetailsViewState extends State<TourDetailsView> {
     final padding = MediaQuery.of(context).padding;
     final safeHeight = height - padding.top - padding.bottom;
     final safeWidth = width - padding.left - padding.right;
+
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final tourId = arguments['id'] as String;
+    final tourName = arguments['name'] as String;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tour Details / Tour Name'),
+        title: Text(tourName),
       ),
       body: WebViewX(
         height: safeHeight,
         width: safeWidth,
-        // TODO: replace URL with response from API call GET /tour/<tour_id>/
-        initialContent:
-            'https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true',
+        initialContent: tourHtml,
         onPageStarted: (url) {
-          // This method is called when the WebView starts loading a new page
           debugPrint('Page started loading: $url');
         },
-        onWebViewCreated: (controller) {
-          webviewController = controller;
-        },
+        onWebResourceError: (error) {
+          debugPrint('WebViewX error: ${error.description}');
+        }, // Set the background color
       ),
     );
   }
