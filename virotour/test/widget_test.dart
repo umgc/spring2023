@@ -8,7 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:virotour/main.dart';
+import 'package:virotour/src/app.dart';
+import 'package:virotour/src/settings/settings_controller.dart';
+import 'package:virotour/src/settings/settings_service.dart';
 
 void main() {
  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
