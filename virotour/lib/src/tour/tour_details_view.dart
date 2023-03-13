@@ -12,6 +12,32 @@ class TourDetailsView extends StatefulWidget {
 class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
 
+  static const images = "https://i.imgur.com/O9CBhdM.jpg";
+
+  static const hotSpots = """
+    "hotSpots": [
+      {
+          "pitch": 5.0,
+          "yaw": 40,
+          "type": "info",
+          "text": "Corsair Fighter Plane",
+          "URL": "https://en.wikipedia.org/wiki/Vought_F4U_Corsair"
+      },
+      {
+          "pitch": -12,
+          "yaw": 222,
+          "type": "info",
+          "text": "Walkway"
+      },
+      {
+          "pitch": 30,
+          "yaw": 180,
+          "type": "info",
+          "text": "Biplane with tag N22E"
+      }
+    ] 
+  """;
+
   static const tourHtml = """
     <!DOCTYPE HTML>
     <html>
@@ -24,12 +50,12 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         <style>
         #panorama {
               position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              width: 100%;
+              height: 100%;
         }
         </style>
     </head>
@@ -39,7 +65,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
     <script>
     pannellum.viewer('panorama', {
         "type": "equirectangular",
-        "panorama": "https://i.imgur.com/O9CBhdM.jpg",
+        "panorama": "$images",
         "autoLoad": true,
         /*
         * Uncomment the next line to print the coordinates of mouse clicks
@@ -48,27 +74,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         * finished, though.
         */
         //"hotSpotDebug": true,
-        "hotSpots": [
-            {
-                "pitch": 5.0,
-                "yaw": 40,
-                "type": "info",
-                "text": "Corsair Fighter Plane",
-                "URL": "https://en.wikipedia.org/wiki/Vought_F4U_Corsair"
-            },
-            {
-                "pitch": -12,
-                "yaw": 222,
-                "type": "info",
-                "text": "Walkway"
-            },
-            {
-                "pitch": 30,
-                "yaw": 180,
-                "type": "info",
-                "text": "Biplane with tag N22E"
-            }
-        ]
+        $hotSpots
     });
     </script>
 
