@@ -12,7 +12,69 @@ class TourDetailsView extends StatefulWidget {
 class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
 
-  static const tourHtml = "<h2> Hello, world! </h2>";
+  static const tourHtml = """
+    <!DOCTYPE HTML>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hot spots</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+        <style>
+        #panorama {
+              position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+        }
+        </style>
+    </head>
+    <body>
+
+    <div id="panorama"></div>
+    <script>
+    pannellum.viewer('panorama', {
+        "type": "equirectangular",
+        "panorama": "https://i.imgur.com/O9CBhdM.jpg",
+        "autoLoad": true,
+        /*
+        * Uncomment the next line to print the coordinates of mouse clicks
+        * to the browser's developer console, which makes it much easier
+        * to figure out where to place hot spots. Always remove it when
+        * finished, though.
+        */
+        //"hotSpotDebug": true,
+        "hotSpots": [
+            {
+                "pitch": 5.0,
+                "yaw": 40,
+                "type": "info",
+                "text": "Corsair Fighter Plane",
+                "URL": "https://en.wikipedia.org/wiki/Vought_F4U_Corsair"
+            },
+            {
+                "pitch": -12,
+                "yaw": 222,
+                "type": "info",
+                "text": "Walkway"
+            },
+            {
+                "pitch": 30,
+                "yaw": 180,
+                "type": "info",
+                "text": "Biplane with tag N22E"
+            }
+        ]
+    });
+    </script>
+
+    </body>
+    </html>
+  """;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +98,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
         height: safeHeight,
         width: safeWidth,
         initialContent: tourHtml,
+        initialSourceType: SourceType.html,
         onPageStarted: (url) {
           debugPrint('Page started loading: $url');
         },
