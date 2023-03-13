@@ -12,10 +12,18 @@ class TourDetailsView extends StatefulWidget {
 class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
 
-  static const images = "https://i.imgur.com/O9CBhdM.jpg";
+  static const image1 = "https://i.imgur.com/O9CBhdM.jpg";
+  static const image2 = "https://i.imgur.com/yrhSmSh.jpg";
 
-  static const hotSpots = """
+  static const hotSpots1 = """
     "hotSpots": [
+      {
+          "pitch": 0,
+          "yaw": 250,
+          "type": "scene",
+          "text": "Second Location",
+          "sceneId": "second"
+      },
       {
           "pitch": 5.0,
           "yaw": 40,
@@ -35,52 +43,80 @@ class _TourDetailsViewState extends State<TourDetailsView> {
           "type": "info",
           "text": "Biplane with tag N22E"
       }
-    ] 
+    ]
+  """;
+  static const hotSpot2 = """
+  "hotSpots": [
+    {
+        "pitch": 12,
+        "yaw": 115,
+        "type": "scene",
+        "text": "First Location",
+        "sceneId": "entrance",
+        "targetYaw": -23,
+        "targetPitch": 2
+    }
+  ]
   """;
 
   static const tourHtml = """
-    <!DOCTYPE HTML>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Hot spots</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-        <style>
-        #panorama {
-              position: absolute;
-              top: 0;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              width: 100%;
-              height: 100%;
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style>
+    #panorama {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+</head>
+<body>
+
+<div id="panorama"></div>
+<script>
+pannellum.viewer('panorama', {
+  "autoLoad": true,   
+    "default": {
+        "firstScene": "entrance",
+        "sceneFadeDuration": 1000
+    },
+
+    "scenes": {
+        "entrance": {
+            "title": "Main entrance",
+            "hfov": 180,
+            "pitch": 0,
+            "yaw": 0,
+            "type": "equirectangular",
+            "panorama": "$image1",
+            $hotSpots1
+        },
+
+        "second": {
+            "title": "Second location",
+            "hfov": 180,
+            "yaw": 0,
+            "type": "equirectangular",
+            "panorama": "$image2",
+            $hotSpot2
         }
-        </style>
-    </head>
-    <body>
+    }
+});
+</script>
 
-    <div id="panorama"></div>
-    <script>
-    pannellum.viewer('panorama', {
-        "type": "equirectangular",
-        "panorama": "$images",
-        "autoLoad": true,
-        /*
-        * Uncomment the next line to print the coordinates of mouse clicks
-        * to the browser's developer console, which makes it much easier
-        * to figure out where to place hot spots. Always remove it when
-        * finished, though.
-        */
-        //"hotSpotDebug": true,
-        $hotSpots
-    });
-    </script>
-
-    </body>
-    </html>
-  """;
+</body>
+</html>
+""";
 
   @override
   Widget build(BuildContext context) {
