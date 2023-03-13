@@ -78,3 +78,16 @@ pytest app/integration_tests
 ```
 
 Navigate to `/apidocs/` to access the documentation.
+
+## Troubleshooting the environment
+
+If you are having trouble with the environment, here is how to wipe everything in Anaconda and start over
+```
+git pull
+conda deactivate py39
+conda remove env -n py39 --all
+conda install --revision 0
+conda create -n py39 python=3.9.16
+conda activate py39
+pip install -r .\requirements.txt --no-cache-dir --user --force-reinstall
+```
