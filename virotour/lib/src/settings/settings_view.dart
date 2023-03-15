@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'settings_controller.dart';
+import 'package:virotour/src/settings/settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -16,9 +15,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         // Glue the SettingsController to the theme selection DropdownButton.
