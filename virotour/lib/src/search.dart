@@ -1,10 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key});
+  const SearchPage({super.key});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -13,7 +15,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String searchQuery = "";
   List<Map<String, dynamic>> items = [];
-  List<dynamic> filteredItems = [];
+  List<Tour> filteredItems = [];
 
   final _searchController = TextEditingController();
 
@@ -27,6 +29,7 @@ class _SearchPageState extends State<SearchPage> {
 
       setState(() {
         items = tours.map((tour) => tour as Map<String, dynamic>).toList();
+        print(items);
       });
 
       if (items.isEmpty) {
@@ -58,7 +61,13 @@ class _SearchPageState extends State<SearchPage> {
         String searchQueryLower = searchQuery.toLowerCase();
         if (itemName.contains(searchQueryLower) ||
             itemDescription.contains(searchQueryLower)) {
-          filteredItems.add(item);
+          Tour tour = Tour(
+            id: item['id']
+                .toString(), // Add .toString() to ensure it's a string
+            tourName: item['name'] as String,
+            description: item['description'] as String,
+          );
+          filteredItems.add(tour);
         }
       }
     });
@@ -82,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search'),
+        title: const Text('Search Tours'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -123,7 +132,8 @@ class _SearchPageState extends State<SearchPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const TourDetailsView(),
+                              builder: (context) =>
+                                  TourDetailsView(tour: filteredItems[index]),
                             ),
                           );
                         },
@@ -132,15 +142,14 @@ class _SearchPageState extends State<SearchPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const TourDetailsView(),
+                                builder: (context) =>
+                                    TourDetailsView(tour: filteredItems[index]),
                               ),
                             );
                           },
                           child: ListTile(
-                            title: Text(filteredItems[index]['name'] as String),
-                            subtitle: Text(
-                              filteredItems[index]['description'] as String,
-                            ),
+                            title: Text(filteredItems[index].tourName),
+                            subtitle: Text(filteredItems[index].description),
                           ),
                         ),
                       ),
