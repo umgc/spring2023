@@ -3,7 +3,11 @@ import os
 from PIL import Image
 from app import app
 from app.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image, \
+<<<<<<< HEAD
     get_raw_images, get_search_results, get_tour_locations
+=======
+    get_raw_images, get_search_results, get_tour_locations, get_panoramic_image_file
+>>>>>>> development
 
 
 def test_compute_tour(client):
@@ -15,7 +19,18 @@ def test_compute_tour(client):
 
     # Test get relative image path
     pano_image_path = get_panoramic_image(client, tour_name, 1)['server_file_path']
+<<<<<<< HEAD
     assert pano_image_path == 'panoramic_images/T_1_L_1_pano.jpg'
+=======
+    assert pano_image_path == 'panoramic_images/T_1_L_1_pano_blurred.jpg'
+
+    # Test data sent by Flask's send_file()
+    response = get_panoramic_image_file(client, tour_name, 1)
+    # Validate response Content-Disposition
+    assert response.headers._list[0][1] == 'inline; filename=T_1_L_1_pano_blurred.jpg'
+    # Validate response Content-Length
+    assert response.headers._list[2][1] >= '113380'
+>>>>>>> development
 
     # Test image exists and is openable
     pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)
@@ -41,11 +56,19 @@ def test_compute_tour(client):
     assert len(data['results']) == 2
     assert data['results'][0]['location_id'] == 2
     assert data['results'][1]['location_id'] == 2
+<<<<<<< HEAD
     assert data['results'][0]['text_content'] == '~LOWER LEVEL'
+=======
+    assert data['results'][0]['text_content'] == 'LOWER LEVEL'
+>>>>>>> development
     assert data['results'][1]['text_content'] == 'UPPER LEVEL'
 
     data = get_search_results(client, tour_name, 'Should find nothing!')
     assert len(data['results']) == 0
 
     data = get_tour_locations(client, tour_name)
+<<<<<<< HEAD
     assert data['results'] == [1, 2]
+=======
+    assert data['results'] == [1, 2]
+>>>>>>> development

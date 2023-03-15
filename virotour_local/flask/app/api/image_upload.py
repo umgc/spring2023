@@ -1,6 +1,6 @@
 import os
 
-from flask import request, flash, redirect, jsonify
+from flask import request, flash, redirect, jsonify, send_file
 
 from app import app, db
 from app.models import Tour, Location, Image
@@ -149,3 +149,18 @@ def api_get_panoramic_image(tour_name, location_id):
         'server_file_path': pano_image
     }
     return jsonify(payload), 200
+
+
+@app.route('/api/tour/images/panoramic-image-file/<string:tour_name>/<int:location_id>', methods=['GET'])
+def api_get_panoramic_image_file(tour_name, location_id):
+    try:
+        # Get Tour
+        tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+        # Get Location
+        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                     (Location.location_id == location_id)).first()
+        pano_image_file = api_upload_resolve_path(location.pano_file_path)
+
+        return send_file(pano_image_file)
+    except Exception as e:
+        return str(e)
