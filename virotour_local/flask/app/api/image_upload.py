@@ -22,11 +22,11 @@ def api_add_tour_images(tour_name):
         if not request.files:
             flash('No file part')
             app.logger.error(f'Could not find images')
+            app.logger.info(request)
             return redirect(request.url)
 
-        app.logger.info(request.files)
         files = request.files.to_dict()
-        app.logger.info(f"files to process: {files}")
+        app.logger.info(f"Uploading images as a new location: {files}")
         result = {}
 
         tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
@@ -122,6 +122,18 @@ def api_set_panoramic_image(tour_name, location_id, path):
     return None
 
 
+def api_set_neighbors(tour_name, location_id, neighbors):
+    """This is an internal call, so there is not a user-facing route."""
+    # # Get Tour
+    # tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # # Get Location
+    # location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+    #                                              (Location.location_id == location_id)).first()
+    # location.pano_file_path = path
+    # db.session.commit()
+    return None
+
+
 @app.route('/api/tour/images/panoramic-image/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_panoramic_image(tour_name, location_id):
     """
@@ -148,6 +160,32 @@ def api_get_panoramic_image(tour_name, location_id):
     payload = {
         'server_file_path': pano_image
     }
+    return jsonify(payload), 200
+
+
+@app.route('/api/tour/images/panoramic-images/<string:tour_name>', methods=['GET'])
+def api_get_panoramic_images(tour_name):
+    """
+        After you've computed the tour, you can retrieve all panoramic images.
+        ---
+        parameters:
+          - in: path
+            name: tour_name
+            type: string
+            required: true
+            description: Name of the tour
+    """
+    # Get Tour
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # Get Location
+    locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
+
+    pano_images = [location.pano_file_path for location in locations]
+
+    payload = {
+        'server_file_paths': pano_images
+    }
+
     return jsonify(payload), 200
 
 

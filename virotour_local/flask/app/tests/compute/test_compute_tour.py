@@ -3,7 +3,7 @@ import os
 from PIL import Image
 from app import app
 from app.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image, \
-    get_raw_images, get_search_results, get_tour_locations, get_panoramic_image_file
+    get_raw_images, get_search_results, get_tour_locations, get_panoramic_image_file, get_image_path
 
 
 def test_compute_tour(client):
@@ -56,3 +56,13 @@ def test_compute_tour(client):
 
     data = get_tour_locations(client, tour_name)
     assert data['results'] == [1, 2]
+
+
+def test_compute_tour_full(client):
+    tour_name = "sample-tour"
+    add_tour(client, tour_name, "")
+
+    for location_path in os.listdir(get_image_path('input_images/sample_tour/')):
+        upload_images(client, tour_name, get_image_paths(f'input_images/sample_tour/{location_path}'))
+
+    compute_tour(client, tour_name)

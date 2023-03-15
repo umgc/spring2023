@@ -39,7 +39,7 @@ def compute_extracted_text_list(image_url):
                 "position": {"x": averagePositionX, "y": averagePositionY, "z": 0},
                 "content": textObj[1]
             }
-            print(currentExtractedTextObj)
+            app.logger.info(currentExtractedTextObj)
             listOfExtractedTexts.append(currentExtractedTextObj)
 
     return listOfExtractedTexts

@@ -57,7 +57,7 @@ def detect_brightness(image_path):
         # Calculate mean brightness as percentage
         mean_percent = np.mean(img) * 100 / 255
         classification = "dark" if mean_percent < 49 else "light"
-        print(f'{filename}: {classification} ({mean_percent:.1f}%)')
+        app.logger.info(f'{filename}: {classification} ({mean_percent:.1f}%)')
         return classification
     except:
         FileNotFoundError
