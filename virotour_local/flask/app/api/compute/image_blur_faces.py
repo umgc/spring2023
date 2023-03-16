@@ -37,11 +37,9 @@ def loadFaceDetector(pathToDetector):
     detector = cv2.CascadeClassifier(pathToDetector)
     return detector
 
-
 def grayscaleImage(image):
     grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return grayImage
-
 
 def detectFaces(grayImage, detector):
     faces = detector.detectMultiScale(grayImage,
@@ -50,7 +48,6 @@ def detectFaces(grayImage, detector):
                                       minSize=(30, 30),
                                       flags=cv2.CASCADE_SCALE_IMAGE)
     return faces
-
 
 def getFacesDetectedLength(faces):
     facesDetected = len(faces)

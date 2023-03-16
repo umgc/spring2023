@@ -70,3 +70,6 @@ if __name__ == '__main__':
 
     # command line example
     # python3 stitch.py sp1.jpg sp2.jpg sp3.jpg sp4.jpg sp5.jpg sp6.jpg --warp spherical --features orb --matcher homography --estimator homography --match_conf 0.3 --conf_thresh 0.3 --ba ray --ba_refine_mask xxxxx --wave_correct horiz --warp compressedPlaneA2B1 --blend multiband --expos_comp channels_blocks --seam gc_colorgrad
+
+    # command line example
+    #python3 stitch.py sp1.jpg sp2.jpg sp3.jpg sp4.jpg sp5.jpg sp6.jpg --warp spherical --features orb --matcher homography --estimator homography --match_conf 0.3 --conf_thresh 0.3 --ba ray --ba_refine_mask xxxxx --wave_correct horiz --warp compressedPlaneA2B1 --blend multiband --expos_comp channels_blocks --seam gc_colorgrad

@@ -79,8 +79,6 @@ pytest app/integration_tests
 
 Navigate to `/apidocs/` to access the documentation.
 
-## Troubleshooting the environment
-
 If you are having trouble with the environment, here is how to wipe everything in Anaconda and start over
 ```
 git pull

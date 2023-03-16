@@ -6,7 +6,6 @@ from app.tests.common_utils import add_tour, upload_images, get_image_path
 
 import cv2
 
-
 def test_image_blur_faces(client):
     tour_name = "Tour 1"
     add_tour(client, tour_name, "Tour Description Example")
