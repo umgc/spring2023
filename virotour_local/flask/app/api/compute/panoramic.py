@@ -2,11 +2,8 @@ import os
 
 from app import app
 from app.api.compute.pano_util import stitch
-from app.api.image_upload import api_get_tour_images, api_get_panoramic_image
+from app.api.image_upload import api_get_tour_images
 from app.api.tour import api_get_tour_by_name
-from app.tests.common_utils import set_panoramic_image_with_resp
-from flask import redirect, url_for
-from setuptools.namespaces import flatten
 
 
 def compute_panoramic(tour_name, location_id):
@@ -24,6 +21,5 @@ def compute_panoramic(tour_name, location_id):
             for inner_element in element:
                 flatlist.append(inner_element)
     app.logger.info(f'Input to panoramic compute: {flatlist}')
-    stitch.main(flatlist)
 
-    return target_file
+    return stitch.main(flatlist)

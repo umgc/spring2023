@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:virotour/src/tour/tour.dart';
 
-
 int hotspot_counter = 0;
 
 class TourCreateView extends StatefulWidget {
@@ -105,7 +104,8 @@ class _TourCreateViewState extends State<TourCreateView> {
                               child: Icon(Icons.delete),
                               onPressed: () {
                                 transitional_hotspots.removeWhere((element) {
-                                  return element.file_names == hotspot.file_names;
+                                  return element.file_names ==
+                                      hotspot.file_names;
                                 });
                                 setState(() {});
                               },
@@ -125,15 +125,14 @@ class _TourCreateViewState extends State<TourCreateView> {
                     final images = await _picker.pickMultiImage();
                     for (XFile xf in images) {
                       if (kIsWeb) {
-                        tmpImages.addAll({Image.network(xf.path): File(xf.path)});
-                      }
-                      else {
-                        tmpImages.addAll({Image.file(File(xf.path)): File(xf.path)});
+                        tmpImages
+                            .addAll({Image.network(xf.path): File(xf.path)});
+                      } else {
+                        tmpImages
+                            .addAll({Image.file(File(xf.path)): File(xf.path)});
                       }
                     }
-                    transitional_hotspots.add(
-                        new Hotspot(tmpImages)
-                    );
+                    transitional_hotspots.add(new Hotspot(tmpImages));
                     setState(() {});
                   },
                   child: Row(
@@ -166,12 +165,14 @@ class _TourCreateViewState extends State<TourCreateView> {
                   const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      if (_nameController.text == "" || _descriptionController.text == "") {
+                      if (_nameController.text == "" ||
+                          _descriptionController.text == "") {
                         _showRequiredFields(context);
                         return;
                       }
                       // Creation of the tour object
-                      final url_add_tour = 'http://192.168.50.43:8081/api/tour/add';
+                      final url_add_tour =
+                          'http://192.168.50.43:8081/api/tour/add';
                       final url_add_tour_body = {
                         'name': _nameController.text,
                         'description': _descriptionController.text,
@@ -182,24 +183,21 @@ class _TourCreateViewState extends State<TourCreateView> {
                         headers: {'Content-Type': 'application/json'},
                         body: json.encode(url_add_tour_body),
                       );
-                      if (response.statusCode == 200 || response.statusCode == 201) {
+                      if (response.statusCode == 200 ||
+                          response.statusCode == 201) {
                         // Send location data for each transitional hotspot
 
                         for (Hotspot location in transitional_hotspots) {
                           var location_request = http.MultipartRequest(
-                            'POST',
-                            Uri.parse("http://192.168.50.43:8081/api/tour/add/images/${_nameController.text}")
-                          );
+                              'POST',
+                              Uri.parse(
+                                  "http://192.168.50.43:8081/api/tour/add/images/${_nameController.text}"));
 
                           location.getImages().forEach((k, v) async {
-                                location_request.files.add(
-                                http.MultipartFile.
-                                  fromBytes(
-                                  "picture",
-                                  v.readAsBytesSync(),
-                                  filename: basename(v.path)
-                                  )
-                                );
+                            location_request.files.add(
+                                http.MultipartFile.fromBytes(
+                                    "picture", v.readAsBytesSync(),
+                                    filename: basename(v.path)));
                           });
 
                           /*
@@ -220,11 +218,12 @@ class _TourCreateViewState extends State<TourCreateView> {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Failed to create location'),
-                                content:
-                                Text('Status code: ${location_response.statusCode}'),
+                                content: Text(
+                                    'Status code: ${location_response.statusCode}'),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+                                    onPressed: () => Navigator.of(context)
+                                        .popUntil((route) => route.isFirst),
                                     child: const Text('OK'),
                                   ),
                                 ],
@@ -232,51 +231,52 @@ class _TourCreateViewState extends State<TourCreateView> {
                             );
                           }
                         }
-                      // Compute tour
-                      final tour_response = await http.get(
-                        Uri.parse("http://192.168.50.43:8081/api/compute-tour/${_nameController.text}")
-                      );
-                      if (tour_response.statusCode == 200){
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Done'),
-                            content: const Text("Successfully created tour!"),
-                            actions: [
-                              TextButton(
-                              onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                              child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Failed to compute tour'),
-                            content:
-                            Text('Status code: ${tour_response.statusCode}'),
-                            actions: [
-                              TextButton(
-                              onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                              child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+                        // Compute tour
+                        final tour_response = await http.get(Uri.parse(
+                            "http://192.168.50.43:8081/api/compute-tour/${_nameController.text}"));
+                        if (tour_response.statusCode == 200) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Done'),
+                              content: const Text("Successfully created tour!"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context)
+                                      .popUntil((route) => route.isFirst),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Failed to compute tour'),
+                              content: Text(
+                                  'Status code: ${tour_response.statusCode}'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context)
+                                      .popUntil((route) => route.isFirst),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       } else {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Failed to create tour'),
                             content:
-                            Text('Status code: ${response.statusCode}'),
+                                Text('Status code: ${response.statusCode}'),
                             actions: [
                               TextButton(
-                                onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+                                onPressed: () => Navigator.of(context)
+                                    .popUntil((route) => route.isFirst),
                                 child: const Text('OK'),
                               ),
                             ],

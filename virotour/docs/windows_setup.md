@@ -14,15 +14,9 @@ https://developer.android.com/studio
 
 https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/windows-7-install.html
 
-Ensure JAVA_HOME is set properly (close all open cmd prompts after setting to see update)
+Ensure JAVA_HOME is set properly
 
-java -version
-
-openjdk version "11.0.18" 2023-01-17 LTS
-
-OpenJDK Runtime Environment Corretto-11.0.18.10.1 (build 11.0.18+10-LTS)
-
-OpenJDK 64-Bit Server VM Corretto-11.0.18.10.1 (build 11.0.18+10-LTS, mixed mode)
+![InstallJava.PNG](../assets/images/windows_setup/InstallJava.PNG)
 
 ## 4. Import the project
 
