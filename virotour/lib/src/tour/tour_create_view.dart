@@ -89,31 +89,35 @@ class _TourCreateViewState extends State<TourCreateView> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              SingleChildScrollView(
+              Expanded(
+                flex: 1,
                 child: Container(
+                  width: double.infinity,
                   padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: transitional_hotspots.map((hotspot) {
-                      return Container(
-                        child: Card(
-                          child: ListTile(
-                            title: Text(hotspot.file_names),
-                            trailing: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.redAccent),
-                              child: Icon(Icons.delete),
-                              onPressed: () {
-                                transitional_hotspots.removeWhere((element) {
-                                  return element.file_names ==
-                                      hotspot.file_names;
-                                });
-                                setState(() {});
-                              },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: transitional_hotspots.map((hotspot) {
+                        return Container(
+                          child: Card(
+                            child: ListTile(
+                              title: Text(hotspot.file_names),
+                              trailing: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.redAccent),
+                                child: Icon(Icons.delete),
+                                onPressed: () {
+                                  transitional_hotspots.removeWhere((element) {
+                                    return element.file_names ==
+                                        hotspot.file_names;
+                                  });
+                                  setState(() {});
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),

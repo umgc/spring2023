@@ -90,7 +90,7 @@ class _TourEditViewState extends State<TourEditView> {
                   ElevatedButton(
                     onPressed: () async {
                       final url =
-                          'http://1192.168.1.180:8081/api/update/tour/${widget.tour.id}';
+                          'http://192.168.50.43:8081/api/update/tour/${widget.tour.id}';
                       final body = {
                         'id': widget.tour.id,
                         'name': _nameController.text,
@@ -149,7 +149,7 @@ class _TourEditViewState extends State<TourEditView> {
                       );
                       if (confirmDelete == true) {
                         final url =
-                            'http://1192.168.1.180:8081/api/tour/delete/${widget.tour.id}';
+                            'http://192.168.50.43:8081/api/tour/delete/${widget.tour.id}';
                         final response = await http.post(Uri.parse(url));
                         if (response.statusCode == 200) {
                           Navigator.pop(context);
