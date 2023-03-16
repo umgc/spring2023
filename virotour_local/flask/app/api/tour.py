@@ -169,6 +169,30 @@ def api_delete_tour(id):
     return jsonify(payload), 200
 
 
+def api_set_neighbors(tour_name, neighbors):
+    """This is an internal call, so there is not a user-facing route."""
+    # Get Tour
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    for key in neighbors:
+        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                     (Location.location_id == key)).first()
+        neighbors_it = neighbors[key]
+
+        location.neighbors = [
+            {
+                "location_id": "UNKNOWN",
+                "x": neighbor[0],
+                "y": neighbor[1]
+            } for neighbor in neighbors_it
+        ]
+        # Get Location
+        # location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+        #                                              (Location.location_id == location_id)).first()
+        # location.neighbors = neighbors
+        db.session.commit()
+    return None
+
+
 @app.route('/api/tour/locations/<string:tour_name>', methods=['GET'])
 def api_locations_for_tour(tour_name):
     """
@@ -188,7 +212,7 @@ def api_locations_for_tour(tour_name):
         'results': [
             {
                 "location_id": x.location_id,
-                "neighbors": str(x.neighbors if x.neighbors is not None else "")
+                "neighbors": x.neighbors if x.neighbors is not None else {}
             } for x in locations
         ]
     }

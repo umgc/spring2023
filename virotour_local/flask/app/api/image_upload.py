@@ -122,31 +122,6 @@ def api_set_panoramic_image(tour_name, location_id, path):
     return None
 
 
-def api_set_neighbors(tour_name, neighbors):
-    """This is an internal call, so there is not a user-facing route."""
-    # Get Tour
-    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
-    for key in neighbors:
-        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
-                                                     (Location.location_id == key)).first()
-        neighbors_it = neighbors[key]
-
-        location.neighbors = {
-            "neighbors": [
-                {
-                    "location_id": "UNKNOWN",
-                    "x": neighbor[0],
-                    "y": neighbor[1]
-                } for neighbor in neighbors_it
-            ]
-        }
-        # Get Location
-        # location = db.session.query(Location).filter((Location.tour_id == tour.id) &
-        #                                              (Location.location_id == location_id)).first()
-        # location.neighbors = neighbors
-        db.session.commit()
-    return None
-
 
 @app.route('/api/tour/images/panoramic-image/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_panoramic_image(tour_name, location_id):

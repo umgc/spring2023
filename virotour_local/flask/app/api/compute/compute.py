@@ -5,9 +5,9 @@ from app.api.compute.image_blur_faces import image_blur_faces
 from app.api.compute.image_extract_text import image_extract_text
 from app.api.compute.neighbors import compute_neighbors
 from app.api.compute.panoramic import compute_panoramic
-from app.api.image_upload import api_set_panoramic_image, api_set_neighbors
+from app.api.image_upload import api_set_panoramic_image
 from app.api.text import api_set_text_search_results
-from app.api.tour import api_get_tour_by_name
+from app.api.tour import api_get_tour_by_name, api_set_neighbors
 from app.models import Location, Tour
 
 
