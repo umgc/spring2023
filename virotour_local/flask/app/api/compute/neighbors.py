@@ -1,9 +1,14 @@
 from app import app
 from app.api.compute.neighbor_util import find_hotspot
-from app.api.image_upload import api_get_panoramic_images
 
 
-def compute_neighbors(tour_name):
-    image_path_candidates = api_get_panoramic_images(tour_name)[0].json['server_file_paths']
+def compute_neighbors(locations):
+    ids = [x.location_id for x in locations]
+    image_path_candidates = [x.pano_file_path for x in locations]
     app.logger.info(f"Input to compute tour: {image_path_candidates}")
-    return find_hotspot.main(image_path_candidates)
+    hotspots = find_hotspot.main(image_path_candidates)
+    if len(hotspots) > 0:
+        result = dict(zip(ids, hotspots))
+    else:
+        result = dict()
+    return result

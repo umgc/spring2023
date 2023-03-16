@@ -102,11 +102,17 @@ def find_hotspot(img_list):
 
         list_int_kp1 = []
 
+
         for k in range(0, len(list_kp1)):
             list_int_kp1.append((int(list_kp1[k][0]), int(list_kp1[k][1])))
 
+        spot_img = None
+
         for center in list_int_kp1:
             spot_img = cv.circle(img_bk, center, radius=min(h1, w1) // 8, color=(255, 255, 255), thickness=-1)
+
+        if spot_img is None:
+            return hotspot_list
 
         cv.imwrite('hotspot.jpg', spot_img)
         list = caculate_points('hotspot.jpg', scale)
@@ -129,7 +135,7 @@ def find_hotspot(img_list):
 
 def main(img_names):
     result = find_hotspot(img_names)
-    app.logger.info(result)
+    return result
 
 
 if __name__ == '__main__':

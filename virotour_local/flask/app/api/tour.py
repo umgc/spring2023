@@ -185,6 +185,11 @@ def api_locations_for_tour(tour_name):
     # Get Locations
     locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
     payload = {
-        'results': [x.location_id for x in locations]
+        'results': [
+            {
+                "location_id": x.location_id,
+                "neighbors": str(x.neighbors if x.neighbors is not None else "")
+            } for x in locations
+        ]
     }
     return jsonify(payload), 200

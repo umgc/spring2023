@@ -55,7 +55,8 @@ def test_compute_tour(client):
     assert len(data['results']) == 0
 
     data = get_tour_locations(client, tour_name)
-    assert data['results'] == [1, 2]
+    assert data['results'][0]['location_id'] == 1
+    assert data['results'][1]['location_id'] == 2
 
 
 def test_compute_tour_full(client):
@@ -66,3 +67,6 @@ def test_compute_tour_full(client):
         upload_images(client, tour_name, get_image_paths(f'input_images/sample_tour/{location_path}'))
 
     compute_tour(client, tour_name)
+
+    data = get_tour_locations(client, tour_name)
+    print(data)

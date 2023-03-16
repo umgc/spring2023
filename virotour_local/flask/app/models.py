@@ -1,4 +1,5 @@
 from app import db
+from sqlalchemy.dialects.postgresql import ARRAY
 
 
 class Tour(db.Model):
@@ -22,6 +23,7 @@ class Location(db.Model):
     location_id = db.Column(db.Integer, primary_key=True)
     tour_id = db.Column(db.Integer)
     pano_file_path = db.Column(db.String(255))
+    neighbors = db.Column(db.PickleType)
 
     def __init__(self, tour_id):
         self.tour_id = tour_id

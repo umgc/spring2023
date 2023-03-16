@@ -46,8 +46,9 @@ def api_compute_tour(tour_name):
 
     # For all locations, compute neighbors
     app.logger.info(f"Computing hotspots")
-    hotspot_results = compute_neighbors(tour_name)
-    api_set_neighbors(tour_name, location.location_id, hotspot_results)
+    hotspot_results = compute_neighbors(locations)
+    app.logger.info(f'hotspot results: {hotspot_results}')
+    api_set_neighbors(tour_name, hotspot_results)
 
     # For all images, blur faces
     for location in locations:

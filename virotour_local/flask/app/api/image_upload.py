@@ -122,15 +122,29 @@ def api_set_panoramic_image(tour_name, location_id, path):
     return None
 
 
-def api_set_neighbors(tour_name, location_id, neighbors):
+def api_set_neighbors(tour_name, neighbors):
     """This is an internal call, so there is not a user-facing route."""
-    # # Get Tour
-    # tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
-    # # Get Location
-    # location = db.session.query(Location).filter((Location.tour_id == tour.id) &
-    #                                              (Location.location_id == location_id)).first()
-    # location.pano_file_path = path
-    # db.session.commit()
+    # Get Tour
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    for key in neighbors:
+        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                     (Location.location_id == key)).first()
+        neighbors_it = neighbors[key]
+
+        location.neighbors = {
+            "neighbors": [
+                {
+                    "location_id": "UNKNOWN",
+                    "x": neighbor[0],
+                    "y": neighbor[1]
+                } for neighbor in neighbors_it
+            ]
+        }
+        # Get Location
+        # location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+        #                                              (Location.location_id == location_id)).first()
+        # location.neighbors = neighbors
+        db.session.commit()
     return None
 
 
@@ -180,7 +194,10 @@ def api_get_panoramic_images(tour_name):
     # Get Location
     locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
 
-    pano_images = [location.pano_file_path for location in locations]
+    pano_images = [{
+        'pano_file_path': location.pano_file_path,
+        'location_id': location.location_id
+    } for location in locations]
 
     payload = {
         'server_file_paths': pano_images
