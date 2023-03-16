@@ -5,6 +5,8 @@ import 'package:virotour/src/tour/tour.dart';
 import 'package:webviewx/webviewx.dart';
 import 'package:http/http.dart' as http;
 
+import '../helpers/ip_handler.dart';
+
 /// Displays detailed information about a Tour.
 class TourDetailsView extends StatefulWidget {
   const TourDetailsView({super.key, required this.tour});
@@ -20,8 +22,8 @@ class _TourDetailsViewState extends State<TourDetailsView> {
   late WebViewXController webviewController;
 
   Future<Tour> getTourInfo() async {
-    final response = await http
-        .get(Uri.parse('http://192.168.1.180:8081/api/tour/${widget.tour.id}'));
+    final http.Response response =
+        await IPHandler().tryEndpoint('/api/tour/${widget.tour.id}');
 
     if (response.statusCode == 200) {
       final Tour tour = jsonDecode(response.body) as Tour;
