@@ -145,8 +145,8 @@ def get_tour_locations_with_resp(client, tour_name):
     return client.get(f'/api/tour/locations/{tour_name}')
 
 
-def get_tour(client, search_input):
-    return parse_http_response(get_tour_locations_with_resp(client, search_input))
+def get_tour(client, tour_name):
+    return parse_http_response(get_tour_with_resp(client, tour_name))
 
 
 def get_tour_with_resp(client, tour_name):

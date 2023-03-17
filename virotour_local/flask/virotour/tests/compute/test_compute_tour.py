@@ -59,6 +59,9 @@ def test_compute_tour(client):
     assert data['results'][0]['location_id'] == 1
     assert data['results'][1]['location_id'] == 2
 
+    data = get_tour(client, tour_name)
+    print(json.dumps(data, indent=2))
+
 
 def test_compute_tour_full(client):
     tour_name = "sample-tour"
