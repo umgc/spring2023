@@ -8,6 +8,8 @@ from virotour.api.tour import api_get_tour_by_name
 
 def image_blur_faces(tour_name, location_id):
     image_path = api_get_panoramic_image(tour_name, location_id)[0].json['server_file_path']
+    if image_path is None:
+        return None
     file_extension = os.path.splitext(image_path)[1]
     tour_id = api_get_tour_by_name(tour_name)[0].json['id']
     target_file = f"panoramic_images/T_{tour_id}_L_{location_id}_pano_blurred{file_extension}"

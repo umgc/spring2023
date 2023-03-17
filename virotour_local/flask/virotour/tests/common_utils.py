@@ -118,6 +118,7 @@ def get_panoramic_image_file(client, tour_name, location_id):
 def get_panoramic_image_file_with_resp(client, tour_name, location_id):
     return client.get(f'/api/tour/images/panoramic-image-file/{tour_name}/{location_id}')
 
+
 def set_panoramic_image(client, tour_name, location_id, path):
     return parse_http_response(get_raw_images_with_resp(client, tour_name, location_id, path))
 
@@ -142,6 +143,14 @@ def get_tour_locations(client, search_input):
 
 def get_tour_locations_with_resp(client, tour_name):
     return client.get(f'/api/tour/locations/{tour_name}')
+
+
+def get_tour(client, search_input):
+    return parse_http_response(get_tour_locations_with_resp(client, search_input))
+
+
+def get_tour_with_resp(client, tour_name):
+    return client.get(f'/api/tour/get-tour/{tour_name}')
 
 
 def parse_http_response(resp):

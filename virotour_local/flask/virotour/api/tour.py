@@ -1,7 +1,10 @@
+import random
+
 from flask import jsonify, request
 
 from virotour import db, app
-from virotour.models import Tour, Location
+from virotour.api.image_upload import api_upload_resolve_path
+from virotour.models import Tour, Location, Image, Text
 
 
 @app.route('/api/tours', methods=['GET'])
@@ -173,6 +176,7 @@ def api_set_neighbors(tour_name, neighbors):
     """This is an internal call, so there is not a user-facing route."""
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
     for key in neighbors:
         location = db.session.query(Location).filter((Location.tour_id == tour.id) &
                                                      (Location.location_id == key)).first()
@@ -180,15 +184,11 @@ def api_set_neighbors(tour_name, neighbors):
 
         location.neighbors = [
             {
-                "location_id": "UNKNOWN",
+                "location_id": random.choice(locations).location_id,  # TODO: FIX Random results (Hardcoding)
                 "x": neighbor[0],
                 "y": neighbor[1]
             } for neighbor in neighbors_it
         ]
-        # Get Location
-        # location = db.session.query(Location).filter((Location.tour_id == tour.id) &
-        #                                              (Location.location_id == location_id)).first()
-        # location.neighbors = neighbors
         db.session.commit()
     return None
 
@@ -216,4 +216,31 @@ def api_locations_for_tour(tour_name):
             } for x in locations
         ]
     }
+    return jsonify(payload), 200
+
+
+@app.route('/api/tour/get-tour/<string:tour_name>', methods=['GET'])
+def api_get_tour(tour_name):
+    """
+        Get all tour information for a given tour name
+        ---
+        parameters:
+          - in: path
+            name: tour_name
+            type: string
+            required: true
+            description: Name of the tour
+    """
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # Get Locations
+    locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
+    text = db.session.query(Text).filter((Text.tour_id == tour.id)).all()
+    payload = {
+        "id": tour.id,
+        "name": tour.name,
+        "description": tour.description,
+        "locations": [locations],
+        "text_matches": [text]
+    }
+
     return jsonify(payload), 200

@@ -35,10 +35,12 @@ class Image(db.Model):
     __tablename__ = 'images_table_v1'
 
     image_id = db.Column(db.Integer, primary_key=True)
+    tour_id = db.Column(db.Integer)
     location_id = db.Column(db.Integer)
     file_path = db.Column(db.String(255))
 
-    def __init__(self, location_id, file_path):
+    def __init__(self, tour_id, location_id, file_path):
+        self.tour_id = tour_id
         self.location_id = location_id
         self.file_path = file_path
 

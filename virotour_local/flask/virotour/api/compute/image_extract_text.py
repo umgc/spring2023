@@ -6,6 +6,8 @@ import easyocr
 
 def image_extract_text(tour_name, location_id):
     rel_path = api_get_panoramic_image(tour_name, location_id)[0].json['server_file_path']
+    if rel_path is None:
+        return []
     full_path = api_upload_resolve_path(rel_path)
     extractTextList = compute_extracted_text_list(full_path)
     return extractTextList

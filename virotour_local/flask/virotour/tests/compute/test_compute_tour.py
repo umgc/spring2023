@@ -1,9 +1,10 @@
+import json
 import os
 
 from PIL import Image
 from virotour import app
 from virotour.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image, \
-    get_raw_images, get_search_results, get_tour_locations, get_panoramic_image_file, get_image_path
+    get_raw_images, get_search_results, get_tour_locations, get_panoramic_image_file, get_image_path, get_tour
 
 
 def test_compute_tour(client):
@@ -68,5 +69,5 @@ def test_compute_tour_full(client):
 
     compute_tour(client, tour_name)
 
-    data = get_tour_locations(client, tour_name)
-    print(data)
+    data = get_tour(client, tour_name)
+    print(json.dumps(data, indent=2))

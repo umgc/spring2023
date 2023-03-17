@@ -49,7 +49,7 @@ def api_add_tour_images(tour_name):
                 os.makedirs(target_path, exist_ok=True)
                 files[file].save(target_file_full)
 
-                image = Image(location.location_id, result[filename])
+                image = Image(tour.id, location.location_id, result[filename])
                 db.session.add(image)
                 db.session.commit()
 
@@ -183,6 +183,16 @@ def api_get_panoramic_images(tour_name):
 
 @app.route('/api/tour/images/panoramic-image-file/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_panoramic_image_file(tour_name, location_id):
+    """
+        After you've computed the tour, you can retrieve the image for a given tour name and location_id.
+        ---
+        parameters:
+          - in: path
+            name: tour_name
+            type: string
+            required: true
+            description: Name of the tour
+    """
     try:
         # Get Tour
         tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
