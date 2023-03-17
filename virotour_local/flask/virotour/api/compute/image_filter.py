@@ -4,7 +4,10 @@ import os
 import argparse
 import sys
 
-from virotour import app
+from virotour.models import Location
+from virotour.api.image_upload import api_get_panoramic_image, api_upload_resolve_path
+from virotour import app, db
+from flask import jsonify, request
 
 # Instantiate the parser
 parser = argparse.ArgumentParser(description='Increase the brightness of an image')
@@ -15,36 +18,28 @@ parser.add_argument("-m", "--mode", type=str, required=True, choices=['b', 'h', 
 parser.add_argument("-v", "--value", type=int, help="brightness value")
 parser.add_argument("-r", "--radius", type=int, help="glow radius")
 parser.add_argument("-s", "--strength", type=int, help="glow strength")
-# args = vars(parser.parse_args())
-
-'''image_path = args["image"]
-mode = args["mode"]
-filename = os.path.basename(args["image"])
-brightness = args["value"]
-output = args["output"]
-radius = args["radius"]
-strength = args["strength"]'''
 
 '''
 There are three different methods to apply a filter to illuminate a single image:
 
-adjust_brightness(): 
+adjust_contrast_brightness(): 
 Calculates the brightness of an image. If the image mean brightness of the image is calculated to be less than 50%,
 it uses the alpha/beta pixel values to adjust brightness of the image. This maybe useful to invoke during the image upload process.
 command =>  filter.py --image 'path to input image/filename' --output 'path to write new image' --mode 'b' --value [integer]
 
-adjust_hsv(): 
+adjust_hue_saturation_value(): 
 Calculates the brightness of an image. If the image mean brightness of the image is calculated to be less than 50%,
 it uses the hue and saturation values to adjust the brightness of the image. This maybe useful to invoke during the image upload process.
 command =>  filter.py --image 'path to input image/filename' --output 'path to write new image' --mode 'h' --value [integer]
 
-apply_glow() 
+apply_gaussian_filter() 
 uses a Gaussian blurring effect to brighten the image.  Front-end can change the effect of the image by passing in two arguments
 radius and strength 
 command =>  filter.py --image 'path to input image/filename' --output 'path to write new image' --mode 'g' --radius [integer] --strength [integer]
 
-TO DO: Append some indicator to filename to indicate filter was applied
-TO DO: Add file extension validation
+apply_glow_effect() 
+Is the api end point that triggers the adjust_contrast_brightness()
+
 '''
 
 
@@ -57,13 +52,13 @@ def detect_brightness(image_path):
         # Calculate mean brightness as percentage
         mean_percent = np.mean(img) * 100 / 255
         classification = "dark" if mean_percent < 49 else "light"
-        app.logger.info(f'{filename}: {classification} ({mean_percent:.1f}%)')
+        print(f'{filename}: {classification} ({mean_percent:.1f}%)')
         return classification
     except:
         FileNotFoundError
 
 
-def adjust_brightness(image_path, brightness, output):
+def adjust_contrast_brightness(image_path, brightness, output):
     # Check if file exists
     if os.path.exists(image_path):
         # Apply filter if mean brightness was below 50%
@@ -91,7 +86,7 @@ def adjust_brightness(image_path, brightness, output):
             return os.path.join(output, filename)
 
 
-def adjust_hsv(image_path, brightness, output):
+def adjust_hue_saturation_value(image_path, brightness, output):
     # Check if file exists
     if os.path.exists(image_path):
         # Apply filter if mean brightness was below 50%
@@ -115,7 +110,7 @@ def adjust_hsv(image_path, brightness, output):
             return os.path.join(output, filename)
 
 
-def apply_glow(image_path, radius, strength, output):
+def apply_gaussian_filter(image_path, radius, strength, output):
     # Check if file exists
     if os.path.exists(image_path):
         filename = os.path.basename(image_path)
@@ -130,15 +125,32 @@ def apply_glow(image_path, radius, strength, output):
         return os.path.join(output, filename)
 
 
+@app.route('/api/glow-effect/update/<int:location_id>/<int:brightness>', methods=['POST'])
+def apply_glow_effect(location_id, brightness):
+    # Get Location
+    location = db.session.query(Location).filter(Location.location_id == location_id).first()
+    # Get the absolute file path of the panoramic image
+    image_path = api_upload_resolve_path(location.pano_file_path).replace("\\", "/")
+    # Strip the filename from the output path
+    output = api_upload_resolve_path(os.path.dirname(location.pano_file_path)).replace("\\", "/")
+    # applies brightness value to the image
+    adjust_contrast_brightness(image_path, brightness, output)
+
+    payload = {
+            'message': f'Glow effect was applied successfully.'
+        }
+    return jsonify(payload), 200
+
+
 def main(in_args):
     args = parser.parse_args(in_args)
 
     if args['mode'] == 'b':
-        adjust_brightness(args['image'], args['value'], args['output'])
+        adjust_contrast_brightness(args['image'], args['value'], args['output'])
     elif args['mode'] == 'h':
-        adjust_hsv(args['image'], args['value'], args['output'])
+        adjust_hue_saturation_value(args['image'], args['value'], args['output'])
     elif args['mode'] == 'g':
-        apply_glow(args['image'], args['radius'], args['strength'], args['output'])
+        apply_gaussian_filter(args['image'], args['radius'], args['strength'], args['output'])
 
 
 if __name__ == "__main__":

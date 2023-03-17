@@ -153,6 +153,14 @@ def get_tour_with_resp(client, tour_name):
     return client.get(f'/api/tour/get-tour/{tour_name}')
 
 
+def apply_glow_effect(client, location_id, brightness):
+    return parse_http_response(apply_glow_effect_with_resp(client, location_id, brightness))
+
+
+def apply_glow_effect_with_resp(client, location_id, brightness):
+    return client.get(f'/api/glow-effect/update/{location_id}/{brightness}')
+
+
 def parse_http_response(resp):
     try:
         print(str(resp))
