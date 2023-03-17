@@ -242,7 +242,8 @@ def api_get_tour(tour_name):
         "locations": [
             {
                 "location_id": location.location_id,
-                "pano_file_path": location.pano_file_path
+                "pano_file_path": location.pano_file_path,
+                "neighbors": location.neighbors
             } for location in locations
         ],
         "text_matches": [

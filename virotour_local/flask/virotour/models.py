@@ -26,6 +26,7 @@ class Location(db.Model):
 
     def __init__(self, tour_id):
         self.tour_id = tour_id
+        self.neighbors = {}
 
     def __repr__(self):
         return '<Locations %r>' % self.location_id
