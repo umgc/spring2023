@@ -239,8 +239,20 @@ def api_get_tour(tour_name):
         "id": tour.id,
         "name": tour.name,
         "description": tour.description,
-        "locations": [locations],
-        "text_matches": [text]
+        "locations": [
+            {
+                "location_id": location.location_id,
+                "pano_file_path": location.pano_file_path
+            } for location in locations
+        ],
+        "text_matches": [
+            {
+                "location_id": text_entry.location_id,
+                "content": text_entry.text_content,
+                "x": text_entry.position_x,
+                "y": text_entry.position_y
+            } for text_entry in text
+        ],
     }
 
     return jsonify(payload), 200
