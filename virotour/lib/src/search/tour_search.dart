@@ -6,14 +6,14 @@ import 'package:virotour/src/helpers/ip_handler.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+class TourSearch extends StatefulWidget {
+  const TourSearch({super.key});
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _TourSearchState createState() => _TourSearchState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _TourSearchState extends State<TourSearch> {
   String searchQuery = "";
   List<Map<String, dynamic>> items = [];
   List<Tour> filteredItems = [];
