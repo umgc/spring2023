@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:virotour/src/search.dart';
+import 'package:virotour/src/search/hotspot_search_view.dart';
+import 'package:virotour/src/search/search.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
-
-import '../search/hotspot_search_view.dart';
 
 class Hamburger extends StatelessWidget {
   const Hamburger({super.key});

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:virotour/src/helpers/ip_handler.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 
@@ -20,8 +21,7 @@ class _SearchPageState extends State<SearchPage> {
   final _searchController = TextEditingController();
 
   Future<void> fetchData() async {
-    final response =
-        await http.get(Uri.parse('http://127.0.0.1:8081/api/tours'));
+    final http.Response response = await IPHandler().tryEndpoint('/api/tours');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -29,7 +29,6 @@ class _SearchPageState extends State<SearchPage> {
 
       setState(() {
         items = tours.map((tour) => tour as Map<String, dynamic>).toList();
-        print(items);
       });
 
       if (items.isEmpty) {
@@ -56,12 +55,13 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       filteredItems = [];
       for (final item in items) {
-        String itemName = item['name'].toString().toLowerCase();
-        String itemDescription = item['description'].toString().toLowerCase();
-        String searchQueryLower = searchQuery.toLowerCase();
+        final String itemName = item['name'].toString().toLowerCase();
+        final String itemDescription =
+            item['description'].toString().toLowerCase();
+        final String searchQueryLower = searchQuery.toLowerCase();
         if (itemName.contains(searchQueryLower) ||
             itemDescription.contains(searchQueryLower)) {
-          Tour tour = Tour(
+          final Tour tour = Tour(
             id: item['id']
                 .toString(), // Add .toString() to ensure it's a string
             tourName: item['name'] as String,
