@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:virotour/src/helpers/ip_handler.dart';
 import 'package:virotour/src/navbar/hamburger.dart';
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
@@ -32,8 +33,7 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.50.43:8081/api/tours'));
+    final http.Response response = await IPHandler().tryEndpoint('/api/tours');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
