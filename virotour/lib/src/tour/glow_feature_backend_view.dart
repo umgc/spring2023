@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class GlowEffectBackendView extends StatefulWidget {
-  const GlowEffectBackendView({super.key});
+double lighting = 0;
+
+void main() {
+  runApp(ViroTour());
+}
+
+class ViroTour extends StatefulWidget {
+  ViroTour({Key? key}) : super(key: key);
   @override
   SliderState createState() => SliderState();
 }
 
-class SliderState extends State<GlowEffectBackendView> {
-  double lighting = 0;
+class SliderState extends State<ViroTour> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Glow Effect')),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Align(
               alignment: Alignment.bottomCenter,
@@ -28,12 +35,15 @@ class SliderState extends State<GlowEffectBackendView> {
                       fit: BoxFit.cover),
                   ColoredBox(
                     color: Colors.white.withAlpha(lighting.toInt()),
+                    //color: Colors.black.withOpacity(lighting),
                   ),
+                  // const Text("Change slider"),
                 ],
               ),
             ),
             Slider(
                 value: lighting,
+                min: 0,
                 max: 255,
                 divisions: 17,
                 label: lighting.toString(),
