@@ -130,21 +130,18 @@ class _TourCreateViewState extends State<TourCreateView> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    Map<Uint8List, File> tmpImages = HashMap();
+                    final Map<Uint8List, File> tmpImages = HashMap();
 
-                    List<XFile> images = await _picker.pickMultiImage();
-                    if (images.length != 0) {
-                      for (XFile xf in images) {
-                        print(xf.path);
+                    final List<XFile> images = await _picker.pickMultiImage();
+                    if (images.isNotEmpty) {
+                      for (final XFile xf in images) {
                         if (kIsWeb) {
-                          print("Running application on web");
-                          Uint8List? imgBytes =
+                          final Uint8List? imgBytes =
                               await networkImageToInts(xf.path);
                           tmpImages.addAll({imgBytes!: File(xf.path)});
                         } else {
-                          print("Running application on mobile");
-                          Uint8List? imgBytes = await xf.readAsBytes();
-                          tmpImages.addAll({imgBytes!: File(xf.path)});
+                          final Uint8List imgBytes = await xf.readAsBytes();
+                          tmpImages.addAll({imgBytes: File(xf.path)});
                         }
                       }
                       transitionalHotspots.add(Hotspot(tmpImages));
@@ -220,8 +217,12 @@ class _TourCreateViewState extends State<TourCreateView> {
 
                           location.getImages().forEach((bytes, file) {
                             locationRequest.files.add(
-                                http.MultipartFile.fromBytes("image", bytes,
-                                    filename: basename(file.path)));
+                              http.MultipartFile.fromBytes(
+                                "image",
+                                bytes,
+                                filename: basename(file.path),
+                              ),
+                            );
                           });
                           locationRequest.headers.addAll(headers);
 
