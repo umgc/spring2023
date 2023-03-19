@@ -59,6 +59,7 @@ class _TourCreateViewState extends State<TourCreateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Create Tour'),
       ),
@@ -82,7 +83,6 @@ class _TourCreateViewState extends State<TourCreateView> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _descriptionController,
-                maxLines: null,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Description',
@@ -126,17 +126,25 @@ class _TourCreateViewState extends State<TourCreateView> {
                 child: ElevatedButton(
                   onPressed: () async {
                     Map<Image, File> tmpImages = HashMap();
-                    final images = await _picker.pickMultiImage();
-                    for (XFile xf in images) {
-                      if (kIsWeb) {
-                        tmpImages
-                            .addAll({Image.network(xf.path): File(xf.path)});
-                      } else {
-                        tmpImages
-                            .addAll({Image.file(File(xf.path)): File(xf.path)});
+                    List<XFile> images = await _picker.pickMultiImage();
+                    if (images.length != 0) {
+                      for (XFile xf in images) {
+                        print(xf.path);
+                        if (kIsWeb) {
+                          print("Running application on web");
+                          tmpImages
+                              .addAll({
+                            Image.network(xf.path): File(xf.path)});
+                        } else {
+                          print("Running application on mobile");
+                          tmpImages
+                              .addAll({
+                            Image.file(File(xf.path)): File(xf.path)
+                          });
+                        }
                       }
+                      transitional_hotspots.add(new Hotspot(tmpImages));
                     }
-                    transitional_hotspots.add(new Hotspot(tmpImages));
                     setState(() {});
                   },
                   child: Row(
@@ -197,24 +205,13 @@ class _TourCreateViewState extends State<TourCreateView> {
                               Uri.parse(
                                   "http://192.168.50.43:8081/api/tour/add/images/${_nameController.text}"));
 
-                          location.getImages().forEach((k, v) async {
+                          location.getImages().forEach((k, v) {
                             location_request.files.add(
-                                http.MultipartFile.fromBytes(
-                                    "picture", v.readAsBytesSync(),
+                                http.MultipartFile(
+                                    "image", v!.readAsBytes().asStream(), v!.lengthSync(),
                                     filename: basename(v.path)));
                           });
 
-                          /*
-                          for (String s in location.getAllInfo()) {
-                            location_request.files.add(
-                              http.MultipartFile.fromBytes(
-                                "picture",
-                                s.readAsBytesSync(),
-                                filename: s.split("/").last
-                              )
-                            );
-                          }
-                          */
                           var location_response = await location_request.send();
 
                           if (location_response.statusCode != 200) {
@@ -305,7 +302,7 @@ class _TourCreateViewState extends State<TourCreateView> {
 
 class Hotspot {
   String file_names = "";
-  Map<Image, File> images = HashMap();
+  Map<Image, File> images = new HashMap();
 
   Hotspot(Map<Image, File> images) {
     this.images = images;
