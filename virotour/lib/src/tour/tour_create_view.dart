@@ -56,6 +56,12 @@ class _TourCreateViewState extends State<TourCreateView> {
     );
   }
 
+  Future<Uint8List?> networkImageToInts(String imageUrl) async {
+    http.Response response = await http.get(Uri.parse(imageUrl));
+    final bytes = response?.bodyBytes;
+    return bytes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,26 +131,27 @@ class _TourCreateViewState extends State<TourCreateView> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    Map<Image, File> tmpImages = HashMap();
+                    Map<Uint8List, File> tmpImages = HashMap();
+
                     List<XFile> images = await _picker.pickMultiImage();
                     if (images.length != 0) {
                       for (XFile xf in images) {
                         print(xf.path);
                         if (kIsWeb) {
                           print("Running application on web");
-                          tmpImages
-                              .addAll({
-                            Image.network(xf.path): File(xf.path)});
+                          Uint8List? imgBytes = await networkImageToInts(xf.path);
+                          tmpImages.addAll({
+                            imgBytes!: File(xf.path)});
                         } else {
                           print("Running application on mobile");
-                          tmpImages
-                              .addAll({
-                            Image.file(File(xf.path)): File(xf.path)
-                          });
+                          Uint8List? imgBytes = await xf.readAsBytes();
+                          tmpImages.addAll({
+                            imgBytes!: File(xf.path)});
                         }
                       }
                       transitional_hotspots.add(new Hotspot(tmpImages));
                     }
+
                     setState(() {});
                   },
                   child: Row(
@@ -205,14 +212,17 @@ class _TourCreateViewState extends State<TourCreateView> {
                               Uri.parse(
                                   "http://192.168.50.43:8081/api/tour/add/images/${_nameController.text}"));
 
-                          location.getImages().forEach((k, v) {
-                            location_request.files.add(
-                                http.MultipartFile(
-                                    "image", v!.readAsBytes().asStream(), v!.lengthSync(),
-                                    filename: basename(v.path)));
-                          });
+                          final headers = {"Content-type": "multipart/form-data"};
 
-                          var location_response = await location_request.send();
+                          location.getImages().forEach((bytes, file) {
+                            location_request.files.add(
+                                http.MultipartFile.fromBytes(
+                                    "image", bytes,
+                                    filename: basename(file.path)));
+                          });
+                          location_request.headers.addAll(headers);
+
+                          final location_response = await location_request.send();
 
                           if (location_response.statusCode != 200) {
                             showDialog(
@@ -302,14 +312,14 @@ class _TourCreateViewState extends State<TourCreateView> {
 
 class Hotspot {
   String file_names = "";
-  Map<Image, File> images = new HashMap();
+  Map<Uint8List, File> images = new HashMap();
 
-  Hotspot(Map<Image, File> images) {
+  Hotspot(Map<Uint8List, File> images) {
     this.images = images;
     images.forEach((k, v) => this.file_names += basename(v.path) + "\n");
   }
 
-  Map<Image, File> getImages() {
+  Map<Uint8List, File> getImages() {
     return this.images;
   }
 }
