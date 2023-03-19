@@ -1,16 +1,17 @@
-import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
 import 'dart:collection';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:virotour/src/tour/tour.dart';
+import 'dart:convert';
+import 'dart:io';
 
-int hotspot_counter = 0;
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+
+import 'package:virotour/src/helpers/ip_handler.dart';
+
+int hotspotCounter = 0;
 
 class TourCreateView extends StatefulWidget {
   static const routeName = '/tour_create';
@@ -25,7 +26,7 @@ class _TourCreateViewState extends State<TourCreateView> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   final ImagePicker _picker = ImagePicker();
-  List<Hotspot> transitional_hotspots = [];
+  List<Hotspot> transitionalHotspots = [];
 
   @override
   void initState() {
@@ -57,8 +58,8 @@ class _TourCreateViewState extends State<TourCreateView> {
   }
 
   Future<Uint8List?> networkImageToInts(String imageUrl) async {
-    http.Response response = await http.get(Uri.parse(imageUrl));
-    final bytes = response?.bodyBytes;
+    final http.Response response = await http.get(Uri.parse(imageUrl));
+    final bytes = response.bodyBytes;
     return bytes;
   }
 
@@ -99,26 +100,24 @@ class _TourCreateViewState extends State<TourCreateView> {
                 flex: 1,
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: SingleChildScrollView(
                     child: Column(
-                      children: transitional_hotspots.map((hotspot) {
-                        return Container(
-                          child: Card(
-                            child: ListTile(
-                              title: Text(hotspot.file_names),
-                              trailing: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.redAccent),
-                                child: Icon(Icons.delete),
-                                onPressed: () {
-                                  transitional_hotspots.removeWhere((element) {
-                                    return element.file_names ==
-                                        hotspot.file_names;
-                                  });
-                                  setState(() {});
-                                },
+                      children: transitionalHotspots.map((hotspot) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(hotspot.fileNames),
+                            trailing: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
                               ),
+                              child: const Icon(Icons.delete),
+                              onPressed: () {
+                                transitionalHotspots.removeWhere((element) {
+                                  return element.fileNames == hotspot.fileNames;
+                                });
+                                setState(() {});
+                              },
                             ),
                           ),
                         );
@@ -139,17 +138,16 @@ class _TourCreateViewState extends State<TourCreateView> {
                         print(xf.path);
                         if (kIsWeb) {
                           print("Running application on web");
-                          Uint8List? imgBytes = await networkImageToInts(xf.path);
-                          tmpImages.addAll({
-                            imgBytes!: File(xf.path)});
+                          Uint8List? imgBytes =
+                              await networkImageToInts(xf.path);
+                          tmpImages.addAll({imgBytes!: File(xf.path)});
                         } else {
                           print("Running application on mobile");
                           Uint8List? imgBytes = await xf.readAsBytes();
-                          tmpImages.addAll({
-                            imgBytes!: File(xf.path)});
+                          tmpImages.addAll({imgBytes!: File(xf.path)});
                         }
                       }
-                      transitional_hotspots.add(new Hotspot(tmpImages));
+                      transitionalHotspots.add(Hotspot(tmpImages));
                     }
 
                     setState(() {});
@@ -190,47 +188,52 @@ class _TourCreateViewState extends State<TourCreateView> {
                         return;
                       }
                       // Creation of the tour object
-                      final url_add_tour =
-                          'http://192.168.50.43:8081/api/tour/add';
-                      final url_add_tour_body = {
+                      final urlAddTourBody = {
                         'name': _nameController.text,
                         'description': _descriptionController.text,
                       };
 
-                      final response = await http.post(
-                        Uri.parse(url_add_tour),
-                        headers: {'Content-Type': 'application/json'},
-                        body: json.encode(url_add_tour_body),
-                      );
+                      final Map<String, String> headers = {
+                        'Content-Type': 'application/json'
+                      };
+                      final Object body = json.encode(urlAddTourBody);
+                      final Map<String, String> options = {
+                        'headers': headers.toString(),
+                        'body': body.toString()
+                      };
+
+                      final http.Response response =
+                          await IPHandler().post('/api/tour/add', options);
                       if (response.statusCode == 200 ||
                           response.statusCode == 201) {
                         // Send location data for each transitional hotspot
 
-                        for (Hotspot location in transitional_hotspots) {
-                          var location_request = http.MultipartRequest(
-                              'POST',
-                              Uri.parse(
-                                  "http://192.168.50.43:8081/api/tour/add/images/${_nameController.text}"));
+                        for (final Hotspot location in transitionalHotspots) {
+                          final MultipartRequest locationRequest =
+                              await IPHandler().requestMultipart(
+                            '/api/tour/add/images/${_nameController.text}',
+                          ) as http.MultipartRequest;
 
-                          final headers = {"Content-type": "multipart/form-data"};
+                          final headers = {
+                            "Content-type": "multipart/form-data"
+                          };
 
                           location.getImages().forEach((bytes, file) {
-                            location_request.files.add(
-                                http.MultipartFile.fromBytes(
-                                    "image", bytes,
+                            locationRequest.files.add(
+                                http.MultipartFile.fromBytes("image", bytes,
                                     filename: basename(file.path)));
                           });
-                          location_request.headers.addAll(headers);
+                          locationRequest.headers.addAll(headers);
 
-                          final location_response = await location_request.send();
+                          final locationResponse = await locationRequest.send();
 
-                          if (location_response.statusCode != 200) {
+                          if (locationResponse.statusCode != 200) {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Failed to create location'),
                                 content: Text(
-                                    'Status code: ${location_response.statusCode}'),
+                                    'Status code: ${locationResponse.statusCode}'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.of(context)
@@ -243,9 +246,12 @@ class _TourCreateViewState extends State<TourCreateView> {
                           }
                         }
                         // Compute tour
-                        final tour_response = await http.get(Uri.parse(
-                            "http://192.168.50.43:8081/api/compute-tour/${_nameController.text}"));
-                        if (tour_response.statusCode == 200) {
+
+                        final http.Response tourResponse =
+                            await IPHandler().get(
+                          '/api/compute-tour/${_nameController.text}',
+                        );
+                        if (tourResponse.statusCode == 200) {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -266,7 +272,7 @@ class _TourCreateViewState extends State<TourCreateView> {
                             builder: (context) => AlertDialog(
                               title: const Text('Failed to compute tour'),
                               content: Text(
-                                  'Status code: ${tour_response.statusCode}'),
+                                  'Status code: ${tourResponse.statusCode}'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.of(context)
@@ -311,15 +317,14 @@ class _TourCreateViewState extends State<TourCreateView> {
 }
 
 class Hotspot {
-  String file_names = "";
-  Map<Uint8List, File> images = new HashMap();
+  String fileNames = "";
+  Map<Uint8List, File> images = HashMap();
 
-  Hotspot(Map<Uint8List, File> images) {
-    this.images = images;
-    images.forEach((k, v) => this.file_names += basename(v.path) + "\n");
+  Hotspot(this.images) {
+    images.forEach((k, v) => fileNames += "${basename(v.path)}\n");
   }
 
   Map<Uint8List, File> getImages() {
-    return this.images;
+    return images;
   }
 }

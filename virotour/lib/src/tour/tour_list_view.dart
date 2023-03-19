@@ -33,7 +33,7 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
-    final http.Response response = await IPHandler().tryEndpoint('/api/tours');
+    final http.Response response = await IPHandler().get('/api/tours');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
