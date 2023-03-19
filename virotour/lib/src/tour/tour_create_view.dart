@@ -14,7 +14,7 @@ import 'package:virotour/src/helpers/ip_handler.dart';
 int hotspotCounter = 0;
 
 class TourCreateView extends StatefulWidget {
-  static const routeName = '/tour_create';
+  static const routeName = '/create_tour';
 
   const TourCreateView({super.key});
 
