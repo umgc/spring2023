@@ -6,8 +6,8 @@ import requests
 from virotour.tests.common_utils import get_image_paths, get_image_path
 
 # api-endpoint
-#URL = "https://virotour2023-flask-server.azurewebsites.net/api"
-URL = "http://127.0.0.1:8081/api"
+URL = "https://virotour2023-flask-server.azurewebsites.net/api"
+#URL = "http://127.0.0.1:8081/api"
 
 
 def file_upload_request_builder(image_paths):

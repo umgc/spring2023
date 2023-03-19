@@ -176,19 +176,25 @@ def api_set_neighbors(tour_name, neighbors):
     """This is an internal call, so there is not a user-facing route."""
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
-    locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
-    for key in neighbors:
-        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
-                                                     (Location.location_id == key)).first()
-        neighbors_it = neighbors[key]
 
-        location.neighbors = [
-            {
-                "location_id": random.choice(locations).location_id,  # TODO: FIX Random results (Hardcoding)
-                "x": neighbor[0],
-                "y": neighbor[1]
-            } for neighbor in neighbors_it
-        ]
+    first_location = db.session.query(Location)\
+        .filter((Location.tour_id == tour.id))\
+        .order_by(Location.location_id)\
+        .first()
+
+    for neighbor in neighbors:
+        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                     (Location.location_id == neighbor)).first()
+        curr_neighbor = neighbors[neighbor][0]
+
+        if curr_neighbor and location.location_id != first_location.location_id:
+            location.neighbors = [
+                {
+                    "location_id": location.location_id - 1,
+                    "x": curr_neighbor[0],
+                    "y": curr_neighbor[1]
+                }
+            ]
         db.session.commit()
     return None
 
