@@ -5,7 +5,7 @@ from flask import jsonify, request
 from virotour import db, app
 from virotour.models import Tour, Location, Text
 
-URL = "https://virotour2023-flask-server.azurewebsites.net/"
+URL = "https://virotour2023-flask-server.azurewebsites.net/api"
 
 
 @app.route('/api/tours', methods=['GET'])
@@ -250,7 +250,7 @@ def api_get_tour(tour_name):
         "locations": [
             {
                 "location_id": location.location_id,
-                "pano_file_path": f"{URL}api/tour/images/panoramic-image-file/{tour_name_url_encoded}/{str(location.location_id)}",
+                "pano_file_path": f"{URL}tour/images/panoramic-image-file/{tour_name_url_encoded}/{str(location.location_id)}",
                 "neighbors": location.neighbors
             } for location in locations
         ],
