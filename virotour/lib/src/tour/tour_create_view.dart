@@ -1,19 +1,16 @@
-import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
 import 'dart:collection';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:virotour/src/tour/tour.dart';
+import 'package:path/path.dart';
 
-int hotspot_counter = 0;
+int hotspotCounter = 0;
 
 class TourCreateView extends StatefulWidget {
-  static const routeName = '/tour_create';
+  static const routeName = '/create_tour';
 
   const TourCreateView({super.key});
 
@@ -25,7 +22,7 @@ class _TourCreateViewState extends State<TourCreateView> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   final ImagePicker _picker = ImagePicker();
-  List<Hotspot> transitional_hotspots = [];
+  List<Hotspot> transitionalHotspots = [];
 
   @override
   void initState() {
@@ -57,8 +54,8 @@ class _TourCreateViewState extends State<TourCreateView> {
   }
 
   Future<Uint8List?> networkImageToInts(String imageUrl) async {
-    http.Response response = await http.get(Uri.parse(imageUrl));
-    final bytes = response?.bodyBytes;
+    final http.Response response = await http.get(Uri.parse(imageUrl));
+    final bytes = response.bodyBytes;
     return bytes;
   }
 
@@ -99,26 +96,24 @@ class _TourCreateViewState extends State<TourCreateView> {
                 flex: 1,
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: SingleChildScrollView(
                     child: Column(
-                      children: transitional_hotspots.map((hotspot) {
-                        return Container(
-                          child: Card(
-                            child: ListTile(
-                              title: Text(hotspot.file_names),
-                              trailing: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.redAccent),
-                                child: Icon(Icons.delete),
-                                onPressed: () {
-                                  transitional_hotspots.removeWhere((element) {
-                                    return element.file_names ==
-                                        hotspot.file_names;
-                                  });
-                                  setState(() {});
-                                },
+                      children: transitionalHotspots.map((hotspot) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(hotspot.fileNames),
+                            trailing: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
                               ),
+                              child: const Icon(Icons.delete),
+                              onPressed: () {
+                                transitionalHotspots.removeWhere((element) {
+                                  return element.fileNames == hotspot.fileNames;
+                                });
+                                setState(() {});
+                              },
                             ),
                           ),
                         );
@@ -131,25 +126,21 @@ class _TourCreateViewState extends State<TourCreateView> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    Map<Uint8List, File> tmpImages = HashMap();
+                    final Map<Uint8List, File> tmpImages = HashMap();
 
-                    List<XFile> images = await _picker.pickMultiImage();
-                    if (images.length != 0) {
-                      for (XFile xf in images) {
-                        print(xf.path);
+                    final List<XFile> images = await _picker.pickMultiImage();
+                    if (images.isNotEmpty) {
+                      for (final XFile xf in images) {
                         if (kIsWeb) {
-                          print("Running application on web");
-                          Uint8List? imgBytes = await networkImageToInts(xf.path);
-                          tmpImages.addAll({
-                            imgBytes!: File(xf.path)});
+                          final Uint8List? imgBytes =
+                              await networkImageToInts(xf.path);
+                          tmpImages.addAll({imgBytes!: File(xf.path)});
                         } else {
-                          print("Running application on mobile");
-                          Uint8List? imgBytes = await xf.readAsBytes();
-                          tmpImages.addAll({
-                            imgBytes!: File(xf.path)});
+                          final Uint8List imgBytes = await xf.readAsBytes();
+                          tmpImages.addAll({imgBytes: File(xf.path)});
                         }
                       }
-                      transitional_hotspots.add(new Hotspot(tmpImages));
+                      transitionalHotspots.add(Hotspot(tmpImages));
                     }
 
                     setState(() {});
@@ -167,6 +158,7 @@ class _TourCreateViewState extends State<TourCreateView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // Cancel button
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -182,6 +174,7 @@ class _TourCreateViewState extends State<TourCreateView> {
                     ),
                   ),
                   const SizedBox(width: 16.0),
+                  // Save button
                   ElevatedButton(
                     onPressed: () async {
                       if (_nameController.text == "" ||
@@ -189,111 +182,13 @@ class _TourCreateViewState extends State<TourCreateView> {
                         _showRequiredFields(context);
                         return;
                       }
-                      // Creation of the tour object
-                      final url_add_tour =
-                          'http://192.168.50.43:8081/api/tour/add';
-                      final url_add_tour_body = {
-                        'name': _nameController.text,
-                        'description': _descriptionController.text,
-                      };
+                      debugPrint('Try to send request!');
+                      // To avoid the browser or the simulator throw an error
+                      // after trying to get the response from the server, we keep this part empty.
+                      // TODO: Make real API call to the endpoint and handle errors if any.
 
-                      final response = await http.post(
-                        Uri.parse(url_add_tour),
-                        headers: {'Content-Type': 'application/json'},
-                        body: json.encode(url_add_tour_body),
-                      );
-                      if (response.statusCode == 200 ||
-                          response.statusCode == 201) {
-                        // Send location data for each transitional hotspot
-
-                        for (Hotspot location in transitional_hotspots) {
-                          var location_request = http.MultipartRequest(
-                              'POST',
-                              Uri.parse(
-                                  "http://192.168.50.43:8081/api/tour/add/images/${_nameController.text}"));
-
-                          final headers = {"Content-type": "multipart/form-data"};
-
-                          location.getImages().forEach((bytes, file) {
-                            location_request.files.add(
-                                http.MultipartFile.fromBytes(
-                                    "image", bytes,
-                                    filename: basename(file.path)));
-                          });
-                          location_request.headers.addAll(headers);
-
-                          final location_response = await location_request.send();
-
-                          if (location_response.statusCode != 200) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Failed to create location'),
-                                content: Text(
-                                    'Status code: ${location_response.statusCode}'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.of(context)
-                                        .popUntil((route) => route.isFirst),
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        }
-                        // Compute tour
-                        final tour_response = await http.get(Uri.parse(
-                            "http://192.168.50.43:8081/api/compute-tour/${_nameController.text}"));
-                        if (tour_response.statusCode == 200) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Done'),
-                              content: const Text("Successfully created tour!"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context)
-                                      .popUntil((route) => route.isFirst),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Failed to compute tour'),
-                              content: Text(
-                                  'Status code: ${tour_response.statusCode}'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context)
-                                      .popUntil((route) => route.isFirst),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Failed to create tour'),
-                            content:
-                                Text('Status code: ${response.statusCode}'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context)
-                                    .popUntil((route) => route.isFirst),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+                      // By default, after successfully posting the tour, redirect users to the list of tours
+                      Navigator.pushNamed(context, '/');
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -311,15 +206,14 @@ class _TourCreateViewState extends State<TourCreateView> {
 }
 
 class Hotspot {
-  String file_names = "";
-  Map<Uint8List, File> images = new HashMap();
+  String fileNames = "";
+  Map<Uint8List, File> images = HashMap();
 
-  Hotspot(Map<Uint8List, File> images) {
-    this.images = images;
-    images.forEach((k, v) => this.file_names += basename(v.path) + "\n");
+  Hotspot(this.images) {
+    images.forEach((k, v) => fileNames += "${basename(v.path)}\n");
   }
 
   Map<Uint8List, File> getImages() {
-    return this.images;
+    return images;
   }
 }
