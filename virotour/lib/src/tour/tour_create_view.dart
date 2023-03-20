@@ -1,15 +1,11 @@
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-
-import 'package:virotour/src/helpers/ip_handler.dart';
 
 int hotspotCounter = 0;
 
@@ -162,6 +158,7 @@ class _TourCreateViewState extends State<TourCreateView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // Cancel button
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -177,6 +174,7 @@ class _TourCreateViewState extends State<TourCreateView> {
                     ),
                   ),
                   const SizedBox(width: 16.0),
+                  // Save button
                   ElevatedButton(
                     onPressed: () async {
                       if (_nameController.text == "" ||
@@ -184,123 +182,13 @@ class _TourCreateViewState extends State<TourCreateView> {
                         _showRequiredFields(context);
                         return;
                       }
-                      // Creation of the tour object
-                      final urlAddTourBody = {
-                        'name': _nameController.text,
-                        'description': _descriptionController.text,
-                      };
+                      debugPrint('Try to send request!');
+                      // To avoid the browser or the simulator throw an error
+                      // after trying to get the response from the server, we keep this part empty.
+                      // TODO: Make real API call to the endpoint and handle errors if any.
 
-                      final Map<String, String> headers = {
-                        'Content-Type': 'application/json'
-                      };
-                      final Object body = json.encode(urlAddTourBody);
-                      final Map<String, String> options = {
-                        'headers': headers.toString(),
-                        'body': body.toString()
-                      };
-
-                      final http.Response response =
-                          await IPHandler().post('/api/tour/add', options);
-                      if (response.statusCode == 200 ||
-                          response.statusCode == 201) {
-                        // Send location data for each transitional hotspot
-
-                        for (final Hotspot location in transitionalHotspots) {
-                          final MultipartRequest locationRequest =
-                              await IPHandler().requestMultipart(
-                            '/api/tour/add/images/${_nameController.text}',
-                          ) as http.MultipartRequest;
-
-                          final headers = {
-                            "Content-type": "multipart/form-data"
-                          };
-
-                          location.getImages().forEach((bytes, file) {
-                            locationRequest.files.add(
-                              http.MultipartFile.fromBytes(
-                                "image",
-                                bytes,
-                                filename: basename(file.path),
-                              ),
-                            );
-                          });
-                          locationRequest.headers.addAll(headers);
-
-                          final locationResponse = await locationRequest.send();
-
-                          if (locationResponse.statusCode != 200) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Failed to create location'),
-                                content: Text(
-                                    'Status code: ${locationResponse.statusCode}'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.of(context)
-                                        .popUntil((route) => route.isFirst),
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        }
-                        // Compute tour
-
-                        final http.Response tourResponse =
-                            await IPHandler().get(
-                          '/api/compute-tour/${_nameController.text}',
-                        );
-                        if (tourResponse.statusCode == 200) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Done'),
-                              content: const Text("Successfully created tour!"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context)
-                                      .popUntil((route) => route.isFirst),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Failed to compute tour'),
-                              content: Text(
-                                  'Status code: ${tourResponse.statusCode}'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context)
-                                      .popUntil((route) => route.isFirst),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Failed to create tour'),
-                            content:
-                                Text('Status code: ${response.statusCode}'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context)
-                                    .popUntil((route) => route.isFirst),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+                      // By default, after successfully posting the tour, redirect users to the list of tours
+                      Navigator.pushNamed(context, '/');
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.green,

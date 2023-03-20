@@ -27,8 +27,10 @@ class IPHandler {
     return http.Response('Could not connect to any IP', 404);
   }
 
-  Future<http.Response> post(String endpoint,
-      [Map<String, String>? options]) async {
+  Future<http.Response> post(
+    String endpoint, [
+    Map<String, String>? options,
+  ]) async {
     for (final String ip in _ipsToTry) {
       final String url = 'http://$ip:$_port$endpoint';
 
