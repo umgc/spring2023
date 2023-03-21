@@ -11,7 +11,7 @@ class Tour(db.Model):
     name = db.Column(db.String(255))
     description = db.Column(db.String(255))
 
-    def __init__(self, name, description):
+    def __init__(self, name=None, description=None):
         self.name = name
         self.description = description
 
@@ -29,9 +29,14 @@ class Location(db.Model):
     state = db.Column(db.String(255))
     filter_id = db.Column(db.Integer)
 
-    def __init__(self, tour_id):
+    def __init__(self, tour_id=None, pano_file_path=None, neighbors=None, state=None, filter_id=None):
+        if neighbors is None:
+            neighbors = {}
         self.tour_id = tour_id
-        self.neighbors = {}
+        self.pano_file_path = pano_file_path
+        self.neighbors = neighbors
+        self.state = state
+        self.filter_id = filter_id
 
     def __repr__(self):
         return '<Locations %r>' % self.location_id
@@ -45,7 +50,7 @@ class Image(db.Model):
     location_id = db.Column(db.Integer)
     file_path = db.Column(db.String(255))
 
-    def __init__(self, tour_id, location_id, file_path):
+    def __init__(self, tour_id=None, location_id=None, file_path=None):
         self.tour_id = tour_id
         self.location_id = location_id
         self.file_path = file_path
@@ -65,7 +70,7 @@ class Text(db.Model):
     position_y = db.Column(db.Integer)
     position_z = db.Column(db.Integer)
 
-    def __init__(self, tour_id, location_id, text_content, position_x, position_y, position_z):
+    def __init__(self, tour_id, location_id=None, text_content=None, position_x=None, position_y=None, position_z=None):
         self.tour_id = tour_id
         self.location_id = location_id
         self.text_content = text_content
@@ -84,7 +89,7 @@ class Filter(db.Model):
     filter_name = db.Column(db.String(255))
     setting = db.Column(db.Integer)
 
-    def __init__(self, setting):
+    def __init__(self, setting=None):
         self.setting = setting
 
     def __repr__(self):
