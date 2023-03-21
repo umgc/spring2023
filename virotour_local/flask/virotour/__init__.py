@@ -11,7 +11,6 @@ from .utils import allowed_file
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 Swagger(app)
-# from . import models
 from logging.config import dictConfig
 
 dictConfig({
@@ -38,6 +37,7 @@ db = SQLAlchemy(app)
 # db.init_app(app)
 app.config.from_object(__name__)
 
+from . import models
 from .api import hello
 from .api import tour
 from .api import image_upload
