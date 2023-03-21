@@ -1,0 +1,8 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/1abedc40-746a-4e49-a8a8-e4d08c4e17a7/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/virotour2023-flask-server",
+    "appService.deploySubpath": ".",
+    "appService.zipIgnorePattern": [
+        "venv{,/**}",
+        ".idea{,/**}"
+    ]
+}
