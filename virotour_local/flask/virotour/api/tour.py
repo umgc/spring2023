@@ -5,7 +5,7 @@ from flask import jsonify, request
 from virotour import db, app
 from virotour.models import Tour, Location, Text
 
-URL = "https://virotour2023-flask-server.azurewebsites.net/api"
+URL = "https://virotour2023-flask-server.azurewebsites.net/api/"
 
 
 @app.route('/api/tours', methods=['GET'])
