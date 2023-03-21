@@ -250,7 +250,10 @@ def api_get_tour(tour_name):
         "locations": [
             {
                 "location_id": location.location_id,
-                "pano_file_path": f"{URL}tour/images/panoramic-image-file/{tour_name_url_encoded}/{str(location.location_id)}",
+                "pano_file_path":
+                    f"{URL}tour/images/panoramic-image-file/{tour_name_url_encoded}/{str(location.location_id)}"
+                    if location.pano_file_path is not None
+                    else "https://i.imgur.com/P2biT0H.jpg",
                 "neighbors": location.neighbors
             } for location in locations
         ],
