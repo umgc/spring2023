@@ -53,6 +53,11 @@ def api_add_tour_images(tour_name):
                 db.session.add(image)
                 db.session.commit()
 
+        # update state of uploaded images to original
+        location.state = "original"
+        db.session.commit()
+        app.logger.info(f'State of location_id {location.location_id} is {location.state}')
+
         flash('File(s) successfully uploaded')
         payload = {
             'tour_id': tour.id,
