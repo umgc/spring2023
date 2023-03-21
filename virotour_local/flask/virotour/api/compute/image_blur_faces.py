@@ -2,8 +2,10 @@ import os
 
 import cv2
 
+from virotour import db, app
 from virotour.api.image_upload import api_get_panoramic_image, api_upload_resolve_path
 from virotour.api.tour import api_get_tour_by_name
+from virotour.models import Location
 
 
 def image_blur_faces(tour_name, location_id):
@@ -14,6 +16,12 @@ def image_blur_faces(tour_name, location_id):
     tour_id = api_get_tour_by_name(tour_name)[0].json['id']
     target_file = f"panoramic_images/T_{tour_id}_L_{location_id}_pano_blurred{file_extension}"
     image_blur_faces_main(image_path, target_file)
+    # Get Location
+    location = db.session.query(Location).filter(Location.location_id == location_id).first()
+    # update state of panoramic to blurred
+    location.state = "blurred"
+    db.session.commit()
+    app.logger.info(f'State of location_id {location_id} updated to blurred')
     return target_file
 
 

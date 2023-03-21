@@ -1,9 +1,11 @@
 import fnmatch
 import os
 
+from virotour import db
 from virotour.api.compute.image_filter import detect_brightness, adjust_contrast_brightness, adjust_hue_saturation_value, \
     apply_gaussian_filter, apply_glow_effect
 from virotour.api.image_upload import api_upload_resolve_path
+from virotour.models import Filter, Location
 from virotour.tests.common_utils import add_tour, get_image_path, upload_images, get_image_paths, compute_tour, \
     get_panoramic_image
 
@@ -71,3 +73,10 @@ def test_apply_glow_effect(client):
     # Detect brighter image
     after = detect_brightness(api_upload_resolve_path(pano_image_path))
     assert before != after
+
+    # Verify filter setting for glow effect was saved to the database
+    location = db.session.query(Location).filter(Location.location_id == location_id).first()
+    filter = db.session.query(Filter).filter(Filter.filter_id == location.filter_id).first()
+    assert filter.filter_name == 'glow'
+    assert filter.setting == brightness
+

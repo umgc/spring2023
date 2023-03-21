@@ -1,3 +1,6 @@
+import enum
+from enum import Enum
+
 from virotour import db
 
 
@@ -23,6 +26,8 @@ class Location(db.Model):
     tour_id = db.Column(db.Integer)
     pano_file_path = db.Column(db.String(255))
     neighbors = db.Column(db.PickleType)
+    state = db.Column(db.String(255))
+    filter_id = db.Column(db.Integer)
 
     def __init__(self, tour_id):
         self.tour_id = tour_id
@@ -70,3 +75,17 @@ class Text(db.Model):
 
     def __repr__(self):
         return '<Text %r>' % self.text_id
+
+
+class Filter(db.Model):
+    __tablename__ = 'filter_table_v1'
+
+    filter_id = db.Column(db.Integer, primary_key=True)
+    filter_name = db.Column(db.String(255))
+    setting = db.Column(db.Integer)
+
+    def __init__(self, setting):
+        self.setting = setting
+
+    def __repr__(self):
+        return '<States %r>' % self.filter_id
