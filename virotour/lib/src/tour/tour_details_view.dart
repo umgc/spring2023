@@ -6,6 +6,7 @@ import 'package:webviewx/webviewx.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/ip_handler.dart';
+import '../settings/settings_view.dart';
 
 /// Displays detailed information about a Tour.
 class TourDetailsView extends StatefulWidget {
@@ -72,6 +73,14 @@ class _TourDetailsViewState extends State<TourDetailsView> {
       appBar: AppBar(
         // TODO: The tour name should come from the tour object
         title: Text(widget.tour.tourName),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.restorablePushNamed(context, SettingsView.routeName);
+            },
+          ),
+        ],
       ),
       body: WebViewX(
         height: safeHeight,

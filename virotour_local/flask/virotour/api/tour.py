@@ -1,10 +1,11 @@
-import random
+import urllib.parse
 
 from flask import jsonify, request
 
 from virotour import db, app
-from virotour.api.image_upload import api_upload_resolve_path
-from virotour.models import Tour, Location, Image, Text
+from virotour.models import Tour, Location, Text
+
+URL = "https://virotour2023-flask-server.azurewebsites.net/api/"
 
 
 @app.route('/api/tours', methods=['GET'])
@@ -177,9 +178,9 @@ def api_set_neighbors(tour_name, neighbors):
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
 
-    first_location = db.session.query(Location)\
-        .filter((Location.tour_id == tour.id))\
-        .order_by(Location.location_id)\
+    first_location = db.session.query(Location) \
+        .filter((Location.tour_id == tour.id)) \
+        .order_by(Location.location_id) \
         .first()
 
     for neighbor in neighbors:
@@ -218,7 +219,7 @@ def api_locations_for_tour(tour_name):
         'results': [
             {
                 "location_id": x.location_id,
-                "neighbors": x.neighbors if x.neighbors is not None else {}
+                "neighbors": x.neighbors if x.neighbors is not None else []
             } for x in locations
         ]
     }
@@ -241,6 +242,7 @@ def api_get_tour(tour_name):
     # Get Locations
     locations = db.session.query(Location).filter((Location.tour_id == tour.id)).all()
     text = db.session.query(Text).filter((Text.tour_id == tour.id)).all()
+    tour_name_url_encoded = urllib.parse.quote(tour_name)
     payload = {
         "id": tour.id,
         "name": tour.name,
@@ -248,7 +250,10 @@ def api_get_tour(tour_name):
         "locations": [
             {
                 "location_id": location.location_id,
-                "pano_file_path": location.pano_file_path,
+                "pano_file_path":
+                    f"{URL}tour/images/panoramic-image-file/{tour_name_url_encoded}/{str(location.location_id)}"
+                    if location.pano_file_path is not None
+                    else "https://i.imgur.com/P2biT0H.jpg",
                 "neighbors": location.neighbors
             } for location in locations
         ],
