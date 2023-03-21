@@ -4,10 +4,10 @@ import os
 import argparse
 import sys
 
-from virotour.models import Location
-from virotour.api.image_upload import api_get_panoramic_image, api_upload_resolve_path
+from virotour.models import Location, Filter
+from virotour.api.image_upload import api_upload_resolve_path
 from virotour import app, db
-from flask import jsonify, request
+from flask import jsonify
 
 # Instantiate the parser
 parser = argparse.ArgumentParser(description='Increase the brightness of an image')
@@ -52,7 +52,7 @@ def detect_brightness(image_path):
         # Calculate mean brightness as percentage
         mean_percent = np.mean(img) * 100 / 255
         classification = "dark" if mean_percent < 49 else "light"
-        print(f'{filename}: {classification} ({mean_percent:.1f}%)')
+        app.logger.info(f'{filename}: {classification} ({mean_percent:.1f}%)')
         return classification
     except:
         FileNotFoundError
@@ -82,7 +82,6 @@ def adjust_contrast_brightness(image_path, brightness, output):
                 os.makedirs(output)
             # Write the image to the output path
             cv2.imwrite(os.path.join(output, f'{filename}'), adjusted_image)
-            app.logger.info(f'Output image: {os.path.join(output, filename)}')
             return os.path.join(output, filename)
 
 
@@ -135,7 +134,16 @@ def apply_glow_effect(location_id, brightness):
     output = api_upload_resolve_path(os.path.dirname(location.pano_file_path)).replace("\\", "/")
     # applies brightness value to the image
     adjust_contrast_brightness(image_path, brightness, output)
-
+    # store filter value
+    filter = Filter(brightness)
+    db.session.add(filter)
+    db.session.commit()
+    # Save filter settings of panoramic image
+    location.filter_id = filter.filter_id
+    filter.filter_name = 'glow'
+    db.session.commit()
+    app.logger.info(f'State of location_id {location_id} is {location.state}')
+    app.logger.info(f'Glow effect applied to {image_path} ')
     payload = {
             'message': f'Glow effect was applied successfully.'
         }

@@ -42,6 +42,9 @@ def api_compute_tour(tour_name):
     for location in locations:
         app.logger.info(f"Computing Panoramic for location_id:{location.location_id}")
         output_path = compute_panoramic(tour_name, location.location_id)
+        location.state = 'panoramic'
+        db.session.commit()
+        app.logger.info(f'State of location_id {location.location_id} updated to panoramic')
         api_set_panoramic_image(tour_name, location.location_id, output_path)
 
     # For all locations, compute neighbors
