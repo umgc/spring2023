@@ -15,11 +15,11 @@ def file_upload_request_builder(image_paths):
     return files
 
 
-def test_integration():
+def test_integration_1():
     # Create Tour
     now = datetime.now()
     current_time = now.strftime("%m_%d_%H_%M_%S")
-    tour_name = f'Virtual Tour {current_time}'
+    tour_name = f'Sample Tour {current_time}'
     r1 = requests.post(url=f"{URL}/tour/add", json= {'name': tour_name, 'description': 'test'})
     r2 = requests.get(url=f"{URL}/tours")
 
@@ -33,10 +33,30 @@ def test_integration():
 
     # Compute tour
     r5 = requests.get(url=f"{URL}/compute-tour/{tour_name}")
-    assert r5.status_code == 200
+
+    # Get Tour
+    r6 = requests.get(url=f"{URL}/tour/get-tour/{tour_name}")
+    assert r6.status_code == 200
+
+def test_integration_2():
+    # Create Tour
+    now = datetime.now()
+    current_time = now.strftime("%m_%d_%H_%M_%S")
+    tour_name = f'Air Space {current_time}'
+    r1 = requests.post(url=f"{URL}/tour/add", json= {'name': tour_name, 'description': 'test'})
+    r2 = requests.get(url=f"{URL}/tours")
+
+    assert r1.json()["message"] == f"Tour {tour_name} has been created successfully."
+    assert r2.json()["count"] > 0
+
+    # Add images
+    for location_path in os.listdir(get_image_path('input_images/sample_tour_2/')):
+        files_to_upload = get_image_paths(f'input_images/sample_tour_2/{location_path}')
+        requests.post(url=f"{URL}/tour/add/images/{tour_name}", files=file_upload_request_builder(files_to_upload))
+
+    # Compute tour
+    r5 = requests.get(url=f"{URL}/compute-tour/{tour_name}")
 
     # Get Tour
     r8 = requests.get(url=f"{URL}/tour/get-tour/{tour_name}")
-    print(json.dumps(r8.json(), indent=2))
-    assert r8.status_code == 200
 
