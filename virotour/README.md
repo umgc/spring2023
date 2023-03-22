@@ -9,6 +9,9 @@
 ## Versions
 See [RELEASE](./docs/RELEASE.md).
 
+## Versions
+See [RELEASE](./docs/RELEASE.md).
+
 ## Issues
 
 ### Android
