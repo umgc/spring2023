@@ -154,7 +154,6 @@ class _TourEditViewState extends State<TourEditView> {
                       if (confirmDelete == true) {
                         final http.Response response = await IPHandler()
                             .post('/api/tour/delete/${widget.tour.id}');
-
                         if (response.statusCode == 200) {
                           Navigator.pop(context);
                         } else {
