@@ -7,6 +7,8 @@ import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
 
+import '../helpers/ip_handler.dart';
+
 class TourListView extends StatefulWidget {
   const TourListView({
     super.key,
