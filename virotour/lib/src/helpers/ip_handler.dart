@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -19,7 +20,7 @@ class IPHandler {
           return response;
         }
       } catch (e) {
-        print('Error connecting to $url: $e');
+        debugPrint('Error connecting to $url: $e');
       }
     }
 

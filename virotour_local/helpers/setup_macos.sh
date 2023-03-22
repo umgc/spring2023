@@ -7,7 +7,7 @@ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.
 echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 source ~/.zshrc
-pyenv install 3.11.2
-pyenv virtualenv 3.11.2 virotour-3.11.2
-pyenv activate virotour-3.11.2
-pyenv local virotour-3.11.2
+pyenv install 3.9.16
+pyenv virtualenv 3.9.16 virotour-3.9.16
+pyenv activate virotour-3.9.16
+pyenv local virotour-3.9.16
