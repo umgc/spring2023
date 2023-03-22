@@ -21,6 +21,7 @@ class IPHandler {
         }
       } catch (e) {
         debugPrint('Error connecting to $url: $e');
+        throw 'Error connecting to $url: $e';
       }
     }
 
