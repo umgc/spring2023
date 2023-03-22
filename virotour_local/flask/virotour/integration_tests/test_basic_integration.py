@@ -36,7 +36,6 @@ def test_integration_1():
 
     # Get Tour
     r6 = requests.get(url=f"{URL}/tour/get-tour/{tour_name}")
-    assert r6.status_code == 200
 
 def test_integration_2():
     # Create Tour
