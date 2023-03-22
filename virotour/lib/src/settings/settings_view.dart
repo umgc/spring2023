@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:virotour/src/settings/settings_controller.dart';
 
+import 'package:virotour/src/tour/glow_feature_backend_view.dart';
+
 /// Displays the various settings that can be customized by the user.
 ///
 /// When a user changes a setting, the SettingsController is updated and
@@ -22,24 +24,68 @@ class SettingsView extends StatelessWidget {
         //
         // When a user selects a theme from the dropdown list, the
         // SettingsController is updated, which rebuilds the MaterialApp.
-        child: DropdownButton<ThemeMode>(
-          // Read the selected themeMode from the controller
-          value: controller.themeMode,
-          // Call the updateThemeMode method any time the user selects a theme.
-          onChanged: controller.updateThemeMode,
-          items: const [
-            DropdownMenuItem(
-              value: ThemeMode.system,
-              child: Text('System Theme'),
+        child: ListView(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 8, bottom: 8),
+              child: DropdownButton<ThemeMode>(
+                // Read the selected themeMode from the controller
+                value: controller.themeMode,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateThemeMode,
+                items: const [
+                  DropdownMenuItem(
+                    value: ThemeMode.system,
+                    child: Text('System Theme'),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.light,
+                    child: Text('Light Theme'),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.dark,
+                    child: Text('Dark Theme'),
+                  )
+                ],
+              ),
             ),
-            DropdownMenuItem(
-              value: ThemeMode.light,
-              child: Text('Light Theme'),
+            Container(
+              margin: const EdgeInsets.only(top: 8, bottom: 8),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViroTour()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  // minimumSize: const Size(70.0, 35.0),
+                  textStyle: const TextStyle(fontSize: 12),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: const Text("Glow Effect"),
+              ),
             ),
-            DropdownMenuItem(
-              value: ThemeMode.dark,
-              child: Text('Dark Theme'),
-            )
+            Container(
+              margin: const EdgeInsets.only(top: 8, bottom: 8),
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  // minimumSize: const Size(70.0, 35.0),
+                  textStyle: const TextStyle(fontSize: 12),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: const Text("Share"),
+              ),
+            ),
           ],
         ),
       ),

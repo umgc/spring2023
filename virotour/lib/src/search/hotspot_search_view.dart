@@ -35,7 +35,13 @@ class _HotspotSearchViewState extends State<HotspotSearchView> {
           {"description": "Vase 2", "url": "URL to vase 2"}
         ]
       },
-      {"sculpture": []},
+      {
+        "sculpture": [
+          {"description": "Sculpture 1", "url": "URL to sculpture 1"},
+          {"description": "Sculpture 2", "url": "URL to sculpture 2"},
+          {"description": "Sculpture 3", "url": "URL to sculpture 3"}
+        ]
+      },
     ];
 
     final matchedItem = items.firstWhere(
@@ -61,52 +67,74 @@ class _HotspotSearchViewState extends State<HotspotSearchView> {
     }
   }
 
+  void clearSearch() {
+    setState(() {
+      _searchController.clear();
+      _searchController.text = '';
+      _searchResults = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Hotspots'),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _searchController,
-            onChanged: _onSearchQueryChanged,
-            decoration: const InputDecoration(
-              hintText: 'Type to search for informational hotspots',
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: _onSearchQueryChanged,
+                    decoration: const InputDecoration(
+                      hintText: 'Search for informational hotspots',
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: clearSearch,
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _searchResults?.length ?? 0,
-              itemBuilder: (BuildContext context, int index) {
-                final result = _searchResults?[index];
-                return ListTile(
-                  title: Text(result?['description'] ?? ''),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Alert'),
-                          content: Text("This should go to: ${result!['url']}"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                );
-              },
+            Expanded(
+              child: ListView.builder(
+                itemCount: _searchResults?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  final result = _searchResults?[index];
+                  return ListTile(
+                    title: Text(result?['description'] ?? ''),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Alert'),
+                            content:
+                                Text("This should go to: ${result!['url']}"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
