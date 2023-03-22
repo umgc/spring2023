@@ -1,10 +1,10 @@
-// tour_edit_view.dart
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:virotour/src/tour/tour.dart';
+
+import '../helpers/ip_handler.dart';
 
 class TourEditView extends StatefulWidget {
   static const routeName = '/tour_edit';
@@ -89,18 +89,22 @@ class _TourEditViewState extends State<TourEditView> {
                   const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      final url =
-                          'http://192.168.1.217:8081/api/update/tour/${widget.tour.id}';
-                      final body = {
+                      final String body = {
                         'id': widget.tour.id,
                         'name': _nameController.text,
                         'description': _descriptionController.text,
+                      }.toString();
+
+                      final String headers =
+                          {'Content-Type': 'application/json'}.toString();
+
+                      final Map<String, String> options = {
+                        'headers': headers,
+                        'body': body,
                       };
-                      final response = await http.post(
-                        Uri.parse(url),
-                        headers: {'Content-Type': 'application/json'},
-                        body: json.encode(body),
-                      );
+
+                      final http.Response response = await IPHandler()
+                          .post('/api/update/tour/${widget.tour.id}', options);
                       if (response.statusCode == 200) {
                         Navigator.pop(context);
                       } else {
@@ -148,9 +152,9 @@ class _TourEditViewState extends State<TourEditView> {
                         ),
                       );
                       if (confirmDelete == true) {
-                        final url =
-                            'http://192.168.1.217:8081/api/delete/tour/${widget.tour.id}';
-                        final response = await http.delete(Uri.parse(url));
+                        final http.Response response = await IPHandler()
+                            .post('/api/tour/delete/${widget.tour.id}');
+
                         if (response.statusCode == 200) {
                           Navigator.pop(context);
                         } else {

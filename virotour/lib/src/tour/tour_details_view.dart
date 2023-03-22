@@ -24,7 +24,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
 
   Future<Tour> getTourInfo() async {
     final http.Response response =
-        await IPHandler().tryEndpoint('/api/tour/${widget.tour.id}');
+        await IPHandler().get('/api/tour/${widget.tour.id}');
 
     if (response.statusCode == 200) {
       final Tour tour = jsonDecode(response.body) as Tour;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:virotour/src/search/hotspot_search_view.dart';
 import 'package:virotour/src/search/tour_search.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
+import 'package:virotour/src/tour/tour_create_view.dart';
 
 class Hamburger extends StatelessWidget {
   const Hamburger({super.key});
@@ -63,8 +64,7 @@ class Hamburger extends StatelessWidget {
     );
 
     if (selected == 'Create Tour') {
-      showSnackBar('Should go to Create Tour Page', context);
-      //Navigator.restorablePushNamed(context, CreateTour.routeName);
+      Navigator.restorablePushNamed(context, TourCreateView.routeName);
     } else if (selected == 'Search Tours') {
       Navigator.push(
         context,

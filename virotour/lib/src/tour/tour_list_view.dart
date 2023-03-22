@@ -7,6 +7,8 @@ import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
 
+import '../helpers/ip_handler.dart';
+
 class TourListView extends StatefulWidget {
   const TourListView({
     super.key,
@@ -31,8 +33,7 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.217:8081/api/tours'));
+    final http.Response response = await IPHandler().get('/api/tours');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
