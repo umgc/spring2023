@@ -3,6 +3,9 @@
     "appService.deploySubpath": ".",
     "appService.zipIgnorePattern": [
         "venv{,/**}",
-        ".idea{,/**}"
+        ".idea{,/**}",
+        "*.png",
+        "*.jpg",
+        "*.db"
     ]
 }

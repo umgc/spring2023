@@ -31,7 +31,7 @@ class Location(db.Model):
 
     def __init__(self, tour_id=None, pano_file_path=None, neighbors=None, state=None, filter_id=None):
         if neighbors is None:
-            neighbors = {}
+            neighbors = []
         self.tour_id = tour_id
         self.pano_file_path = pano_file_path
         self.neighbors = neighbors
