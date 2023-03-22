@@ -13,8 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.5
-  webviewx: ^0.2.1
   image_picker: ^0.8.6
+  webviewx: ^0.2.1
 
 dev_dependencies:
   build_runner: '>=1.6.2 <3.0.0'
