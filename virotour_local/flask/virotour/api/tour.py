@@ -178,20 +178,15 @@ def api_set_neighbors(tour_name, neighbors):
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
 
-    first_location = db.session.query(Location) \
-        .filter((Location.tour_id == tour.id)) \
-        .order_by(Location.location_id) \
-        .first()
-
     for neighbor in neighbors:
         location = db.session.query(Location).filter((Location.tour_id == tour.id) &
                                                      (Location.location_id == neighbor)).first()
         curr_neighbor = neighbors[neighbor][0]
 
-        if curr_neighbor and location.location_id != first_location.location_id:
+        if curr_neighbor:
             location.neighbors = [
                 {
-                    "location_id": location.location_id - 1,
+                    "location_id": location.location_id + 1,
                     "x": curr_neighbor[0],
                     "y": curr_neighbor[1]
                 }

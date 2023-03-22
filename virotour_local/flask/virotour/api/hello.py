@@ -21,6 +21,6 @@ def api_hello():
         """
     payload = {
         'method': request.method,
-        'message': 'Hello World! This is the REST APIs starter template. (v2)'
+        'message': 'Hello World! This is the REST APIs starter template. (v3)'
     }
     return jsonify(payload), 200
