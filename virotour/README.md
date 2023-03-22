@@ -8,3 +8,8 @@
 
 ## Versions
 See [RELEASE](./docs/RELEASE.md).
+
+## Issues
+
+### Android
+- `OS Error: Connection refused`: This is caused by your local Android emulator, see [solution](./docs/android_issues.md#socketexception-os-error-connection-refused).
