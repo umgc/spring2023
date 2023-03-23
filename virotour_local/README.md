@@ -70,23 +70,9 @@ http://localhost:8081/api/add/tour/images/  -- [POST] upload images to server
 
 ## Setup for MacOS
 
-In this folder (virotour_local) run:
+In this folder (virotour_local) run these 2 scripts:
 ```
 . ./helpers/setup_macos.sh
+. ./helpers/start_flask_server.sh
 ```
-Go to the flask folder:
-```
-cd ./flask
-```
-Install dependencies:
-```
-pip install -r requirements.txt
-```
-Start the Flask server:
-```
-python run.py
-```
-If you want to run all tests, do:
-```
-python -m pytest app/tests 
-```
+To stop the server, hold ctrl + C

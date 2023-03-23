@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:virotour/src/helpers/ip_handler.dart';
+import 'package:virotour/src/navbar/hamburger.dart';
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
-import 'package:virotour/src/hamburger.dart';
 
 class TourListView extends StatefulWidget {
   const TourListView({
@@ -32,8 +33,7 @@ class _TourListViewState extends State<TourListView> {
   }
 
   static Future<List<Tour>> fetchData() async {
-    final response =
-        await http.get(Uri.parse('http://127.0.0.1:8081/api/tours'));
+    final http.Response response = await IPHandler().tryEndpoint('/api/tours');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -64,14 +64,12 @@ class _TourListViewState extends State<TourListView> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tours'),
-        leading: Hamburger(),
+        leading: const Hamburger(),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -150,9 +148,17 @@ class _TourListViewState extends State<TourListView> {
                             child: const Icon(Icons.edit),
                           ),
                           onTap: () {
-                            Navigator.restorablePushNamed(
+                            // Navigator.restorablePushNamed(
+                            //   context,
+                            //   TourDetailsView.routeName,
+                            // );
+                            Navigator.push(
                               context,
-                              TourDetailsView.routeName,
+                              MaterialPageRoute(
+                                builder: (context) => TourDetailsView(
+                                  tour: item,
+                                ),
+                              ),
                             );
                           },
                         );

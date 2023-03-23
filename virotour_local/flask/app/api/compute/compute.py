@@ -48,7 +48,8 @@ def api_compute_tour(tour_name):
 
     # For all images, blur faces
     for location in locations:
-        image_blur_faces(tour_name, location.location_id)
+        output_path = image_blur_faces(tour_name, location.location_id)
+        api_set_panoramic_image(tour_name, location.location_id, output_path)
 
     # For all images, extract text
     for location in locations:
