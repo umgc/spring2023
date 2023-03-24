@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
 class IPHandler {
-  static const List<String> _ipsToTry = ['192.168.1.180', '127.0.0.1'];
+  static const List<String> _ipsToTry = ['192.168.1.19', '127.0.0.1'];
   static const int _port = 8081;
 
   Future<http.Response> tryEndpoint(String endpoint) async {
