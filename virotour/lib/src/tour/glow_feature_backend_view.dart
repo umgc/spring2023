@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webviewx/webviewx.dart';
-//import 'dart:convert';
-
 
 double lighting = 0;
 
@@ -17,15 +15,7 @@ class ViroTour extends StatefulWidget {
 class SliderState extends State<ViroTour> {
   @override
   Widget build(BuildContext context) {
-/*
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
-    final padding = MediaQuery.of(context).padding;
-    final safeHeight = height - padding.top - padding.bottom;
-    final safeWidth = width - padding.left - padding.right;
-
- */
     return  MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Glow Effect')),
@@ -54,15 +44,12 @@ class SliderState extends State<ViroTour> {
                       var webviewController = controller;
                     },
 
-                  //Image.asset('assets/plane.png',
-                  //    fit: BoxFit.cover
-                  ),
+                 ),
                   ColoredBox(
                     color: Colors.white.withAlpha(lighting.toInt()),
                     //color: Colors.black.withOpacity(lighting),
                   ),
-                  // const Text("Change slider"),
-                ],
+                  ],
               ),
             ),
             Slider(
