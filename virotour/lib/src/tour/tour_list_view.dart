@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:virotour/src/helpers/ip_handler.dart';
+import 'package:virotour/src/navbar/hamburger.dart';
 import 'package:virotour/src/settings/settings_view.dart';
 import 'package:virotour/src/tour/tour.dart';
 import 'package:virotour/src/tour/tour_details_view.dart';
 import 'package:virotour/src/tour/tour_edit_view.dart';
-
-import '../helpers/ip_handler.dart';
 
 class TourListView extends StatefulWidget {
   const TourListView({
@@ -57,6 +57,7 @@ class _TourListViewState extends State<TourListView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tours'),
+        leading: const Hamburger(),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
