@@ -104,11 +104,26 @@ def api_get_tour_by_name(name):
 
 @app.route('/api/tour/add', methods=['POST'])
 def api_add_tour():
-    """
-        Add new tour
-        ---
-        parameters:
-          - data: name, description
+    """Add new tour
+    ---
+    consumes:
+    - "application/json"
+    parameters:
+      - in: body
+        name: body_params
+        required: true
+        schema:
+          id: endpoint_body
+          required:
+            - parameter1
+            - parameter2
+          properties:
+            parameter1:
+              type: string
+              description: The parameter1 description
+            parameter2:
+              type: string
+              description: The parameter2 description
     """
     if request.is_json:
         data = request.get_json()

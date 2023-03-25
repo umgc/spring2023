@@ -42,5 +42,6 @@ from .api import hello
 from .api import tour
 from .api import image_upload
 from .api import text
+from .api.compute import image_filter
 from .api.compute import compute
 from .api import after_request

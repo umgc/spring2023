@@ -17,6 +17,10 @@ def api_add_tour_images(tour_name):
             type: string
             required: true
             description: Name of the tour
+          - name: file
+            required: true
+            in: formData
+            type: file
     """
     if request.method == 'POST':
         if not request.files:
@@ -24,8 +28,11 @@ def api_add_tour_images(tour_name):
             app.logger.error(f'Could not find images')
             app.logger.info(request)
             return redirect(request.url)
-
-        files = request.files.to_dict()
+        app.logger.info(f"{request.files}")
+        if request.files.get('files[]'):
+            files = request.files.getlist('files[]')
+        else:
+            files = request.files.to_dict()
         app.logger.info(f"Uploading images as a new location: {files}")
         result = {}
 
@@ -36,7 +43,10 @@ def api_add_tour_images(tour_name):
 
         for file in files:
             if file:
-                filename_raw = file
+                if request.files.get('files[]'):
+                    filename_raw = file.filename
+                else:
+                    filename_raw = file
                 filename = os.path.basename(filename_raw)
                 target_path = os.path.join(app.config['UPLOAD_FOLDER'], 'raw_images/')
                 target_file = f'T_{tour.id}_L_{location.location_id}_{filename}'
@@ -47,7 +57,11 @@ def api_add_tour_images(tour_name):
 
                 # Make directory & save
                 os.makedirs(target_path, exist_ok=True)
-                files[file].save(target_file_full)
+
+                if request.files.get('files[]'):
+                    file.save(target_file_full)
+                else:
+                    files[file].save(target_file_full)
 
                 image = Image(tour.id, location.location_id, result[filename])
                 db.session.add(image)

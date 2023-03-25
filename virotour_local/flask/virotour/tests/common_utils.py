@@ -70,7 +70,7 @@ def upload_images(client, name, image_list):
 
 
 def upload_images_with_resp(client, name, image_list):
-    files = {fpath: open(fpath, 'rb') for fpath in image_list}
+    files = {'files[]': [open(fpath, 'rb') for fpath in image_list]}
     return client.post(f'/api/tour/add/images/{name}', data=files)
 
 
