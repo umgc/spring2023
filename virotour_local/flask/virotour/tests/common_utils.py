@@ -119,6 +119,14 @@ def get_panoramic_image_file_with_resp(client, tour_name, location_id):
     return client.get(f'/api/tour/images/panoramic-image-file/{tour_name}/{location_id}')
 
 
+def get_glow_panoramic_image_file(client, tour_name, location_id, value):
+    return get_panoramic_image_file_with_resp(client, tour_name, location_id, value)
+
+
+def get_glow_panoramic_image_file_with_resp(client, tour_name, location_id, value):
+    return client.get(f'/api/tour/images/glow-panoramic-image-file/{tour_name}/{location_id}/{value}')
+
+
 def set_panoramic_image(client, tour_name, location_id, path):
     return parse_http_response(get_raw_images_with_resp(client, tour_name, location_id, path))
 

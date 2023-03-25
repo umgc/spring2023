@@ -3,6 +3,7 @@ import os
 from flask import request, flash, redirect, jsonify, send_file
 
 from virotour import app, db
+from virotour.api.compute.image_filter import apply_glow_effect
 from virotour.models import Tour, Location, Image
 
 
@@ -141,7 +142,6 @@ def api_set_panoramic_image(tour_name, location_id, path):
     return None
 
 
-
 @app.route('/api/tour/images/panoramic-image/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_panoramic_image(tour_name, location_id):
     """
@@ -218,6 +218,35 @@ def api_get_panoramic_image_file(tour_name, location_id):
         # Get Location
         location = db.session.query(Location).filter((Location.tour_id == tour.id) &
                                                      (Location.location_id == location_id)).first()
+        pano_image_file = api_upload_resolve_path(location.pano_file_path)
+
+        return send_file(pano_image_file)
+    except Exception as e:
+        return str(e)
+
+
+@app.route('/api/tour/images/glow-panoramic-image-file/<string:tour_name>/<int:location_id>/<int:value>',
+           methods=['GET'])
+def api_get_glow_panoramic_image_file(tour_name, location_id, value):
+    """
+        After you've computed the tour, you can retrieve the image for a given tour name and location_id.
+        ---
+        parameters:
+          - in: path
+            name: tour_name
+            value: brightness value
+            type: string
+            required: true
+            description: Name of the tour
+    """
+    try:
+        # Get Tour
+        tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+        # Get Location
+        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                     (Location.location_id == location_id)).first()
+        # brighten the image by applying the glow effect
+        apply_glow_effect(location.location_id, value)
         pano_image_file = api_upload_resolve_path(location.pano_file_path)
 
         return send_file(pano_image_file)
