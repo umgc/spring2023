@@ -18,7 +18,7 @@ def test_detect_brightness(client):
 
 def test_adjust_contrast_brightness(client):
     input_file = get_image_path('input_images\\location4\original\\T_1_L_1_pano.png').replace("\\", "/")
-    output_directory = get_image_path('input_images\\location4\\result').replace("\\", "/")
+    output_directory = get_image_path('input_images\\location4\\result\\result.png').replace("\\", "/")
     brightness_level = 100
     adjust_contrast_brightness(input_file, brightness_level, output_directory)
     # Count the number of files in the output directory

@@ -58,11 +58,13 @@ def detect_brightness(image_path):
         FileNotFoundError
 
 
-def adjust_contrast_brightness(image_path, brightness, output):
+def adjust_contrast_brightness(image_path, brightness, output_file):
+    if brightness == 0:
+        return image_path
+
     # Check if file exists
     if os.path.exists(image_path):
-        # Apply filter if mean brightness was below 50%
-        filename = os.path.basename(image_path)
+        # Apply filter if mean brightness was below 50%\
         #if detect_brightness(image_path) == "dark":
         img = cv2.imread(image_path)
         dst = img.copy()
@@ -77,12 +79,12 @@ def adjust_contrast_brightness(image_path, brightness, output):
         alpha_b = (highlight - shadow) / 255
         gamma_b = shadow
         adjusted_image = cv2.convertScaleAbs(img, dst, alpha_b, gamma_b)
-        # Check if output folder exists
-        if not os.path.exists(output):
-            os.makedirs(output)
+        # # Check if output folder exists
+        # if not os.path.exists(output):
+        #     os.makedirs(output)
         # Write the image to the output path
-        cv2.imwrite(os.path.join(output, f'{filename}'), adjusted_image)
-        return os.path.join(output, filename)
+        cv2.imwrite(output_file, adjusted_image)
+        return output_file
 
 
 def adjust_hue_saturation_value(image_path, brightness, output):
@@ -128,12 +130,6 @@ def apply_gaussian_filter(image_path, radius, strength, output):
 def apply_glow_effect(location_id, brightness):
     # Get Location
     location = db.session.query(Location).filter(Location.location_id == location_id).first()
-    # Get the absolute file path of the panoramic image
-    image_path = api_upload_resolve_path(location.pano_file_path).replace("\\", "/")
-    # Strip the filename from the output path
-    output = api_upload_resolve_path(os.path.dirname(location.pano_file_path)).replace("\\", "/")
-    # applies brightness value to the image
-    adjust_contrast_brightness(image_path, brightness, output)
     # store filter value
     filter = Filter(brightness)
     db.session.add(filter)
@@ -143,7 +139,6 @@ def apply_glow_effect(location_id, brightness):
     filter.filter_name = 'glow'
     db.session.commit()
     app.logger.info(f'State of location_id {location_id} is {location.state}')
-    app.logger.info(f'Glow effect applied to {image_path} ')
     payload = {
             'message': f'Glow effect was applied successfully.'
         }

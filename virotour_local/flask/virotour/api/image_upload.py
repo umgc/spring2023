@@ -3,9 +3,9 @@ import os
 from flask import request, flash, redirect, jsonify, send_file
 
 from virotour import app, db
-from virotour.api.compute.image_filter import apply_glow_effect
+from virotour.api.compute.image_filter import apply_glow_effect, adjust_contrast_brightness
 from virotour.api.tour import api_upload_resolve_path
-from virotour.models import Tour, Location, Image
+from virotour.models import Tour, Location, Image, Filter
 
 
 @app.route('/api/tour/add/images/<string:tour_name>', methods=['POST'])
@@ -208,37 +208,19 @@ def api_get_panoramic_image_file(tour_name, location_id):
         location = db.session.query(Location).filter((Location.tour_id == tour.id) &
                                                      (Location.location_id == location_id)).first()
         pano_image_file = api_upload_resolve_path(location.pano_file_path)
+        value = db.session.query(Filter).filter(Filter.filter_id == location.filter_id).first()\
 
-        return send_file(pano_image_file)
-    except Exception as e:
-        return str(e)
-
-
-@app.route('/api/tour/images/glow-panoramic-image-file/<string:tour_name>/<int:location_id>/<int:value>',
-           methods=['GET'])
-def api_get_glow_panoramic_image_file(tour_name, location_id, value):
-    """
-        After you've computed the tour, you can retrieve the image for a given tour name and location_id.
-        ---
-        parameters:
-          - in: path
-            name: tour_name
-            value: brightness value
-            type: string
-            required: true
-            description: Name of the tour
-    """
-    try:
-        # Get Tour
-        tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
-        # Get Location
-        location = db.session.query(Location).filter((Location.tour_id == tour.id) &
-                                                     (Location.location_id == location_id)).first()
-        # brighten the image by applying the glow effect
-        apply_glow_effect(location.location_id, value)
-        pano_image_file = api_upload_resolve_path(location.pano_file_path)
-        app.logger.info(f"Returning: {pano_image_file}")
-
-        return send_file(pano_image_file)
+        if value is not None and value.setting is not None and value.setting != 0:
+            setting = value.setting
+            app.logger.info(f"setting is {setting}")
+            # Get the absolute file path of the panoramic image
+            image_path = api_upload_resolve_path(location.pano_file_path).replace("\\", "/")
+            # Strip the filename from the output path
+            output = api_upload_resolve_path(os.path.join(os.path.dirname(location.pano_file_path), "temp.jpg")).replace("\\", "/")
+            # applies brightness value to the image
+            adjust_contrast_brightness(image_path, setting, output)
+            return send_file(output)
+        else:
+            return send_file(pano_image_file)
     except Exception as e:
         return str(e)
