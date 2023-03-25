@@ -126,6 +126,19 @@ def apply_gaussian_filter(image_path, radius, strength, output):
 
 @app.route('/api/glow-effect/update/<int:location_id>/<int:brightness>', methods=['POST'])
 def apply_glow_effect(location_id, brightness):
+    """
+        Set glow filter. 1-255 are valid inputs for 'brightness'. 0 tells the system to reset to original image.
+        ---
+        parameters:
+          - in: path
+            name: location_id
+            type: int
+            required: true
+          - in: path
+            name: brightness
+            type: int
+            required: true
+    """
     # Get Location
     location = db.session.query(Location).filter(Location.location_id == location_id).first()
     # store filter value
