@@ -3,6 +3,7 @@ import 'package:virotour/src/search/hotspot_search_view.dart';
 import 'package:virotour/src/search/tour_search.dart';
 import 'package:virotour/src/tour/tour_list_view.dart';
 import 'package:virotour/src/tour/tour_create_view.dart';
+import 'package:virotour/src/tour/tour_vr_demo.dart';
 
 class Hamburger extends StatelessWidget {
   const Hamburger({super.key});
@@ -59,6 +60,19 @@ class Hamburger extends StatelessWidget {
             ],
           ),
         ),
+        const PopupMenuDivider(height: 2),
+        PopupMenuItem<String>(
+          value: 'Vr Demo',
+          child: Row(
+            children: const <Widget>[
+              Icon(Icons.panorama, color: Colors.white),
+              Text(
+                'Vr Demo',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+        ),
       ],
       elevation: 8.0,
     );
@@ -73,7 +87,11 @@ class Hamburger extends StatelessWidget {
     } else if (selected == 'Search Hotspots') {
       // showSnackBar('Should go to Search Hotspots Page', context);
       Navigator.restorablePushNamed(context, HotspotSearchView.routeName);
-    } else if (selected == 'View Tours') {
+    }else if (selected == 'Vr Demo') {
+      // showSnackBar('Should go to Search Hotspots Page', context);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> const TourVrDetailsView()));
+    }
+    else if (selected == 'View Tours') {
       Navigator.restorablePushNamed(context, TourListView.routeName);
     } else {
       //nothing here, only used for testing
