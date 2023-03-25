@@ -63,26 +63,26 @@ def adjust_contrast_brightness(image_path, brightness, output):
     if os.path.exists(image_path):
         # Apply filter if mean brightness was below 50%
         filename = os.path.basename(image_path)
-        if detect_brightness(image_path) == "dark":
-            img = cv2.imread(image_path)
-            dst = img.copy()
-            if brightness != 0:
-                if brightness > 0:
-                    shadow = brightness
-                    highlight = 255
-                else:
-                    shadow = 0
-                    highlight = 255 + brightness
+        #if detect_brightness(image_path) == "dark":
+        img = cv2.imread(image_path)
+        dst = img.copy()
+        if brightness != 0:
+            if brightness > 0:
+                shadow = brightness
+                highlight = 255
+            else:
+                shadow = 0
+                highlight = 255 + brightness
 
-            alpha_b = (highlight - shadow) / 255
-            gamma_b = shadow
-            adjusted_image = cv2.convertScaleAbs(img, dst, alpha_b, gamma_b)
-            # Check if output folder exists
-            if not os.path.exists(output):
-                os.makedirs(output)
-            # Write the image to the output path
-            cv2.imwrite(os.path.join(output, f'{filename}'), adjusted_image)
-            return os.path.join(output, filename)
+        alpha_b = (highlight - shadow) / 255
+        gamma_b = shadow
+        adjusted_image = cv2.convertScaleAbs(img, dst, alpha_b, gamma_b)
+        # Check if output folder exists
+        if not os.path.exists(output):
+            os.makedirs(output)
+        # Write the image to the output path
+        cv2.imwrite(os.path.join(output, f'{filename}'), adjusted_image)
+        return os.path.join(output, filename)
 
 
 def adjust_hue_saturation_value(image_path, brightness, output):
