@@ -4,6 +4,7 @@ from flask import request, flash, redirect, jsonify, send_file
 
 from virotour import app, db
 from virotour.api.compute.image_filter import apply_glow_effect
+from virotour.api.tour import api_upload_resolve_path
 from virotour.models import Tour, Location, Image
 
 
@@ -116,18 +117,6 @@ def api_get_tour_images(tour_name, location_id):
         'server_file_paths': result
     }
     return jsonify(payload), 200
-
-
-def api_upload_resolve_path(relative_path):
-    """
-    This is an internal call, so there is not a user-facing route.
-
-    Additional note: if the path to the file is not sufficient, and we need to return the full contents of the file,
-    we will need to change the endpoints to use "flask.send_file(...)" or "flask.send_from_directory(...).
-
-    https://flask.palletsprojects.com/en/2.2.x/api/#flask.send_file
-    """
-    return os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], relative_path))
 
 
 def api_set_panoramic_image(tour_name, location_id, path):
@@ -248,6 +237,7 @@ def api_get_glow_panoramic_image_file(tour_name, location_id, value):
         # brighten the image by applying the glow effect
         apply_glow_effect(location.location_id, value)
         pano_image_file = api_upload_resolve_path(location.pano_file_path)
+        app.logger.info(f"Returning: {pano_image_file}")
 
         return send_file(pano_image_file)
     except Exception as e:

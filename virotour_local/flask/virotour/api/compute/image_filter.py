@@ -5,7 +5,7 @@ import argparse
 import sys
 
 from virotour.models import Location, Filter
-from virotour.api.image_upload import api_upload_resolve_path
+from virotour.api.tour import api_upload_resolve_path
 from virotour import app, db
 from flask import jsonify
 

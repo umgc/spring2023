@@ -1,5 +1,6 @@
 from virotour import app
-from virotour.api.image_upload import api_get_panoramic_image, api_upload_resolve_path
+from virotour.api.image_upload import api_get_panoramic_image
+from virotour.api.tour import api_upload_resolve_path
 
 import easyocr
 

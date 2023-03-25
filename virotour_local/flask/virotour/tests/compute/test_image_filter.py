@@ -4,7 +4,7 @@ import os
 from virotour import db
 from virotour.api.compute.image_filter import detect_brightness, adjust_contrast_brightness, adjust_hue_saturation_value, \
     apply_gaussian_filter, apply_glow_effect
-from virotour.api.image_upload import api_upload_resolve_path
+from virotour.api.tour import api_upload_resolve_path
 from virotour.models import Filter, Location
 from virotour.tests.common_utils import add_tour, get_image_path, upload_images, get_image_paths, compute_tour, \
     get_panoramic_image

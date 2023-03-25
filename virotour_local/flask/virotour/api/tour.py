@@ -1,3 +1,4 @@
+import os
 import urllib.parse
 
 from flask import jsonify, request
@@ -278,3 +279,15 @@ def api_get_tour(tour_name):
     }
 
     return jsonify(payload), 200
+
+
+def api_upload_resolve_path(relative_path):
+    """
+    This is an internal call, so there is not a user-facing route.
+
+    Additional note: if the path to the file is not sufficient, and we need to return the full contents of the file,
+    we will need to change the endpoints to use "flask.send_file(...)" or "flask.send_from_directory(...).
+
+    https://flask.palletsprojects.com/en/2.2.x/api/#flask.send_file
+    """
+    return os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], relative_path))
