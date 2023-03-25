@@ -64,8 +64,6 @@ def adjust_contrast_brightness(image_path, brightness, output_file):
 
     # Check if file exists
     if os.path.exists(image_path):
-        # Apply filter if mean brightness was below 50%\
-        #if detect_brightness(image_path) == "dark":
         img = cv2.imread(image_path)
         dst = img.copy()
         if brightness != 0:
