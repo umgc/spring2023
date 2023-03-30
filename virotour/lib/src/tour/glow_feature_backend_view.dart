@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:webviewx/webviewx.dart';
 
 double lighting = 0;
 
@@ -30,14 +31,24 @@ class SliderState extends State<ViroTour> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset(
-                      'assets/images/screenshots/app_screenshot_Chrome_v1.0.png',
-                      fit: BoxFit.cover),
+                  WebViewX(
+                    height: 520,
+                    width: 1600,
+                    // TODO: replace URL with response from API call GET /tour/<tour_id>/
+                    initialContent:
+                        'https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/O9CBhdM.jpg&autoLoad=true',
+                    onPageStarted: (url) {
+                      // This method is called when the WebView starts loading a new page
+                      debugPrint('Page started loading: $url');
+                    },
+                    onWebViewCreated: (controller) {
+                      var webviewController = controller;
+                    },
+                  ),
                   ColoredBox(
                     color: Colors.white.withAlpha(lighting.toInt()),
                     //color: Colors.black.withOpacity(lighting),
                   ),
-                  // const Text("Change slider"),
                 ],
               ),
             ),
