@@ -70,7 +70,7 @@ def upload_images(client, name, image_list):
 
 
 def upload_images_with_resp(client, name, image_list):
-    files = {fpath: open(fpath, 'rb') for fpath in image_list}
+    files = {'files[]': [open(fpath, 'rb') for fpath in image_list]}
     return client.post(f'/api/tour/add/images/{name}', data=files)
 
 
@@ -117,6 +117,14 @@ def get_panoramic_image_file(client, tour_name, location_id):
 
 def get_panoramic_image_file_with_resp(client, tour_name, location_id):
     return client.get(f'/api/tour/images/panoramic-image-file/{tour_name}/{location_id}')
+
+
+def get_glow_panoramic_image_file(client, tour_name, location_id, value):
+    return get_panoramic_image_file_with_resp(client, tour_name, location_id, value)
+
+
+def get_glow_panoramic_image_file_with_resp(client, tour_name, location_id, value):
+    return client.get(f'/api/tour/images/glow-panoramic-image-file/{tour_name}/{location_id}/{value}')
 
 
 def set_panoramic_image(client, tour_name, location_id, path):

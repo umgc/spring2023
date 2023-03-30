@@ -8,7 +8,7 @@ import sys
 import cv2 as cv
 
 from virotour import app
-from virotour.api.image_upload import api_upload_resolve_path
+from virotour.api.tour import api_upload_resolve_path
 
 modes = (cv.Stitcher_PANORAMA, cv.Stitcher_SCANS)
 

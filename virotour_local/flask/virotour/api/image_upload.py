@@ -3,7 +3,9 @@ import os
 from flask import request, flash, redirect, jsonify, send_file
 
 from virotour import app, db
-from virotour.models import Tour, Location, Image
+from virotour.api.compute.image_filter import apply_glow_effect, adjust_contrast_brightness
+from virotour.api.tour import api_upload_resolve_path
+from virotour.models import Tour, Location, Image, Filter
 
 
 @app.route('/api/tour/add/images/<string:tour_name>', methods=['POST'])
@@ -17,6 +19,10 @@ def api_add_tour_images(tour_name):
             type: string
             required: true
             description: Name of the tour
+          - name: file
+            required: true
+            in: formData
+            type: file
     """
     if request.method == 'POST':
         if not request.files:
@@ -24,8 +30,11 @@ def api_add_tour_images(tour_name):
             app.logger.error(f'Could not find images')
             app.logger.info(request)
             return redirect(request.url)
-
-        files = request.files.to_dict()
+        app.logger.info(f"{request.files}")
+        if request.files.get('files[]'):
+            files = request.files.getlist('files[]')
+        else:
+            files = request.files.to_dict()
         app.logger.info(f"Uploading images as a new location: {files}")
         result = {}
 
@@ -36,7 +45,10 @@ def api_add_tour_images(tour_name):
 
         for file in files:
             if file:
-                filename_raw = file
+                if request.files.get('files[]'):
+                    filename_raw = file.filename
+                else:
+                    filename_raw = file
                 filename = os.path.basename(filename_raw)
                 target_path = os.path.join(app.config['UPLOAD_FOLDER'], 'raw_images/')
                 target_file = f'T_{tour.id}_L_{location.location_id}_{filename}'
@@ -47,7 +59,11 @@ def api_add_tour_images(tour_name):
 
                 # Make directory & save
                 os.makedirs(target_path, exist_ok=True)
-                files[file].save(target_file_full)
+
+                if request.files.get('files[]'):
+                    file.save(target_file_full)
+                else:
+                    files[file].save(target_file_full)
 
                 image = Image(tour.id, location.location_id, result[filename])
                 db.session.add(image)
@@ -103,18 +119,6 @@ def api_get_tour_images(tour_name, location_id):
     return jsonify(payload), 200
 
 
-def api_upload_resolve_path(relative_path):
-    """
-    This is an internal call, so there is not a user-facing route.
-
-    Additional note: if the path to the file is not sufficient, and we need to return the full contents of the file,
-    we will need to change the endpoints to use "flask.send_file(...)" or "flask.send_from_directory(...).
-
-    https://flask.palletsprojects.com/en/2.2.x/api/#flask.send_file
-    """
-    return os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], relative_path))
-
-
 def api_set_panoramic_image(tour_name, location_id, path):
     """This is an internal call, so there is not a user-facing route."""
     # Get Tour
@@ -125,7 +129,6 @@ def api_set_panoramic_image(tour_name, location_id, path):
     location.pano_file_path = path
     db.session.commit()
     return None
-
 
 
 @app.route('/api/tour/images/panoramic-image/<string:tour_name>/<int:location_id>', methods=['GET'])
@@ -205,7 +208,19 @@ def api_get_panoramic_image_file(tour_name, location_id):
         location = db.session.query(Location).filter((Location.tour_id == tour.id) &
                                                      (Location.location_id == location_id)).first()
         pano_image_file = api_upload_resolve_path(location.pano_file_path)
+        value = db.session.query(Filter).filter(Filter.filter_id == location.filter_id).first()\
 
-        return send_file(pano_image_file)
+        if value is not None and value.setting is not None and value.setting != 0:
+            setting = value.setting
+            app.logger.info(f"setting is {setting}")
+            # Get the absolute file path of the panoramic image
+            image_path = api_upload_resolve_path(location.pano_file_path).replace("\\", "/")
+            # Strip the filename from the output path
+            output = api_upload_resolve_path(os.path.join(os.path.dirname(location.pano_file_path), "temp.jpg")).replace("\\", "/")
+            # applies brightness value to the image
+            adjust_contrast_brightness(image_path, setting, output)
+            return send_file(output)
+        else:
+            return send_file(pano_image_file)
     except Exception as e:
         return str(e)

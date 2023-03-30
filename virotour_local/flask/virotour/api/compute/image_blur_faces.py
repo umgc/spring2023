@@ -3,8 +3,8 @@ import os
 import cv2
 
 from virotour import db, app
-from virotour.api.image_upload import api_get_panoramic_image, api_upload_resolve_path
-from virotour.api.tour import api_get_tour_by_name
+from virotour.api.image_upload import api_get_panoramic_image
+from virotour.api.tour import api_get_tour_by_name, api_upload_resolve_path
 from virotour.models import Location
 
 

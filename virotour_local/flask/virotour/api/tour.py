@@ -1,3 +1,4 @@
+import os
 import urllib.parse
 
 from flask import jsonify, request
@@ -104,11 +105,26 @@ def api_get_tour_by_name(name):
 
 @app.route('/api/tour/add', methods=['POST'])
 def api_add_tour():
-    """
-        Add new tour
-        ---
-        parameters:
-          - data: name, description
+    """Add new tour
+    ---
+    consumes:
+    - "application/json"
+    parameters:
+      - in: body
+        name: body_params
+        required: true
+        schema:
+          id: endpoint_body
+          required:
+            - parameter1
+            - parameter2
+          properties:
+            parameter1:
+              type: string
+              description: The parameter1 description
+            parameter2:
+              type: string
+              description: The parameter2 description
     """
     if request.is_json:
         data = request.get_json()
@@ -178,20 +194,15 @@ def api_set_neighbors(tour_name, neighbors):
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
 
-    first_location = db.session.query(Location) \
-        .filter((Location.tour_id == tour.id)) \
-        .order_by(Location.location_id) \
-        .first()
-
     for neighbor in neighbors:
         location = db.session.query(Location).filter((Location.tour_id == tour.id) &
                                                      (Location.location_id == neighbor)).first()
         curr_neighbor = neighbors[neighbor][0]
 
-        if curr_neighbor and location.location_id != first_location.location_id:
+        if curr_neighbor:
             location.neighbors = [
                 {
-                    "location_id": location.location_id - 1,
+                    "location_id": location.location_id + 1,
                     "x": curr_neighbor[0],
                     "y": curr_neighbor[1]
                 }
@@ -268,3 +279,15 @@ def api_get_tour(tour_name):
     }
 
     return jsonify(payload), 200
+
+
+def api_upload_resolve_path(relative_path):
+    """
+    This is an internal call, so there is not a user-facing route.
+
+    Additional note: if the path to the file is not sufficient, and we need to return the full contents of the file,
+    we will need to change the endpoints to use "flask.send_file(...)" or "flask.send_from_directory(...).
+
+    https://flask.palletsprojects.com/en/2.2.x/api/#flask.send_file
+    """
+    return os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], relative_path))

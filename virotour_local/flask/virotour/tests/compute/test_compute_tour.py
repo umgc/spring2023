@@ -2,6 +2,8 @@ import json
 import os
 
 from PIL import Image
+from cv2 import cv2
+
 from virotour import app
 from virotour.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image, \
     get_raw_images, get_search_results, get_tour_locations, get_panoramic_image_file, get_image_path, get_tour
@@ -74,3 +76,18 @@ def test_compute_tour_full(client):
 
     data = get_tour(client, tour_name)
     print(json.dumps(data, indent=2))
+
+    # for location in get_tour_locations(client, tour_name)['results']:
+    #     location_path = get_panoramic_image(client, tour_name, location['location_id'])['server_file_path']
+    #     # Reading an image in default mode
+    #     image = cv2.imread(location_path)
+    #     # Center coordinates
+    #     center_coordinates = (location['neighbors'][0]['x'], location['neighbors'][0]['y'])
+    #     # Radius of circle
+    #     radius = 100
+    #     # Blue color in BGR
+    #     color = (255, 0, 0)
+    #     # Line thickness of 2 px
+    #     thickness = 20
+    #     image = cv2.circle(image, center_coordinates, radius, color, thickness)
+    #     cv2.imwrite(f"result_{tour_name}_{location['location_id']}.jpg", image)

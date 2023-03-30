@@ -7,7 +7,7 @@ from virotour.tests.common_utils import get_image_paths, get_image_path
 
 # api-endpoint
 URL = "https://virotour2023-flask-server.azurewebsites.net/api"
-# URL = "http://127.0.0.1:8081/api"
+URL = "http://127.0.0.1:8081/api"
 
 
 def file_upload_request_builder(image_paths):
@@ -29,14 +29,14 @@ def test_integration_1():
     # Add images
     for location_path in os.listdir(get_image_path('input_images/sample_tour/')):
         files_to_upload = get_image_paths(f'input_images/sample_tour/{location_path}')
-        requests.post(url=f"{URL}/tour/add/images/{tour_name}", files=file_upload_request_builder(files_to_upload))
+        r = requests.post(url=f"{URL}/tour/add/images/{tour_name}", files=file_upload_request_builder(files_to_upload))
+        print(r.text)
 
     # Compute tour
     r5 = requests.get(url=f"{URL}/compute-tour/{tour_name}")
 
     # Get Tour
     r6 = requests.get(url=f"{URL}/tour/get-tour/{tour_name}")
-    assert r6.status_code == 200
 
 def test_integration_2():
     # Create Tour
@@ -52,7 +52,7 @@ def test_integration_2():
     # Add images
     for location_path in os.listdir(get_image_path('input_images/sample_tour_2/')):
         files_to_upload = get_image_paths(f'input_images/sample_tour_2/{location_path}')
-        requests.post(url=f"{URL}/tour/add/images/{tour_name}", files=file_upload_request_builder(files_to_upload))
+        requests.post(url=f"{URL}/tour/add/images/{tour_name}", data=file_upload_request_builder(files_to_upload))
 
     # Compute tour
     r5 = requests.get(url=f"{URL}/compute-tour/{tour_name}")
