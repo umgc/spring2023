@@ -59,7 +59,6 @@ class SettingsView extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  // minimumSize: const Size(70.0, 35.0),
                   textStyle: const TextStyle(fontSize: 12),
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.lightBlue,
@@ -75,7 +74,6 @@ class SettingsView extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  // minimumSize: const Size(70.0, 35.0),
                   textStyle: const TextStyle(fontSize: 12),
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.lightBlue,
